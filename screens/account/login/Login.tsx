@@ -58,7 +58,6 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text>Login</Text>
       </TouchableOpacity>
-      <Button title="Go to Main" onPress={handlePress} />
     </View>
   );
 };
