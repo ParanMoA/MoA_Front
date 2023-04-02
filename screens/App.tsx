@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from './account/login/Login';
@@ -14,6 +14,8 @@ import MyPage from './Contents/main/MyPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<TabParamList>();
+
+// const Home;
 
 const Auth = () => {
   return (
@@ -111,5 +113,4 @@ function App() {
     </NavigationContainer>
   );
 }
-
 export default App;

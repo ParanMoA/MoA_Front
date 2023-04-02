@@ -31,12 +31,14 @@ const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.button} onPress={handlePressLogin}>
-        <Text>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handlePressSignUp}>
-        <Text>SingUp</Text>
-      </TouchableOpacity>
+      <View style={styles.buttoncontainer}>
+        <TouchableOpacity style={styles.button} onPress={handlePressLogin}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handlePressSignUp}>
+          <Text>SingUp</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 100,
   },
+  buttoncontainer: {marginTop: 10},
   button: {
     alignItems: 'center',
     padding: 10,

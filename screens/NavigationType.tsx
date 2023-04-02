@@ -11,3 +11,8 @@ export type TabParamList = {
   홈: undefined;
   마이: undefined;
 };
+
+export type MainParamList = {
+  Ingredient: undefined;
+  Home: undefined;
+};

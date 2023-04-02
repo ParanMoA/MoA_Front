@@ -20,16 +20,16 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const handlePress = () => {
     navigation.navigate('LoginHome');
   };
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (email === 'MoA' && password === 'Hello') {
-      navigation.navigate('Main');
-    } else {
-      Alert.alert('Error', 'Invalid email or password');
-    }
+    // if (email === 'MoA' && password === 'Hello') {
+    //   navigation.navigate('Main');
+    // } else {
+    //   Alert.alert('Error', 'Invalid email or password');
+    // }
+    navigation.navigate('Main');
   };
 
   return (
@@ -55,9 +55,14 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         secureTextEntry
         value={password}
         onChangeText={setPassword}></TextInput>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text>Login</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
+          <Text>Back</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -78,6 +83,7 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     borderRadius: 12,
   },
+  buttonContainer: {flexDirection: 'row'},
   button: {
     alignItems: 'center',
     padding: 10,

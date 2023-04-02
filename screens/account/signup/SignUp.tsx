@@ -64,7 +64,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         value={name}
         onChangeText={setName}
       />
-      <View style={styles.genderContainer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => handleGenderPress('male')}>
@@ -81,11 +81,16 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         placeholder="Birth Date"
         onChangeText={setBirthDate}
         value={birthDate}
-        type="date"
+        keyboardType="number-pad"
       />
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text>SignUp</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <Text>SignUp</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
+          <Text>Back</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 5,
   },
-  genderContainer: {
+  buttonContainer: {
     flexDirection: 'row',
     marginBottom: 10,
   },
