@@ -1,21 +1,42 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image, StyleSheet} from 'react-native';
+import {Text, Image, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from './account/login/Login';
 import SignUp from './account/signup/SignUp';
 import LoginHome from './account/loginhome/LoginHome';
-import {RootStackParamList, TabParamList} from './NavigationType';
-import Chat from './Contents/main/Chat';
-import Home from './Contents/main/Home';
-import MyPage from './Contents/main/MyPage';
+import {
+  MainParamList,
+  RootStackParamList,
+  TabParamList,
+} from './NavigationType';
+import Chat from './contents/main/Chat';
+import Home from './contents/main/Home';
+import MyPage from './contents/main/MyPage';
+import Ingredient from './contents/ingredient/Ingredient';
+import Recruit from './contents/recruit/Recruit';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
+const MainStack = createNativeStackNavigator<MainParamList>();
 
 // const Home;
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator initialRouteName="Home">
+      <MainStack.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
+      <MainStack.Screen name="Ingredient" component={Ingredient} />
+      <MainStack.Screen name="Recruit" component={Recruit} />
+    </MainStack.Navigator>
+  );
+};
 
 const Auth = () => {
   return (
@@ -39,12 +60,27 @@ const Auth = () => {
   );
 };
 
-const MainScreen = () => {
+const MainTabScreen = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarLabel: ({}) => {
+          let labelName;
+
+          if (route.name === 'HomeTab') {
+            labelName = '홈';
+          } else if (route.name === 'ChatTab') {
+            labelName = '채팅';
+          } else if (route.name === 'MyTab') {
+            labelName = '마이';
+          }
+
+          return <Text style={{color: 'black'}}>{labelName}</Text>;
+        },
+      })}>
       <Tab.Screen
-        name="홈"
-        component={Home}
+        name="HomeTab"
+        component={MainStackScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => (
@@ -59,7 +95,7 @@ const MainScreen = () => {
         }}
       />
       <Tab.Screen
-        name="채팅"
+        name="ChatTab"
         component={Chat}
         options={{
           headerShown: false,
@@ -76,7 +112,7 @@ const MainScreen = () => {
       />
 
       <Tab.Screen
-        name="마이"
+        name="MyTab"
         component={MyPage}
         options={{
           headerShown: false,
@@ -106,7 +142,7 @@ function App() {
         />
         <Stack.Screen
           name="Main"
-          component={MainScreen}
+          component={MainTabScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

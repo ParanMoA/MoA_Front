@@ -7,12 +7,14 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-  채팅: undefined;
-  홈: undefined;
-  마이: undefined;
+  ChatTab: undefined;
+  HomeTab: undefined;
+  MyTab: undefined;
 };
 
 export type MainParamList = {
   Ingredient: undefined;
   Home: undefined;
+  Recruit: undefined;
+  MyPage: undefined;
 };

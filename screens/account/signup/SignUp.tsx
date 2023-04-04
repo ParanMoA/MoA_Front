@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
+import DatePicker from 'react-native-date-picker';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -27,8 +28,12 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
   const [name, setName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState<Date>(new Date());
 
+  const handleDateChange = (newDate: Date) => {
+    setBirthDate(newDate);
+  };
+  const dateString = birthDate.toISOString().slice(0, 10).replace(/-/g, '');
   const handleSignUp = () => {
     console.log(email, password, gender, name, birthDate);
     Alert.alert('SignUp', 'SignUp Successful');
@@ -76,13 +81,13 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           <Text style={styles.buttonText}> female</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Birth Date"
-        onChangeText={setBirthDate}
-        value={birthDate}
-        keyboardType="number-pad"
-      />
+      <>
+        <DatePicker
+          date={birthDate}
+          mode="date"
+          onDateChange={handleDateChange}
+        />
+      </>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text>SignUp</Text>

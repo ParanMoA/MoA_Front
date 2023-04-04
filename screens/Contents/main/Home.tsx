@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {MainParamList} from '../../NavigationType';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -14,10 +15,41 @@ type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'Home'>;
 };
 
+type Todo = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
+const initialData: Todo[] = [
+  {id: '1', title: 'First', completed: false},
+  {id: '2', title: 'Second', completed: false},
+  {id: '3', title: 'Third', completed: false},
+];
+
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   const handleIngredientPress = () => {
     navigation.navigate('Ingredient');
   };
+  const handleRecruitPress = () => {
+    navigation.navigate('Recruit');
+  };
+
+  const [data, setData] = useState<Todo[]>(initialData);
+
+  const renderItem = ({item}: {item: Todo}) => (
+    <TouchableOpacity
+      style={[styles.item, item.completed && styles.completed]}
+      onPress={() => {
+        setData(
+          data.map(todo =>
+            todo.id === item.id ? {...todo, completed: !todo.completed} : todo,
+          ),
+        );
+      }}>
+      <Text style={styles.title}>{item.title} </Text>
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
       <Image
@@ -32,10 +64,14 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         <TouchableOpacity style={styles.button} onPress={handleIngredientPress}>
           <Text> 식재료 등록 </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleRecruitPress}>
           <Text> 모집글 보기 </Text>
         </TouchableOpacity>
       </View>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}></FlatList>
     </View>
   );
 };
@@ -62,6 +98,20 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 100,
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+  },
+  title: {
+    fontSize: 18,
+  },
+  completed: {
+    backgroundColor: '#ccc',
   },
 });
 
