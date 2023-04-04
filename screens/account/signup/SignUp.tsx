@@ -1,3 +1,4 @@
+import {Dimensions} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
+import {styles} from './Style';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -45,25 +47,27 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="name"
-        value={name}
-        onChangeText={setName}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}></TextInput>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}></TextInput>
+        <TextInput
+          style={styles.input}
+          placeholder="name"
+          value={name}
+          onChangeText={setName}
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -76,59 +80,25 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           <Text style={styles.buttonText}> female</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Birth Date"
-        onChangeText={setBirthDate}
-        value={birthDate}
-        keyboardType="number-pad"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Birth Date"
+          onChangeText={setBirthDate}
+          value={birthDate}
+          keyboardType="number-pad"
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text>SignUp</Text>
+          <Text style={styles.buttonText}>SignUp</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
-          <Text>Back</Text>
+          <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFD6BF',
-    flex: 1,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    padding: 10,
-    marginVertical: 3,
-    borderWidth: 1,
-    borderColor: '#000000',
-    borderRadius: 12,
-  },
-  button: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#FFD6BF',
-    borderColor: '#000000',
-    borderWidth: 0.5,
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  buttonText: {
-    color: '#fff',
-  },
-});
 export default SignUpScreen;

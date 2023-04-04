@@ -1,3 +1,4 @@
+import {Dimensions} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
+import {styles} from './Style';
 
 type LoginHomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHome'>;
@@ -31,41 +33,16 @@ const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={styles.buttoncontainer}>
+      <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePressLogin}>
-          <Text>Login</Text>
+          <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePressSignUp}>
-          <Text>SingUp</Text>
+          <Text style={styles.btnText}>SingUp</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFD6BF',
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  buttoncontainer: {marginTop: 10},
-  button: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#FFD6BF',
-    borderColor: '#000000',
-    borderWidth: 0.5,
-    borderRadius: 5,
-  },
-});
 
 export default LoginHomeScreen;
