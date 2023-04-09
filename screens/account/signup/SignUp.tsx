@@ -37,6 +37,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const handleDateChange = (newDate: Date) => {
     setBirthDate(newDate);
   };
+  4;
   const dateString = birthDate.toISOString().slice(0, 10).replace(/-/g, '');
   const handleSignUp = () => {
     navigation.goBack();
