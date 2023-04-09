@@ -12,6 +12,8 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {RootStackParamList} from '../../NavigationType';
 
+import axios from 'axios';
+
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
 };
@@ -24,12 +26,18 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // if (email === 'MoA' && password === 'Hello') {
-    //   navigation.navigate('Main');
-    // } else {
-    //   Alert.alert('Error', 'Invalid email or password');
-    // }
     navigation.navigate('Main');
+    // const data = {email: email, password: password};
+    // axios
+    //   .post('http://localhost:8080/user/login', data)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     navigation.navigate('Main');
+    //   })
+    //   .catch(error => {
+    //     console.log(error.response.data);
+    //     Alert.alert('Login Failed', 'Please Check your email and password');
+    //   });
   };
 
   return (

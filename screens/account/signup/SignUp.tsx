@@ -13,6 +13,8 @@ import {
 import {RootStackParamList} from '../../NavigationType';
 import DatePicker from 'react-native-date-picker';
 
+import axios from 'axios';
+
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 };
@@ -35,9 +37,24 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   };
   const dateString = birthDate.toISOString().slice(0, 10).replace(/-/g, '');
   const handleSignUp = () => {
-    console.log(email, password, gender, name, birthDate);
-    Alert.alert('SignUp', 'SignUp Successful');
     navigation.goBack();
+    // axios
+    //   .post('http://localhost:8080/user/signup', {
+    //     email,
+    //     password,
+    //     name,
+    //     birthDate,
+    //     gender,
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     Alert.alert('SignUp', 'SignUp Successful');
+    //     navigation.goBack();
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     Alert.alert('SignUp', 'SignUp Failed');
+    //   });
   };
 
   return (
@@ -72,12 +89,12 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleGenderPress('male')}>
+          onPress={() => handleGenderPress('M')}>
           <Text style={styles.buttonText}> male</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleGenderPress('female')}>
+          onPress={() => handleGenderPress('F')}>
           <Text style={styles.buttonText}> female</Text>
         </TouchableOpacity>
       </View>
