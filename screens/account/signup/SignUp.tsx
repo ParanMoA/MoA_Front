@@ -13,6 +13,8 @@ import {
 import {RootStackParamList} from '../../NavigationType';
 import DatePicker from 'react-native-date-picker';
 
+import {styles} from './Style';
+
 import axios from 'axios';
 
 type SignUpScreenProps = {
@@ -117,40 +119,4 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFD6BF',
-    flex: 1,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    padding: 10,
-    marginVertical: 3,
-    borderWidth: 1,
-    borderColor: '#000000',
-    borderRadius: 12,
-  },
-  button: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#FFD6BF',
-    borderColor: '#000000',
-    borderWidth: 0.5,
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  buttonText: {
-    color: '#fff',
-  },
-});
 export default SignUpScreen;
