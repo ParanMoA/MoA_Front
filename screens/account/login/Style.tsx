@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     height: '15%',
   },
   inputContainer: {
+    // backgroundColor: 'white',
     marginTop: '3%',
     paddingHorizontal: '10%',
     paddingVertical: '2%',

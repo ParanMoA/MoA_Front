@@ -7,12 +7,16 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
 import {styles} from './Style';
 type LoginHomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHome'>;
 };
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
   const handlePressLogin = () => {
@@ -33,10 +37,10 @@ const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
       />
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button} onPress={handlePressLogin}>
-          <Text>Login</Text>
+          <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePressSignUp}>
-          <Text>SingUp</Text>
+          <Text style={styles.btnText}>SingUp</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,6 +1,16 @@
 import React from 'react';
-import {StyleSheet, Modal, View, Pressable, Text} from 'react-native';
+import {
+  StyleSheet,
+  Modal,
+  View,
+  Pressable,
+  Text,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 interface Props {
   visible: boolean;

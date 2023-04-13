@@ -7,7 +7,11 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Dimensions,
 } from 'react-native';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const ChatScreen = () => {
   return (

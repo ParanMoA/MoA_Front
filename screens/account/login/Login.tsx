@@ -9,11 +9,14 @@ import {
   Alert,
   Image,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
-
 import {styles} from './Style';
 import axios from 'axios';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -51,25 +54,29 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TextInput
-        style={styles.inputContainer}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}></TextInput>
-      <TextInput
-        style={styles.inputContainer}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}></TextInput>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          // placeholderTextColor={'black'}
+          value={email}
+          onChangeText={setEmail}></TextInput>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Password"
+          // placeholderTextColor={'black'}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}></TextInput>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text>Login</Text>
+          <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
-          <Text>Back</Text>
+          <Text style={styles.btnText}>Back</Text>
         </TouchableOpacity>
       </View>
     </View>

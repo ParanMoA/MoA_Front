@@ -7,6 +7,7 @@ import {
   Platform,
   ActionSheetIOS,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainParamList} from '../../NavigationType';
@@ -21,6 +22,9 @@ import {
   launchCamera,
 } from 'react-native-image-picker';
 import UploadModeModal from './CameraModal';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [response, setResponse] = useState<ImagePickerResponse | null>(null);

@@ -17,8 +17,9 @@ export const styles = StyleSheet.create({
     marginTop: '3%',
     paddingHorizontal: '10%',
     paddingVertical: '2%',
+    // alignItems: 'center',
   },
-  input: {
+  inputText: {
     fontSize: 18,
     textAlign: 'center',
     fontWeight: 'bold',
@@ -30,7 +31,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderRadius: 5,
   },
-  inputText: {},
   buttonContainer: {
     flexDirection: 'row',
     // backgroundColor: 'teal',
@@ -39,10 +39,9 @@ export const styles = StyleSheet.create({
     paddingVertical: '1%',
   },
   button: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: '2%',
-    paddingHorizontal: '5%',
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: '5%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
     borderColor: '#000000',
@@ -53,9 +52,12 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: 'bold',
-    textAlign: 'center',
     color: 'black',
     paddingHorizontal: '2%',
     paddingVertical: '0.5%',
   },
+
+  // checked: {
+  //   color: 'orange',
+  // },
 });
