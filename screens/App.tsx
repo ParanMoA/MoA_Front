@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Text, Image, StyleSheet} from 'react-native';
+import {Text, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from './account/login/Login';
@@ -17,7 +17,7 @@ import Home from './contents/main/Home';
 import MyPage from './contents/main/MyPage';
 import Ingredient from './contents/ingredient/Ingredient';
 import Recruit from './contents/recruit/Recruit';
-
+import {styles} from './Style';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 const MainStack = createNativeStackNavigator<MainParamList>();
@@ -32,8 +32,16 @@ const MainStackScreen = () => {
         component={Home}
         options={{headerShown: false}}
       />
-      <MainStack.Screen name="Ingredient" component={Ingredient} />
-      <MainStack.Screen name="Recruit" component={Recruit} />
+      <MainStack.Screen
+        name="Ingredient"
+        component={Ingredient}
+        options={{headerShown: false}}
+      />
+      <MainStack.Screen
+        name="Recruit"
+        component={Recruit}
+        options={{headerShown: false}}
+      />
     </MainStack.Navigator>
   );
 };
@@ -86,10 +94,7 @@ const MainTabScreen = () => {
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../public/images/icon-home.png')}
-              style={{
-                width: 24,
-                height: 24,
-              }}
+              style={focused ? styles.img_click : styles.img_nonclick}
             />
           ),
         }}
@@ -102,10 +107,7 @@ const MainTabScreen = () => {
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../public/images/icon-chat.png')}
-              style={{
-                width: 24,
-                height: 24,
-              }}
+              style={focused ? styles.img_click : styles.img_nonclick}
             />
           ),
         }}
@@ -119,10 +121,7 @@ const MainTabScreen = () => {
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../public/images/icon-my.png')}
-              style={{
-                width: 24,
-                height: 24,
-              }}
+              style={focused ? styles.img_click : styles.img_nonclick}
             />
           ),
         }}

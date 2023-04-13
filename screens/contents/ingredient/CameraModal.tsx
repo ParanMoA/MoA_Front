@@ -1,5 +1,13 @@
 import React from 'react';
-import {StyleSheet, Modal, View, Pressable, Text} from 'react-native';
+import {
+  StyleSheet,
+  Modal,
+  View,
+  Pressable,
+  TouchableOpacity,
+  Text,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
@@ -43,7 +51,6 @@ const UploadModeModal: React.FC<Props> = ({
             android_ripple={{color: '#eee'}}
             onPress={() => {
               onLaunchImageLibrary();
-
               onClose();
             }}>
             <Icon name="photo" color="#757575" size={24} style={styles.icon} />

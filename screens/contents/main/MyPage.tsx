@@ -8,24 +8,13 @@ type MyPageScreenProps = {
 };
 
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const handleIngredientPress = () => {
     navigation.navigate('Ingredient');
   };
-  const handleData = () => {
-    // console.log('hello');
-    axios
-      .get(
-        'https://new-api.spacecloud.kr/products/56984/prices?reservation_type_id=104496&year=2023&month=04',
-      )
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      });
-  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -36,8 +25,8 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.button} onPress={handleData}>
-        <Text>클릭</Text>
+      <TouchableOpacity onPress={handleIngredientPress}>
+        <Icon name="plus" color="black" size={60}></Icon>
       </TouchableOpacity>
     </View>
   );

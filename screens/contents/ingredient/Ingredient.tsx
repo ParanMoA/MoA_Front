@@ -3,10 +3,11 @@ import {
   View,
   StyleSheet,
   Text,
-  Button,
   Platform,
   ActionSheetIOS,
-  Pressable,
+  TouchableOpacity,
+  Image,
+  TextInput,
 } from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainParamList} from '../../NavigationType';
@@ -15,21 +16,26 @@ type IngredientScreenProps = {
 };
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {
-  launchImageLibrary,
-  ImagePickerResponse,
-  launchCamera,
-} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import UploadModeModal from './CameraModal';
+import {DateAutoFormat} from '../../utils/index';
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
-  const [response, setResponse] = useState<ImagePickerResponse | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [uri, setUri] = useState();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [purchasedDate, setPurchasedDate] = useState<string>('');
+  const [expirationDate, setExpirationDate] = useState<string>('');
+
+  const handlePress = () => {
+    // 등록 버튼을 눌렀을 때, 이미지 uri, purchasedDate, expirationDate 넘겨주기
+    // axios.post('')
+    console.log(uri, purchasedDate, expirationDate);
+  };
   const onPickImage = (res: any) => {
     if (res.didCancel || !res) {
       return;
     }
-    console.log(res);
+    setUri(res.assets[0].uri);
   };
 
   const onLaunchCamera = () => {
@@ -76,17 +82,56 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     }
   };
 
+  const onChangePurchasedDate = (date: string) => {
+    const targetDate = DateAutoFormat(date);
+    setPurchasedDate(targetDate);
+  };
+  const onChangeExpirationDate = (date: string) => {
+    const targetDate = DateAutoFormat(date);
+    setExpirationDate(targetDate);
+  };
   return (
     <View style={styles.container}>
-      <Pressable onPress={modalOpen}>
-        <Icon name="plus" color="black" size={60} />
-      </Pressable>
-      <UploadModeModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onLaunchCamera={onLaunchCamera}
-        onLaunchImageLibrary={onLaunchImageLibrary}
-      />
+      <View style={styles.piccontainer}>
+        <TouchableOpacity style={styles.inputText} onPress={modalOpen}>
+          <Icon name="plus" color="black" size={60} />
+          <Text>사진 등록</Text>
+        </TouchableOpacity>
+        <UploadModeModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onLaunchCamera={onLaunchCamera}
+          onLaunchImageLibrary={onLaunchImageLibrary}
+        />
+        {uri === undefined ? (
+          <Text> No Image </Text>
+        ) : (
+          <Image
+            source={{uri: uri}}
+            style={{width: 100, height: 100, marginLeft: '5%'}}
+          />
+        )}
+      </View>
+      <View>
+        <Text>구매 일자</Text>
+        <TextInput
+          onChangeText={onChangePurchasedDate}
+          value={purchasedDate}
+          placeholder="YYYY-MM-DD"
+          keyboardType="numeric"
+          maxLength={10}></TextInput>
+        <Text>유통 기한</Text>
+        <TextInput
+          onChangeText={onChangeExpirationDate}
+          value={expirationDate}
+          placeholder="YYYY-MM-DD"
+          keyboardType="numeric"
+          maxLength={10}></TextInput>
+      </View>
+
+      <TouchableOpacity style={styles.btn} onPress={handlePress}>
+        <Text> 등록 </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -97,6 +142,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFD6BF',
     flex: 1,
+  },
+  piccontainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFD6BF',
+    flexDirection: 'row',
+  },
+  btn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
+  inputText: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginVertical: '1%',
+    paddingHorizontal: '20%',
+    paddingVertical: '2%',
+    backgroundColor: '#FFF7F4',
+    borderColor: '#000000',
+    borderWidth: 1.5,
+    borderRadius: 5,
   },
 });
 export default IngredientScreen;
