@@ -1,8 +1,22 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  ScrollView,
+  StatusBar,
+  Dimensions,
+} from 'react-native';
 import axios from 'axios';
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Calendar} from 'react-native-calendars';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const ChatScreen = () => {
   const [data, setData] = useState([]);

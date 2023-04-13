@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../../NavigationType';
 import DatePicker from 'react-native-date-picker';
@@ -16,6 +17,9 @@ import DatePicker from 'react-native-date-picker';
 import {styles} from './Style';
 
 import axios from 'axios';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -70,25 +74,27 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}></TextInput>
-      <TextInput
-        style={styles.input}
-        placeholder="name"
-        value={name}
-        onChangeText={setName}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}></TextInput>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}></TextInput>
+        <TextInput
+          style={styles.inputText}
+          placeholder="name"
+          value={name}
+          onChangeText={setName}
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}

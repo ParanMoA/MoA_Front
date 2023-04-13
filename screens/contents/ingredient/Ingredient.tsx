@@ -5,6 +5,8 @@ import {
   Text,
   Platform,
   ActionSheetIOS,
+  Pressable,
+  Dimensions,
   TouchableOpacity,
   Image,
   TextInput,
@@ -19,6 +21,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import UploadModeModal from './CameraModal';
 import {DateAutoFormat} from '../../utils/index';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [uri, setUri] = useState();

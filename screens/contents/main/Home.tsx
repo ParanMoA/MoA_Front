@@ -7,9 +7,14 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import {MainParamList} from '../../NavigationType';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {styles} from './HomeStyle';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'Home'>;
@@ -47,7 +52,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           ),
         );
       }}>
-      <Text style={styles.title}>{item.title} </Text>
+      <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
   );
   return (
@@ -62,10 +67,10 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleIngredientPress}>
-          <Text> 식재료 등록 </Text>
+          <Text style={styles.btnText}> 식재료 등록 </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleRecruitPress}>
-          <Text> 모집글 보기 </Text>
+          <Text style={styles.btnText}> 모집글 보기 </Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -75,44 +80,5 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFD6BF',
-  },
-  buttonContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  button: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#FFFFFF',
-    borderColor: '#000000',
-    borderWidth: 0.5,
-    borderRadius: 5,
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 18,
-  },
-  completed: {
-    backgroundColor: '#ccc',
-  },
-});
 
 export default HomeScreen;

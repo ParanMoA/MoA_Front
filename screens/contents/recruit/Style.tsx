@@ -13,6 +13,15 @@ export const styles = StyleSheet.create({
   //   padding: '40%',
   //   margin: '5%',
   // },
+  textContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    // padding: '15%',
+    paddingHorizontal: '25%',
+    margin: '10%',
+    paddingVertical: '5%',
+    borderRadius: 5,
+  },
   text: {
     marginTop: '5%',
     textAlign: 'center',
@@ -61,6 +70,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    color: 'black',
   },
   completed: {
     backgroundColor: 'skyblue',

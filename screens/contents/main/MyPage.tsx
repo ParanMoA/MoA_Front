@@ -1,6 +1,13 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {MainParamList} from '../../NavigationType';
 
 type MyPageScreenProps = {
@@ -9,6 +16,9 @@ type MyPageScreenProps = {
 
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+const windowDimensions = Dimensions.get('window');
+const screenDimensions = Dimensions.get('screen');
 
 const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const handleIngredientPress = () => {
