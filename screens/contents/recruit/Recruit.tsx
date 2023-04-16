@@ -98,13 +98,14 @@ const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
 
 type dataList = {
+  id: number;
   menu: string;
   cost: number;
 };
 
 const InitialData: dataList[] = [
-  {menu: 'pasta', cost: 20000},
-  {menu: 'pizza', cost: 21000},
+  {id: 1, menu: 'pasta', cost: 20000},
+  {id: 2, menu: 'pizza', cost: 21000},
 ];
 
 type RecruitScreenProps = {
@@ -136,11 +137,16 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   );
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.menu}
-      />
+      /> */}
+      <Text style={styles.text}>
+        {InitialData.map(initData => (
+          <Text key={initData.id}>{initData.menu}</Text>
+        ))}
+      </Text>
     </View>
   );
 };
