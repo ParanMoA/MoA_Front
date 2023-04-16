@@ -7,7 +7,6 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
-  Text,
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';

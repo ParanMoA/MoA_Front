@@ -1,17 +1,12 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Image,
-  ScrollView,
-  StatusBar,
-  Dimensions,
-} from 'react-native';
 import axios from 'axios';
 import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Modal} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Calendar} from 'react-native-calendars';
 
@@ -59,6 +54,11 @@ const ChatScreen = () => {
           }}>
           <Icon name="backward" color="black" size={60}></Icon>
         </TouchableOpacity>
+        <Calendar
+          onDayPress={day => {
+            console.log('selected day', day);
+          }}
+        />
       </Modal>
       <TouchableOpacity
         style={styles.button}

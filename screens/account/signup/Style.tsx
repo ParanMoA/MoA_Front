@@ -9,8 +9,23 @@ export const styles = StyleSheet.create({
   },
 
   logo: {
-    width: '50%',
-    height: '15%',
+    width: 200,
+    height: 92,
+  },
+  emailContainer: {
+    marginTop: '3%',
+    paddingHorizontal: '10%',
+    paddingVertical: '2%',
+    flexDirection: 'row',
+  },
+  emailBtn: {
+    alignItems: 'center',
+    marginHorizontal: '5%',
+    paddingVertical: '2%',
+    backgroundColor: '#FFF7F4',
+    borderColor: '#000000',
+    borderWidth: 1.5,
+    borderRadius: 5,
   },
   inputContainer: {
     // backgroundColor: 'white',

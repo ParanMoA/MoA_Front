@@ -29,19 +29,19 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    navigation.navigate('Main');
-    // const data = {email: email, password: password};
-    // axios
-    //   .post('http://localhost:8080/user/login', data)
-    //   .then(response => {
-    //     console.log(response.data);
-    //     navigation.navigate('Main');
-    //   })
-    //   .catch(error => {
-    //     console.log(error.response.data);
-    //     Alert.alert('Login Failed', 'Please Check your email and password');
-    //   });
+  const handleLogin = async () => {
+    const data = {email: email, password: password};
+    console.log('?', data);
+    axios
+      .post('http://localhost:8080/user/login', {body: data})
+      .then(response => {
+        console.log(response.data);
+        navigation.navigate('Main');
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Login Failed', 'Please Check your email and password');
+      });
   };
 
   return (
