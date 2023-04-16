@@ -55,6 +55,11 @@ const ChatScreen = () => {
           }}>
           <Icon name="backward" color="black" size={60}></Icon>
         </TouchableOpacity>
+        <Calendar
+          onDayPress={day => {
+            console.log('selected day', day);
+          }}
+        />
       </Modal>
       <TouchableOpacity
         style={styles.button}

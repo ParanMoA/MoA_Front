@@ -3,8 +3,6 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  Button,
   TextInput,
   TouchableOpacity,
   Image,
@@ -36,32 +34,68 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
   const [name, setName] = useState('');
-  const [birthDate, setBirthDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
+  const [birthDate, setBirthDate] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleDateChange = (newDate: Date) => {
-    setBirthDate(newDate);
+    const formattedDate =
+      newDate.getFullYear() +
+      '-' +
+      (newDate.getMonth() + 1) +
+      '-' +
+      newDate.getDate();
+    setBirthDate(formattedDate);
   };
-  4;
-  const dateString = birthDate.toISOString().slice(0, 10).replace(/-/g, '');
   const handleSignUp = () => {
-    navigation.goBack();
-    // axios
-    //   .post('http://localhost:8080/user/signup', {
-    //     email,
-    //     password,
-    //     name,
-    //     birthDate,
-    //     gender,
-    //   })
-    //   .then(response => {
-    //     console.log(response.data);
-    //     Alert.alert('SignUp', 'SignUp Successful');
-    //     navigation.goBack();
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     Alert.alert('SignUp', 'SignUp Failed');
-    //   });
+    const data = {
+      email: email,
+      password: password,
+      gender: gender,
+      name: name,
+      birth: birthDate,
+    };
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/user/signup',
+      data: {
+        email: 'Fred',
+        password: 'Flintstone',
+        gender: 'gender',
+        name: 'name',
+        birth: 'birthDate',
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+        navigation.navigate('Main');
+      })
+      .catch(error => {
+        console.log(error.toJSON());
+        // console.log(error.request);
+        Alert.alert('Login Failed', 'Please Check your email and password');
+      });
+  };
+
+  const handleEmail = () => {
+    const data = {
+      email: email,
+      password: password,
+      gender: gender,
+      name: name,
+      birth: birthDate,
+    };
+    axios
+      .get('http://localhost:8080/user/signup/validation?email=1237901739012')
+      .then(response => {
+        console.log(response.data);
+        navigation.navigate('Main');
+      })
+      .catch(error => {
+        console.log(error);
+        console.log(error.request);
+        Alert.alert('Login Failed', 'Please Check your email and password');
+      });
   };
 
   return (
@@ -74,7 +108,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={styles.inputContainer}>
+      <View style={styles.emailContainer}>
         <TextInput
           style={styles.inputText}
           placeholder="Email"
@@ -82,6 +116,11 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}></TextInput>
+        <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
+          <Text> 확인 </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputText}
           placeholder="Password"
@@ -108,11 +147,35 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         </TouchableOpacity>
       </View>
       <>
-        <DatePicker
-          date={birthDate}
-          mode="date"
-          onDateChange={handleDateChange}
-        />
+        <TouchableOpacity
+          style={{
+            alignItems: 'center',
+            marginHorizontal: '5%',
+            paddingVertical: '2%',
+            backgroundColor: '#FFF7F4',
+            borderColor: '#000000',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            width: 100,
+            height: 40,
+          }}
+          onPress={() => setOpen(true)}>
+          <Text> 생일 </Text>
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            mode="date"
+            onConfirm={date => {
+              setOpen(false);
+              setDate(date);
+              handleDateChange(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+        </TouchableOpacity>
       </>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
