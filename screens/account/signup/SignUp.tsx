@@ -9,15 +9,12 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
-import {RootStackParamList} from '../../NavigationType';
-import DatePicker from 'react-native-date-picker';
-
-import {styles} from './Style';
-
 import axios from 'axios';
+import DatePicker from 'react-native-date-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+import {RootStackParamList} from '../../NavigationType';
+import {styles} from './Style';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -52,49 +49,35 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       email: email,
       password: password,
       gender: gender,
-      name: name,
       birth: birthDate,
+      name: name,
     };
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/user/signup',
-      data: {
-        email: 'Fred',
-        password: 'Flintstone',
-        gender: 'gender',
-        name: 'name',
-        birth: 'birthDate',
-      },
-    })
+    axios
+      .post('http://localhost:8080/user/signup', {body: data})
       .then(response => {
-        console.log(response.data);
+        console.log(response.headers['set-cookie']);
         navigation.navigate('Main');
+        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
       })
       .catch(error => {
         console.log(error.toJSON());
-        // console.log(error.request);
         Alert.alert('Login Failed', 'Please Check your email and password');
       });
   };
 
   const handleEmail = () => {
-    const data = {
-      email: email,
-      password: password,
-      gender: gender,
-      name: name,
-      birth: birthDate,
-    };
     axios
-      .get('http://localhost:8080/user/signup/validation?email=1237901739012')
+      .get('http://localhost:8080/user/signup/validation', {
+        params: {email: email},
+      })
       .then(response => {
-        console.log(response.data);
-        navigation.navigate('Main');
+        console.log(response.headers['set-cookie']);
+        Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
       })
       .catch(error => {
         console.log(error);
         console.log(error.request);
-        Alert.alert('Login Failed', 'Please Check your email and password');
+        Alert.alert('이메일 인증', '중복된 이메일입니다.');
       });
   };
 

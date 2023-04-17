@@ -31,17 +31,17 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
 
   const handleLogin = async () => {
     const data = {email: email, password: password};
-    console.log('?', data);
-    axios
-      .post('http://localhost:8080/user/login', {body: data})
-      .then(response => {
-        console.log(response.data);
-        navigation.navigate('Main');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert('Login Failed', 'Please Check your email and password');
-      });
+    // console.log('?', data);
+    // axios
+    //   .post('http://localhost:8080/user/login', {body: data})
+    //   .then(response => {
+    //     console.log(response.data);
+    navigation.navigate('Main');
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    //   Alert.alert('Login Failed', 'Please Check your email and password');
+    // });
   };
 
   return (
