@@ -16,6 +16,7 @@ type MyPageScreenProps = {
 
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {styles} from './MyPageStyle';
 
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
@@ -41,26 +42,5 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFD6BF',
-  },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  button: {
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#FFD6BF',
-    borderColor: '#000000',
-    borderWidth: 0.5,
-    borderRadius: 5,
-  },
-});
 
 export default MyPageScreen;
