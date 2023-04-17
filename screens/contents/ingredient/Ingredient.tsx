@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import axios from 'axios';
 
 import {MainParamList} from '../../NavigationType';
 import UploadModeModal from './CameraModal';
@@ -28,14 +29,13 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [expirationDate, setExpirationDate] = useState<string>('');
 
   const handlePress = () => {
-    // 등록 버튼을 눌렀을 때, 이미지 uri, purchasedDate, expirationDate 넘겨주기
-    // axios.post('')
     console.log(uri, purchasedDate, expirationDate);
   };
   const onPickImage = (res: any) => {
     if (res.didCancel || !res) {
       return;
     }
+
     const uri = res.assets?.[0]?.uri;
     if (uri) {
       setUri(uri);
@@ -66,6 +66,24 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     );
   };
 
+  const handleAxios = async () => {
+    await axios
+      .post('http://localhost:8080/user/ingredient/image', {
+        Headers: {
+          'X-CSRF-TOKEN':
+            'rkg0NPh5xREUu8o_AZvvwBTYdlRYi2pL7WNjYVHGFGO8WhM-mHBWB8AaoCk5ifsKMbbb9Se6WzVu6Vpm3QVSB2T_cgGMaXBa',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaGR0YWNrQGFqb3UuYWMua3IiLCJrZXkiOiJ2YWx1ZSIsImVtYWlsIjoiZ2hkdGFja0Bham91LmFjLmtyIiwidXNlcm5hbWUiOiLtmY3shLHtmZQifQ.TDrKP5-_2hzmkEdnNF4rhBEI5rwhx_tnNCdePDMXQ_8',
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const modalOpen = () => {
     if (Platform.OS === 'android') {
       setModalVisible(true);
@@ -80,6 +98,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             onLaunchCamera();
           } else if (buttonIndex === 1) {
             onLaunchImageLibrary();
+            handleAxios();
           }
         },
       );
@@ -97,10 +116,20 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <View>
+        <View style={styles.piccontainer}>
           <TouchableOpacity style={styles.btn} onPress={modalOpen}>
-            <Icon name="plus" color="black" size={60} />
+            <Icon name="plus" color="#EB5500" size={24} />
             <Text>사진 등록</Text>
+          </TouchableOpacity>
+          <UploadModeModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onLaunchCamera={onLaunchCamera}
+            onLaunchImageLibrary={onLaunchImageLibrary}
+          />
+          <TouchableOpacity style={styles.btn} onPress={modalOpen}>
+            <Icon name="plus" color="#EB5500" size={24} />
+            <Text>영수증 사진 등록</Text>
           </TouchableOpacity>
           <UploadModeModal
             visible={modalVisible}
@@ -113,31 +142,33 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           {uri === undefined ? (
             <Text></Text>
           ) : (
-            <Image source={{uri: uri}} style={{width: 200, height: 200}} />
+            <View style={{flexDirection: 'row'}}>
+              <Image source={{uri: uri}} style={{width: 150, height: 150}} />
+              <Text>Hello</Text>
+            </View>
           )}
         </View>
         <View>
-          <Text>구매 일자</Text>
+          <Text style={styles.text}>구매 일자</Text>
           <TextInput
+            style={styles.inputText}
             onChangeText={onChangePurchasedDate}
             value={purchasedDate}
             placeholder="YYYY-MM-DD"
+            placeholderTextColor="black"
             keyboardType="numeric"
             maxLength={10}></TextInput>
-          <Text>유통 기한</Text>
+          <Text style={styles.text}>유통 기한</Text>
           <TextInput
+            style={styles.inputText}
             onChangeText={onChangeExpirationDate}
             value={expirationDate}
             placeholder="YYYY-MM-DD"
+            placeholderTextColor="black"
             keyboardType="numeric"
             maxLength={10}></TextInput>
         </View>
-        <TouchableOpacity
-          style={{
-            width: 200,
-            height: 200,
-          }}
-          onPress={handlePress}>
+        <TouchableOpacity style={styles.btn_2} onPress={handlePress}>
           <Text> 등록 </Text>
         </TouchableOpacity>
       </View>

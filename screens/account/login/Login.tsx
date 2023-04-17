@@ -31,17 +31,19 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
 
   const handleLogin = async () => {
     const data = {email: email, password: password};
-    // console.log('?', data);
-    // axios
-    //   .post('http://localhost:8080/user/login', {body: data})
-    //   .then(response => {
-    //     console.log(response.data);
-    navigation.navigate('Main');
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    //   Alert.alert('Login Failed', 'Please Check your email and password');
-    // });
+    axios
+      .post('http://localhost:8080/user/login', {
+        email: email,
+        password: password,
+      })
+      .then(response => {
+        console.log(response.data);
+        navigation.navigate('Main');
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Login Failed', 'Please Check your email and password');
+      });
   };
 
   return (
@@ -60,13 +62,11 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
-          // placeholderTextColor={'black'}
           value={email}
           onChangeText={setEmail}></TextInput>
         <TextInput
           style={styles.inputText}
           placeholder="Password"
-          // placeholderTextColor={'black'}
           secureTextEntry
           value={password}
           onChangeText={setPassword}></TextInput>

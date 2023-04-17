@@ -52,15 +52,22 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       birth: birthDate,
       name: name,
     };
+    console.log(data);
     axios
-      .post('http://localhost:8080/user/signup', {body: data})
+      .post('http://localhost:8080/user/signup', {
+        email: email,
+        password: password,
+        gender: gender,
+        birth: birthDate,
+        name: name,
+      })
       .then(response => {
-        console.log(response.headers['set-cookie']);
-        navigation.navigate('Main');
+        console.log(response);
         Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+        navigation.navigate('LoginHome');
       })
       .catch(error => {
-        console.log(error.toJSON());
+        console.log(error);
         Alert.alert('Login Failed', 'Please Check your email and password');
       });
   };
@@ -71,7 +78,8 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         params: {email: email},
       })
       .then(response => {
-        console.log(response.headers['set-cookie']);
+        // console.log(response.headers['set-cookie']);
+        console.log(response);
         Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
       })
       .catch(error => {
@@ -120,12 +128,12 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleGenderPress('M')}>
+          onPress={() => handleGenderPress('Male')}>
           <Text style={styles.buttonText}> male</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleGenderPress('F')}>
+          onPress={() => handleGenderPress('Female')}>
           <Text style={styles.buttonText}> female</Text>
         </TouchableOpacity>
       </View>
