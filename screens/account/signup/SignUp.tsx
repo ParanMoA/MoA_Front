@@ -75,7 +75,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('Login Failed', 'Please Check your email and password');
+        Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
       });
   };
 
