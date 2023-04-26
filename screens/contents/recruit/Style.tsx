@@ -7,19 +7,12 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFD6BF',
     flex: 1,
   },
-  // scrollViewContainer: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  //   padding: '40%',
-  //   margin: '5%',
-  // },
+
   textContainer: {
-    flex: 1,
     backgroundColor: 'white',
-    // padding: '15%',
-    paddingHorizontal: '25%',
-    margin: '10%',
-    paddingVertical: '5%',
+    paddingHorizontal: '30%',
+    marginTop: '5%',
+    paddingVertical: '2%',
     borderRadius: 5,
   },
   text: {
@@ -57,6 +50,10 @@ export const styles = StyleSheet.create({
     paddingVertical: '5%',
     paddingBottom: '5%',
   },
+  ShowboxContainer: {
+    flexDirection: 'row',
+  },
+
   item: {
     paddingHorizontal: 30,
     paddingVertical: 20,

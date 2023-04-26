@@ -85,17 +85,17 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       name: name,
       birth: birthDate,
     };
-    axios
-      .get('http://localhost:8080/user/signup/validation?email=1237901739012')
-      .then(response => {
-        console.log(response.data);
-        navigation.navigate('Main');
-      })
-      .catch(error => {
-        console.log(error);
-        console.log(error.request);
-        Alert.alert('Login Failed', 'Please Check your email and password');
-      });
+    // axios
+    //   .get('http://localhost:8080/user/signup/validation?email=1237901739012')
+    //   .then(response => {
+    //     console.log(response.data);
+    navigation.navigate('Main');
+    //   })
+    // .catch(error => {
+    //   console.log(error);
+    //   console.log(error.request);
+    //   Alert.alert('Login Failed', 'Please Check your email and password');
+    // });
   };
 
   return (

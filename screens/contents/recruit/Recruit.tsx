@@ -88,6 +88,7 @@ import {
   FlatList,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -106,6 +107,9 @@ type dataList = {
 const InitialData: dataList[] = [
   {id: 1, menu: 'pasta', cost: 20000},
   {id: 2, menu: 'pizza', cost: 21000},
+  {id: 3, menu: 'chicken', cost: 25000},
+  {id: 4, menu: 'cola', cost: 2000},
+  {id: 5, menu: 'water', cost: 1000},
 ];
 
 type RecruitScreenProps = {
@@ -116,8 +120,32 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [data, setData] = useState(InitialData);
   const [visible, setVisible] = useState(true);
 
-  const onPress = () => {
-    setVisible(!true);
+  const Show = () => {
+    setVisible(current => !current);
+  };
+
+  const ShowConfirm = () => {
+    Alert.alert('취소하시겠습니까?', '취소', [
+      {text: '확인', onPress: () => Show()},
+    ]);
+  };
+  const ShowAlert = () => {
+    Alert.alert(
+      '참여하시겠습니까?',
+      '참여',
+      [
+        {
+          text: 'Sure Join!',
+          onPress: () => Show(),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => Show(),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   useEffect(() => {
@@ -128,25 +156,23 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   }, []);
 
   const renderItem = ({item}: {item: dataList}) => (
-    <TouchableOpacity style={styles.textContainer}>
-      <Button title="JOIN" onPress={onPress} />
-      {visible ? <Text>aaa</Text> : <Text>NO!!</Text>}
-      <Text style={styles.title}>menu : {item.menu}</Text>
-      <Text style={styles.title}>cost : {item.cost}</Text>
-    </TouchableOpacity>
+    <View style={styles.textContainer}>
+      <View style={styles.ShowboxContainer}>
+        <Button title="join⭕" onPress={ShowAlert} disabled={!visible} />
+        <Button title="cancel❌" onPress={ShowConfirm} disabled={visible} />
+      </View>
+      <Text style={styles.title}>{item.menu}</Text>
+      <Text style={styles.title}>{item.cost}</Text>
+      {visible ? <Text>Join</Text> : <Text>Already Joined</Text>}
+    </View>
   );
   return (
     <View style={styles.container}>
-      {/* <FlatList
-        data={data}
+      <FlatList
+        data={InitialData}
         renderItem={renderItem}
-        keyExtractor={item => item.menu}
-      /> */}
-      <Text style={styles.text}>
-        {InitialData.map(initData => (
-          <Text key={initData.id}>{initData.menu}</Text>
-        ))}
-      </Text>
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
