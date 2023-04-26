@@ -17,6 +17,7 @@ import {MainParamList} from '../../NavigationType';
 import UploadModeModal from './CameraModal';
 import {DateAutoFormat} from '../../utils/index';
 import {styles} from './Sytle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type IngredientScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'Ingredient'>;
@@ -24,12 +25,17 @@ type IngredientScreenProps = {
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [uri, setUri] = useState(undefined);
+  const [name, setName] = useState(undefined);
+  const [ingredients, setIngredients] = useState(['']);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newIngredient, setNewIngredient] = useState('');
+  const [selected, setSelected] = useState('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [purchasedDate, setPurchasedDate] = useState<string>('');
   const [expirationDate, setExpirationDate] = useState<string>('');
 
   const handlePress = () => {
-    console.log(uri, purchasedDate, expirationDate);
+    console.log(selected, purchasedDate, expirationDate);
   };
   const onPickImage = (res: any) => {
     if (res.didCancel || !res) {
@@ -37,9 +43,13 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     }
 
     const uri = res.assets?.[0]?.uri;
-    if (uri) {
+    const name = res.assets?.[0]?.fileName;
+    // console.log(name);
+    if (uri && name) {
       setUri(uri);
+      setName(name);
     }
+    handleAxios();
   };
 
   const onLaunchCamera = () => {
@@ -66,21 +76,54 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     );
   };
 
+  const handleIngredient = (selectedIngredient: any) => {
+    console.log(selectedIngredient);
+    setSelected(selectedIngredient);
+  };
+
+  const handleAddIngredient = () => {
+    setIsAdding(true);
+  };
+
+  const handleSaveIngredient = () => {
+    if (newIngredient.trim() !== '') {
+      const exists = ingredients.includes(newIngredient);
+      if (!exists) {
+        setIngredients([...ingredients, newIngredient]);
+      }
+      setIsAdding(false);
+      setNewIngredient('');
+    }
+  };
+
+  const handleCancelAddIngredient = () => {
+    setIsAdding(false);
+    setNewIngredient('');
+  };
+
   const handleAxios = async () => {
+    const token = await AsyncStorage.getItem('AccessToken');
+    const reqHeader = {
+      'x-access-token': token || '',
+      'content-type': 'multipart/form-data',
+    };
+    const formData = new FormData();
+    var file = {
+      uri: uri,
+      type: 'multipart/form-data',
+      name: name,
+    };
+    formData.append('file', file);
     await axios
-      .post('http://localhost:8080/user/ingredient/image', {
-        Headers: {
-          'X-CSRF-TOKEN':
-            'rkg0NPh5xREUu8o_AZvvwBTYdlRYi2pL7WNjYVHGFGO8WhM-mHBWB8AaoCk5ifsKMbbb9Se6WzVu6Vpm3QVSB2T_cgGMaXBa',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaGR0YWNrQGFqb3UuYWMua3IiLCJrZXkiOiJ2YWx1ZSIsImVtYWlsIjoiZ2hkdGFja0Bham91LmFjLmtyIiwidXNlcm5hbWUiOiLtmY3shLHtmZQifQ.TDrKP5-_2hzmkEdnNF4rhBEI5rwhx_tnNCdePDMXQ_8',
-        },
+      .post('http://localhost:8080/user/ingredient/image', formData, {
+        headers: reqHeader,
       })
       .then(response => {
-        console.log(response);
+        const result = response.data.result.slice(0, 5);
+        setIngredients(result);
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.request);
       });
   };
 
@@ -98,7 +141,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             onLaunchCamera();
           } else if (buttonIndex === 1) {
             onLaunchImageLibrary();
-            handleAxios();
           }
         },
       );
@@ -127,24 +169,92 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             onLaunchCamera={onLaunchCamera}
             onLaunchImageLibrary={onLaunchImageLibrary}
           />
-          <TouchableOpacity style={styles.btn} onPress={modalOpen}>
-            <Icon name="plus" color="#EB5500" size={24} />
-            <Text>영수증 사진 등록</Text>
-          </TouchableOpacity>
-          <UploadModeModal
-            visible={modalVisible}
-            onClose={() => setModalVisible(false)}
-            onLaunchCamera={onLaunchCamera}
-            onLaunchImageLibrary={onLaunchImageLibrary}
-          />
         </View>
         <View>
-          {uri === undefined ? (
+          {uri === undefined && name === undefined ? (
             <Text></Text>
           ) : (
             <View style={{flexDirection: 'row'}}>
-              <Image source={{uri: uri}} style={{width: 150, height: 150}} />
-              <Text>Hello</Text>
+              <View style={{flexDirection: 'column', alignItems: 'center'}}>
+                <Image source={{uri: uri}} style={{width: 150, height: 150}} />
+              </View>
+              <View style={{flexDirection: 'column', flex: 1}}>
+                {ingredients.map(ingredient => (
+                  <TouchableOpacity
+                    key={ingredient}
+                    style={{flexDirection: 'column'}}
+                    onPress={() => handleIngredient(ingredient)}>
+                    <Text
+                      style={{
+                        width: 250,
+                        height: 30,
+                        backgroundColor: '#FFD6BF',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        fontSize: 20,
+                        textAlign: 'center',
+                      }}>
+                      {ingredient}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                {isAdding ? (
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TextInput
+                      style={{
+                        flex: 1,
+                        height: 30,
+                        backgroundColor: '#FFF',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        fontSize: 20,
+                        paddingLeft: 10,
+                      }}
+                      value={newIngredient}
+                      onChangeText={text => setNewIngredient(text)}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor: '#FFD6BF',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={handleSaveIngredient}>
+                      <Icon name="check" color="#EB5500" size={20} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor: '#FFD6BF',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onPress={handleCancelAddIngredient}>
+                      <Icon name="times" color="#EB5500" size={20} />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    style={{
+                      width: 250,
+                      height: 30,
+                      backgroundColor: '#FFD6BF',
+                      borderColor: '#000000',
+                      borderWidth: 1,
+                      alignItems: 'center',
+                    }}
+                    onPress={handleAddIngredient}>
+                    <Icon name="plus" color="#EB5500" size={24} />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           )}
         </View>

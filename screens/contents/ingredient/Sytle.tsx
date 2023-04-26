@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 53,
+    marginTop: 10,
     borderRadius: 16,
   },
   inputText: {

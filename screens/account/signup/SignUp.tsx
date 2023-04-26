@@ -27,6 +27,14 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const handleGenderPress = (selectedGender: string) => {
     setGender(selectedGender);
   };
+
+  const getButtonStyle = (buttonGender: string) => {
+    return {
+      ...styles.button,
+      backgroundColor: gender === buttonGender ? '#FFC1B3' : '#FFF7F4',
+    };
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
@@ -52,7 +60,6 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       birth: birthDate,
       name: name,
     };
-    console.log(data);
     axios
       .post('http://localhost:8080/user/signup', {
         email: email,
@@ -99,18 +106,17 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={styles.emailContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}></TextInput>
-        <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
-          <Text> 확인 </Text>
-        </TouchableOpacity>
-      </View>
+      <TextInput
+        style={styles.inputText}
+        placeholder="Email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        maxLength={20}
+        value={email}
+        onChangeText={setEmail}></TextInput>
+      <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
+        <Text> 중복 확인 </Text>
+      </TouchableOpacity>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputText}
@@ -127,14 +133,14 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle('Male')}
           onPress={() => handleGenderPress('Male')}>
-          <Text style={styles.buttonText}> male</Text>
+          <Text style={styles.buttonText}> male </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle('Female')}
           onPress={() => handleGenderPress('Female')}>
-          <Text style={styles.buttonText}> female</Text>
+          <Text style={styles.buttonText}> female </Text>
         </TouchableOpacity>
       </View>
       <>
@@ -144,9 +150,9 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
             marginHorizontal: '5%',
             paddingVertical: '2%',
             backgroundColor: '#FFF7F4',
-            borderColor: '#000000',
+            borderColor: '#FFFFFF',
             borderWidth: 1.5,
-            borderRadius: 5,
+            borderRadius: 16,
             width: 100,
             height: 40,
           }}

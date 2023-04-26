@@ -14,30 +14,34 @@ import {
 import {RootStackParamList} from '../../NavigationType';
 import {styles} from './Style';
 import axios from 'axios';
-
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
 };
 
 const LoginScreen = ({navigation}: LoginScreenProps) => {
-  const handlePress = () => {
-    navigation.navigate('LoginHome');
-  };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleBack = () => {
+    navigation.navigate('LoginHome');
+  };
+
   const handleLogin = async () => {
-    const data = {email: email, password: password};
-    axios
+    await axios
       .post('http://localhost:8080/user/login', {
         email: email,
         password: password,
+        withCredentials: true,
+        responsetype: 'json',
+        header: {
+          'content-type': 'application/json',
+        },
       })
       .then(response => {
         console.log(response.data);
+        AsyncStorage.setItem('AccessToken', JSON.stringify(response.data));
         navigation.navigate('Main');
       })
       .catch(error => {
@@ -75,7 +79,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.btnText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <TouchableOpacity style={styles.button} onPress={handleBack}>
           <Text style={styles.btnText}>Back</Text>
         </TouchableOpacity>
       </View>
