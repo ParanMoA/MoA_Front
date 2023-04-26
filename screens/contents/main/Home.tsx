@@ -27,9 +27,9 @@ type Todo = {
 };
 
 const initialData: Todo[] = [
-  {id: '1', title: 'First', completed: false},
-  {id: '2', title: 'Second', completed: false},
-  {id: '3', title: 'Third', completed: false},
+  {id: '1', title: '레스토랑 1', completed: false},
+  {id: '2', title: '레스토랑 2', completed: false},
+  {id: '3', title: '레스토랑 3', completed: false},
 ];
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {

@@ -9,15 +9,12 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
-import {RootStackParamList} from '../../NavigationType';
-import DatePicker from 'react-native-date-picker';
-
-import {styles} from './Style';
-
 import axios from 'axios';
+import DatePicker from 'react-native-date-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+import {RootStackParamList} from '../../NavigationType';
+import {styles} from './Style';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -30,6 +27,14 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const handleGenderPress = (selectedGender: string) => {
     setGender(selectedGender);
   };
+
+  const getButtonStyle = (buttonGender: string) => {
+    return {
+      ...styles.button,
+      backgroundColor: gender === buttonGender ? '#FFC1B3' : '#FFF7F4',
+    };
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
@@ -52,50 +57,43 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       email: email,
       password: password,
       gender: gender,
-      name: name,
       birth: birthDate,
+      name: name,
     };
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/user/signup',
-      data: {
-        email: 'Fred',
-        password: 'Flintstone',
-        gender: 'gender',
-        name: 'name',
-        birth: 'birthDate',
-      },
-    })
+    axios
+      .post('http://localhost:8080/user/signup', {
+        email: email,
+        password: password,
+        gender: gender,
+        birth: birthDate,
+        name: name,
+      })
       .then(response => {
-        console.log(response.data);
-        navigation.navigate('Main');
+        console.log(response);
+        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+        navigation.navigate('LoginHome');
       })
       .catch(error => {
-        console.log(error.toJSON());
-        // console.log(error.request);
+        console.log(error);
         Alert.alert('Login Failed', 'Please Check your email and password');
       });
   };
 
   const handleEmail = () => {
-    const data = {
-      email: email,
-      password: password,
-      gender: gender,
-      name: name,
-      birth: birthDate,
-    };
-    // axios
-    //   .get('http://localhost:8080/user/signup/validation?email=1237901739012')
-    //   .then(response => {
-    //     console.log(response.data);
-    navigation.navigate('Main');
-    //   })
-    // .catch(error => {
-    //   console.log(error);
-    //   console.log(error.request);
-    //   Alert.alert('Login Failed', 'Please Check your email and password');
-    // });
+    axios
+      .get('http://localhost:8080/user/signup/validation', {
+        params: {email: email},
+      })
+      .then(response => {
+        // console.log(response.headers['set-cookie']);
+        console.log(response);
+        Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
+      })
+      .catch(error => {
+        console.log(error);
+        console.log(error.request);
+        Alert.alert('이메일 인증', '중복된 이메일입니다.');
+      });
   };
 
   return (
@@ -108,18 +106,17 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={styles.emailContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}></TextInput>
-        <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
-          <Text> 확인 </Text>
-        </TouchableOpacity>
-      </View>
+      <TextInput
+        style={styles.inputText}
+        placeholder="Email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        maxLength={20}
+        value={email}
+        onChangeText={setEmail}></TextInput>
+      <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
+        <Text> 중복 확인 </Text>
+      </TouchableOpacity>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputText}
@@ -136,14 +133,14 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleGenderPress('M')}>
-          <Text style={styles.buttonText}> male</Text>
+          style={getButtonStyle('Male')}
+          onPress={() => handleGenderPress('Male')}>
+          <Text style={styles.buttonText}> male </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleGenderPress('F')}>
-          <Text style={styles.buttonText}> female</Text>
+          style={getButtonStyle('Female')}
+          onPress={() => handleGenderPress('Female')}>
+          <Text style={styles.buttonText}> female </Text>
         </TouchableOpacity>
       </View>
       <>
@@ -153,9 +150,9 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
             marginHorizontal: '5%',
             paddingVertical: '2%',
             backgroundColor: '#FFF7F4',
-            borderColor: '#000000',
+            borderColor: '#FFFFFF',
             borderWidth: 1.5,
-            borderRadius: 5,
+            borderRadius: 16,
             width: 100,
             height: 40,
           }}

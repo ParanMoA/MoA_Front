@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 200,
-    height: 92,
+    width: 250,
+    height: 120,
   },
   emailContainer: {
     marginTop: '3%',
@@ -23,9 +23,9 @@ export const styles = StyleSheet.create({
     marginHorizontal: '5%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
-    borderColor: '#000000',
+    borderColor: '#FFFFFF',
     borderWidth: 1.5,
-    borderRadius: 5,
+    borderRadius: 16,
   },
   inputContainer: {
     // backgroundColor: 'white',
@@ -35,16 +35,18 @@ export const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   inputText: {
-    fontSize: 18,
+    height: 53,
+    width: 342,
+    fontSize: 10,
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: '1%',
     paddingHorizontal: '30%',
     paddingVertical: '1%',
     backgroundColor: '#FFF7F4',
-    borderColor: '#000000',
+    borderColor: '#FFFFFF',
     borderWidth: 1.5,
-    borderRadius: 5,
+    borderRadius: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -59,9 +61,9 @@ export const styles = StyleSheet.create({
     marginHorizontal: '5%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
-    borderColor: '#000000',
+    borderColor: '#FFFFFF',
     borderWidth: 1.5,
-    borderRadius: 5,
+    borderRadius: 16,
   },
 
   buttonText: {
