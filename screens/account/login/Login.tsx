@@ -67,6 +67,8 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
+          multiline={false}
+          textAlignVertical="auto"
           onChangeText={setEmail}></TextInput>
         <TextInput
           style={styles.inputText}
