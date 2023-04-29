@@ -60,40 +60,40 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       birth: birthDate,
       name: name,
     };
-    axios
-      .post('http://localhost:8080/user/signup', {
-        email: email,
-        password: password,
-        gender: gender,
-        birth: birthDate,
-        name: name,
-      })
-      .then(response => {
-        console.log(response);
-        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
-        navigation.navigate('LoginHome');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
-      });
+    // axios
+    //   .post('http://localhost:8080/user/signup', {
+    //     email: email,
+    //     password: password,
+    //     gender: gender,
+    //     birth: birthDate,
+    //     name: name,
+    //   })
+    //   .then(response => {
+    //     console.log(response);
+    //     Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+    navigation.navigate('LoginHome');
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
+    //   });
   };
 
   const handleEmail = () => {
-    axios
-      .get('http://localhost:8080/user/signup/validation', {
-        params: {email: email},
-      })
-      .then(response => {
-        // console.log(response.headers['set-cookie']);
-        console.log(response);
-        Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
-      })
-      .catch(error => {
-        console.log(error);
-        console.log(error.request);
-        Alert.alert('이메일 인증', '중복된 이메일입니다.');
-      });
+    // axios
+    //   .get('http://localhost:8080/user/signup/validation', {
+    //     params: {email: email},
+    //   })
+    //   .then(response => {
+    //     // console.log(response.headers['set-cookie']);
+    //     console.log(response);
+    //     Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     console.log(error.request);
+    //     Alert.alert('이메일 인증', '중복된 이메일입니다.');
+    //   });
   };
 
   return (
@@ -106,17 +106,21 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         source={require('../../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <TextInput
-        style={styles.inputText}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        maxLength={20}
-        value={email}
-        onChangeText={setEmail}></TextInput>
-      <TouchableOpacity style={styles.emailBtn} onPress={handleEmail}>
-        <Text> 중복 확인 </Text>
-      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          maxLength={20}
+          value={email}
+          onChangeText={setEmail}></TextInput>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleEmail}>
+          <Text style={styles.buttonText}> 중복 확인 </Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.inputText}
@@ -144,42 +148,45 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         </TouchableOpacity>
       </View>
       <>
-        <TouchableOpacity
-          style={{
-            alignItems: 'center',
-            marginHorizontal: '5%',
-            paddingVertical: '2%',
-            backgroundColor: '#FFF7F4',
-            borderColor: '#FFFFFF',
-            borderWidth: 1.5,
-            borderRadius: 16,
-            width: 100,
-            height: 40,
-          }}
-          onPress={() => setOpen(true)}>
-          <Text> 생일 </Text>
-          <DatePicker
-            modal
-            open={open}
-            date={date}
-            mode="date"
-            onConfirm={date => {
-              setOpen(false);
-              setDate(date);
-              handleDateChange(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          />
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <TouchableOpacity
+            // style={{
+            //   alignItems: 'center',
+            //   marginHorizontal: '5%',
+            //   paddingVertical: '2%',
+            //   backgroundColor: '#FFF7F4',
+            //   borderColor: '#FFFFFF',
+            //   borderWidth: 1.5,
+            //   borderRadius: 16,
+            //   width: 100,
+            //   height: 40,
+            // }}
+            style={styles.BirthBtn}
+            onPress={() => setOpen(true)}>
+            <Text style={styles.inputText}> 생일 </Text>
+            <DatePicker
+              modal
+              open={open}
+              date={date}
+              mode="date"
+              onConfirm={date => {
+                setOpen(false);
+                setDate(date);
+                handleDateChange(date);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text>SignUp</Text>
+          <Text style={styles.buttonText}>SignUp</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
-          <Text>Back</Text>
+          <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
       </View>
     </View>

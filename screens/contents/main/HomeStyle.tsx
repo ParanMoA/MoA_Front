@@ -26,10 +26,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '8%',
     paddingVertical: '4%',
     marginHorizontal: '3%',
-    backgroundColor: '#FFFFFF',
-    borderColor: '#000000',
+    backgroundColor: '#FFF7F4',
+    borderColor: '#FFFFFF',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 15,
   },
 
   btnText: {

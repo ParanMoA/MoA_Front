@@ -89,6 +89,7 @@ import {
   Dimensions,
   Image,
   Alert,
+  TextInput,
 } from 'react-native';
 import axios from 'axios';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -102,14 +103,17 @@ type dataList = {
   id: number;
   menu: string;
   cost: number;
+  completed: boolean;
 };
 
 const InitialData: dataList[] = [
-  {id: 1, menu: 'pasta', cost: 20000},
-  {id: 2, menu: 'pizza', cost: 21000},
-  {id: 3, menu: 'chicken', cost: 25000},
-  {id: 4, menu: 'cola', cost: 2000},
-  {id: 5, menu: 'water', cost: 1000},
+  {id: 1, menu: 'pasta', cost: 20000, completed: false},
+  {id: 2, menu: 'pizza', cost: 21000, completed: false},
+  {id: 3, menu: 'chicken', cost: 25000, completed: false},
+  {id: 4, menu: 'cola', cost: 2000, completed: false},
+  {id: 5, menu: 'water', cost: 1000, completed: false},
+  {id: 6, menu: 'shrimp', cost: 5000, completed: false},
+  {id: 7, menu: 'cheese', cost: 3000, completed: false},
 ];
 
 type RecruitScreenProps = {
@@ -117,35 +121,61 @@ type RecruitScreenProps = {
 };
 
 const RecruitScreen = ({navigation}: RecruitScreenProps) => {
-  const [data, setData] = useState(InitialData);
-  const [visible, setVisible] = useState(true);
+  const [foodname, setFoodname] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [maxpeople, setMaxpeople] = useState('');
+  const [recruitdate, setRecruitdate] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
-  const Show = () => {
-    setVisible(current => !current);
+  const handleBack = () => {
+    navigation.navigate('Home');
   };
 
-  const ShowConfirm = () => {
-    Alert.alert('취소하시겠습니까?', '취소', [
-      {text: '확인', onPress: () => Show()},
-    ]);
-  };
-  const ShowAlert = () => {
-    Alert.alert(
-      '참여하시겠습니까?',
-      '참여',
-      [
-        {
-          text: 'Sure Join!',
-          onPress: () => Show(),
-        },
-        {
-          text: 'Cancel',
-          onPress: () => Show(),
-          style: 'cancel',
-        },
-      ],
-      {cancelable: false},
-    );
+  const [data, setData] = useState<dataList[]>(InitialData);
+
+  const renderItem = ({item}: {item: dataList}) => (
+    <TouchableOpacity
+      style={[styles.item, item.completed && styles.completed]}
+      onPress={() => {
+        setData(
+          data.map(dataList =>
+            dataList.id === item.id
+              ? {...dataList, completed: !dataList.completed}
+              : dataList,
+          ),
+        );
+      }}>
+      <Text style={styles.text}>
+        {item.menu}
+        {item.cost}
+      </Text>
+    </TouchableOpacity>
+  );
+  const handleRecruit = async () => {
+    // await axios
+    //   .post('http://localhost:8080/recruit/create', {
+    //     foodName: foodName,
+    //     ingredients: ingredients,
+    //     maxPeople: maxPeople,
+    //     recruitDate : recruitDate,
+    //     title : title,
+    //     content: content,
+    //     withCredentials: true,
+    //     responsetype: 'json',
+    //     header: {
+    //       'content-type': 'application/json',
+    //     },
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     AsyncStorage.setItem('AccessToken', JSON.stringify(response.data));
+    navigation.navigate('Recruit');
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     Alert.alert('Recruit Failed', 'Please Check your Recruit Options');
+    //   });
   };
 
   useEffect(() => {
@@ -155,24 +185,27 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     //   .catch(error => console.error(error));
   }, []);
 
-  const renderItem = ({item}: {item: dataList}) => (
-    <View style={styles.textContainer}>
-      <View style={styles.ShowboxContainer}>
-        <Button title="join⭕" onPress={ShowAlert} disabled={!visible} />
-        <Button title="cancel❌" onPress={ShowConfirm} disabled={visible} />
-      </View>
-      <Text style={styles.title}>{item.menu}</Text>
-      <Text style={styles.title}>{item.cost}</Text>
-      {visible ? <Text>Join</Text> : <Text>Already Joined</Text>}
-    </View>
-  );
   return (
     <View style={styles.container}>
-      <FlatList
-        data={InitialData}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {
+        <View>
+          {/* <TextInput
+            style={styles.textContainer}
+            placeholder="foodname"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={foodname}
+            onChangeText={setFoodname}></TextInput>
+          <TextInput
+            style={styles.textContainer}
+            placeholder="ingredients"
+            secureTextEntry
+            value={ingredients}
+            onChangeText={setIngredients}></TextInput> */}
+
+          <FlatList data={data} renderItem={renderItem}></FlatList>
+        </View>
+      }
     </View>
   );
 };

@@ -29,25 +29,25 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   };
 
   const handleLogin = async () => {
-    await axios
-      .post('http://localhost:8080/user/login', {
-        email: email,
-        password: password,
-        withCredentials: true,
-        responsetype: 'json',
-        header: {
-          'content-type': 'application/json',
-        },
-      })
-      .then(response => {
-        console.log(response.data);
-        AsyncStorage.setItem('AccessToken', JSON.stringify(response.data));
-        navigation.navigate('Main');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert('Login Failed', 'Please Check your email and password');
-      });
+    // await axios
+    //   .post('http://localhost:8080/user/login', {
+    //     email: email,
+    //     password: password,
+    //     withCredentials: true,
+    //     responsetype: 'json',
+    //     header: {
+    //       'content-type': 'application/json',
+    //     },
+    //   })
+    //   .then(response => {
+    //     console.log(response.data);
+    //     AsyncStorage.setItem('AccessToken', JSON.stringify(response.data));
+    navigation.navigate('Main');
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     Alert.alert('Login Failed', 'Please Check your email and password');
+    //   });
   };
 
   return (

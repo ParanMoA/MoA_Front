@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFF7F4',
     borderColor: '#000000',
     borderWidth: 1.5,
-    borderRadius: 5,
+    borderRadius: 15,
   },
   btnText: {
     fontSize: 18,
