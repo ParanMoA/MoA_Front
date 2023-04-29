@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -24,35 +24,78 @@ type IngredientScreenProps = {
 };
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
-  const [uri, setUri] = useState(undefined);
-  const [name, setName] = useState(undefined);
+  const [isIngredient, setIsIngredient] = useState(true);
+  const [ingredientUri, setIngredientUri] = useState(undefined);
+  const [ingredientName, setIngredientName] = useState(undefined);
+  const [receiptUri, setReceiptUri] = useState(undefined);
+  const [receiptName, setReceiptName] = useState(undefined);
   const [ingredients, setIngredients] = useState(['']);
   const [isAdding, setIsAdding] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
-  const [selected, setSelected] = useState('');
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>('');
+  const [ingredientModalVisible, setIngredientModalVisible] =
+    useState<boolean>(false);
+  const [receiptModalVisible, setReceiptModalVisible] =
+    useState<boolean>(false);
   const [purchasedDate, setPurchasedDate] = useState<string>('');
   const [expirationDate, setExpirationDate] = useState<string>('');
-
-  const handlePress = () => {
-    console.log(selected, purchasedDate, expirationDate);
+  const [ingredientImage, setIngredientImage] = useState<string>('');
+  const [receiptImage, setReceiptImage] = useState<string>('');
+  const handleRegister = async () => {
+    const token = await AsyncStorage.getItem('AccessToken');
+    const reqHeader = {
+      'x-access-token': token || '',
+    };
+    const data = {
+      name: selected,
+      purchasedDate: purchasedDate,
+      expirationDate: expirationDate,
+      ingredientImage: ingredientImage,
+      receiptImage: receiptImage,
+    };
+    console.log(data);
+    await axios({
+      method: 'POST',
+      url: 'http://localhost:8080/user/ingredient/register',
+      data,
+      headers: reqHeader,
+    })
+      .then(response => console.log(response))
+      .catch(error => console.log(error.request));
   };
-  const onPickImage = (res: any) => {
+
+  const onPickImage = (res: any, isIngredient: boolean) => {
     if (res.didCancel || !res) {
       return;
     }
 
     const uri = res.assets?.[0]?.uri;
     const name = res.assets?.[0]?.fileName;
-    // console.log(name);
-    if (uri && name) {
-      setUri(uri);
-      setName(name);
+    if (isIngredient) {
+      console.log('isIngredient : ', isIngredient);
+      setIngredientUri(uri);
+      setIngredientName(name);
+
+      handleUploadAxios(
+        uri,
+        name,
+        'http://localhost:8080/user/ingredient/image',
+        isIngredient,
+      );
+    } else {
+      console.log('else isIngredient : ', isIngredient);
+      setReceiptUri(uri);
+      setReceiptName(name);
+      handleUploadAxios(
+        uri,
+        name,
+        'http://localhost:8080/user/ingredient/receiptImage',
+        isIngredient,
+      );
     }
-    handleAxios();
   };
 
-  const onLaunchCamera = () => {
+  const onLaunchCamera = (isIngredient: boolean) => {
     launchCamera(
       {
         mediaType: 'photo',
@@ -61,10 +104,10 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
         includeBase64: Platform.OS === 'android',
         saveToPhotos: true,
       },
-      onPickImage,
+      res => onPickImage(res, isIngredient),
     );
   };
-  const onLaunchImageLibrary = () => {
+  const onLaunchImageLibrary = (isIngredient: boolean) => {
     launchImageLibrary(
       {
         mediaType: 'photo',
@@ -72,7 +115,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
         maxHeight: 768,
         includeBase64: Platform.OS === 'android',
       },
-      onPickImage,
+      res => onPickImage(res, isIngredient),
     );
   };
 
@@ -101,7 +144,12 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     setNewIngredient('');
   };
 
-  const handleAxios = async () => {
+  const handleUploadAxios = async (
+    uri: string,
+    name: string,
+    url: string,
+    isIngredient: boolean,
+  ) => {
     const token = await AsyncStorage.getItem('AccessToken');
     const reqHeader = {
       'x-access-token': token || '',
@@ -114,22 +162,33 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       name: name,
     };
     formData.append('file', file);
+    console.log(formData.getParts());
     await axios
-      .post('http://localhost:8080/user/ingredient/image', formData, {
+      .post(url, formData, {
         headers: reqHeader,
       })
       .then(response => {
-        const result = response.data.result.slice(0, 5);
-        setIngredients(result);
+        if (isIngredient) {
+          const result = response.data.result.slice(0, 5);
+          setIngredientImage(response.data.ingredientImage);
+          setIngredients(result);
+        } else {
+          setReceiptImage(response.data.receiptImage);
+          // console.log('response =', response.data);
+        }
       })
       .catch(error => {
         console.log(error.request);
       });
   };
 
-  const modalOpen = () => {
+  const handleUpload = (isIngredient: any) => {
     if (Platform.OS === 'android') {
-      setModalVisible(true);
+      if (isIngredient) {
+        setIngredientModalVisible(true);
+      } else {
+        setReceiptModalVisible(true);
+      }
     } else {
       ActionSheetIOS.showActionSheetWithOptions(
         {
@@ -138,13 +197,23 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
         },
         buttonIndex => {
           if (buttonIndex === 0) {
-            onLaunchCamera();
+            onLaunchCamera(isIngredient);
           } else if (buttonIndex === 1) {
-            onLaunchImageLibrary();
+            onLaunchImageLibrary(isIngredient);
           }
         },
       );
     }
+  };
+
+  const IngredientmodalOpen = () => {
+    setIsIngredient(true);
+    handleUpload(true);
+  };
+
+  const ReceiptModalOpen = () => {
+    setIsIngredient(false);
+    handleUpload(false);
   };
 
   const onChangePurchasedDate = (date: string) => {
@@ -159,24 +228,46 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <View style={styles.piccontainer}>
-          <TouchableOpacity style={styles.btn} onPress={modalOpen}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              IngredientmodalOpen();
+            }}>
             <Icon name="plus" color="#EB5500" size={24} />
-            <Text>사진 등록</Text>
+            <Text>식재료 사진 등록</Text>
           </TouchableOpacity>
           <UploadModeModal
-            visible={modalVisible}
-            onClose={() => setModalVisible(false)}
-            onLaunchCamera={onLaunchCamera}
-            onLaunchImageLibrary={onLaunchImageLibrary}
+            visible={ingredientModalVisible}
+            onClose={() => setIngredientModalVisible(false)}
+            onLaunchCamera={() => onLaunchCamera(true)}
+            onLaunchImageLibrary={() => onLaunchImageLibrary(true)}
+          />
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              ReceiptModalOpen();
+            }}>
+            <Icon name="plus" color="#EB5500" size={24} />
+            <Text>영수증 사진 등록</Text>
+          </TouchableOpacity>
+          <UploadModeModal
+            visible={receiptModalVisible}
+            onClose={() => setReceiptModalVisible(false)}
+            onLaunchCamera={() => onLaunchCamera(false)}
+            onLaunchImageLibrary={() => onLaunchImageLibrary(false)}
           />
         </View>
         <View>
-          {uri === undefined && name === undefined ? (
+          {ingredientUri === undefined && ingredientName === undefined ? (
             <Text></Text>
           ) : (
             <View style={{flexDirection: 'row'}}>
               <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image source={{uri: uri}} style={{width: 150, height: 150}} />
+                <Image
+                  source={{uri: ingredientUri}}
+                  style={{width: 100, height: 100}}
+                />
+                <Text> 내가 ingredientUri</Text>
               </View>
               <View style={{flexDirection: 'column', flex: 1}}>
                 {ingredients.map(ingredient => (
@@ -187,7 +278,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                     <Text
                       style={{
                         width: 250,
-                        height: 30,
+                        height: 15,
                         backgroundColor: '#FFD6BF',
                         borderColor: '#000000',
                         borderWidth: 1,
@@ -259,6 +350,15 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           )}
         </View>
         <View>
+          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+            <Image
+              source={{uri: receiptUri}}
+              style={{width: 100, height: 100}}
+            />
+            <Text> 내가 receiptUri</Text>
+          </View>
+        </View>
+        <View>
           <Text style={styles.text}>구매 일자</Text>
           <TextInput
             style={styles.inputText}
@@ -278,7 +378,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             keyboardType="numeric"
             maxLength={10}></TextInput>
         </View>
-        <TouchableOpacity style={styles.btn_2} onPress={handlePress}>
+        <TouchableOpacity style={styles.btn_2} onPress={handleRegister}>
           <Text> 등록 </Text>
         </TouchableOpacity>
       </View>
