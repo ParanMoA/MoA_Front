@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import DatePicker from 'react-native-date-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {RootStackParamList} from '../../NavigationType';
 import {styles} from './Style';
@@ -60,40 +59,38 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       birth: birthDate,
       name: name,
     };
-    // axios
-    //   .post('http://localhost:8080/user/signup', {
-    //     email: email,
-    //     password: password,
-    //     gender: gender,
-    //     birth: birthDate,
-    //     name: name,
-    //   })
-    //   .then(response => {
-    //     console.log(response);
-    //     Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
-    navigation.navigate('LoginHome');
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
-    //   });
+    axios
+      .post('http://10.0.2.2:8080/user/signup', {
+        email: email,
+        password: password,
+        gender: gender,
+        birth: birthDate,
+        name: name,
+      })
+      .then(response => {
+        console.log(response);
+        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+        navigation.navigate('LoginHome');
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
+      });
   };
 
   const handleEmail = () => {
-    // axios
-    //   .get('http://localhost:8080/user/signup/validation', {
-    //     params: {email: email},
-    //   })
-    //   .then(response => {
-    //     // console.log(response.headers['set-cookie']);
-    //     console.log(response);
-    //     Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     console.log(error.request);
-    //     Alert.alert('이메일 인증', '중복된 이메일입니다.');
-    //   });
+    axios
+      .get('http://10.0.2.2:8080/user/signup/validation', {
+        params: {email: email},
+      })
+      .then(response => {
+        console.log(response);
+        Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
+      })
+      .catch(error => {
+        console.log(error.request);
+        Alert.alert('이메일 인증', '중복된 이메일입니다.');
+      });
   };
 
   return (
@@ -150,17 +147,6 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       <>
         <View style={styles.inputContainer}>
           <TouchableOpacity
-            // style={{
-            //   alignItems: 'center',
-            //   marginHorizontal: '5%',
-            //   paddingVertical: '2%',
-            //   backgroundColor: '#FFF7F4',
-            //   borderColor: '#FFFFFF',
-            //   borderWidth: 1.5,
-            //   borderRadius: 16,
-            //   width: 100,
-            //   height: 40,
-            // }}
             style={styles.BirthBtn}
             onPress={() => setOpen(true)}>
             <Text style={styles.inputText}> 생일 </Text>

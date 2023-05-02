@@ -24,9 +24,10 @@ export const styles = StyleSheet.create({
   },
 
   button: {
+    marginTop: '40%',
     marginHorizontal: '5%',
     justifyContent: 'space-between',
-    paddingHorizontal: '5%',
+    paddingHorizontal: '20%',
     paddingVertical: '2%',
     backgroundColor: '#FFFFFF',
     borderColor: '#000000',
@@ -52,6 +53,8 @@ export const styles = StyleSheet.create({
   },
   ShowboxContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   item: {
@@ -70,6 +73,6 @@ export const styles = StyleSheet.create({
     color: 'black',
   },
   completed: {
-    backgroundColor: 'skyblue',
+    backgroundColor: '#FFC1B3',
   },
 });

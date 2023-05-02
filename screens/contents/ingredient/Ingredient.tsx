@@ -79,7 +79,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://localhost:8080/user/ingredient/image',
+        'http://10.0.2.2:8080/user/ingredient/image',
         isIngredient,
       );
     } else {
@@ -89,7 +89,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://localhost:8080/user/ingredient/receiptImage',
+        'http://10.0.2.2:8080/user/ingredient/receiptImage',
         isIngredient,
       );
     }
@@ -206,7 +206,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     }
   };
 
-  const IngredientmodalOpen = () => {
+  const IngredientModalOpen = () => {
     setIsIngredient(true);
     handleUpload(true);
   };
@@ -231,7 +231,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              IngredientmodalOpen();
+              IngredientModalOpen();
             }}>
             <Icon name="plus" color="#EB5500" size={24} />
             <Text>식재료 사진 등록</Text>
