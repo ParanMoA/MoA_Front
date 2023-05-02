@@ -53,7 +53,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
-    console.log(data);
+    console.log(ingredientImage, receiptImage);
     await axios({
       method: 'POST',
       url: 'http://localhost:8080/user/ingredient/register',
