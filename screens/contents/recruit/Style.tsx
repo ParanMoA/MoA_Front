@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
   },
 
   button: {
+    //모집글 등록하기 버튼
     marginTop: '40%',
     marginHorizontal: '5%',
     justifyContent: 'space-between',
@@ -36,6 +37,7 @@ export const styles = StyleSheet.create({
   },
 
   btnText: {
+    //모집글 등록하기 버튼 텍스트
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -74,5 +76,17 @@ export const styles = StyleSheet.create({
   },
   completed: {
     backgroundColor: '#FFC1B3',
+  },
+
+  joinbtncontainer: {
+    justifyContent: 'center',
+    borderRadius: 5,
+    // padding: 5,
+    borderColor: 'white',
+  },
+  joinbtn: {
+    justifyContent: 'space-between',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });

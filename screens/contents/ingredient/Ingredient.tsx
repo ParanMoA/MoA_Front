@@ -18,6 +18,7 @@ import UploadModeModal from './CameraModal';
 import {DateAutoFormat} from '../../utils/index';
 import {styles} from './Sytle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type IngredientScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'Ingredient'>;
@@ -53,7 +54,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
-    console.log(ingredientImage, receiptImage);
+    console.log(data);
     await axios({
       method: 'POST',
       url: 'http://localhost:8080/user/ingredient/register',
@@ -225,164 +226,126 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     setExpirationDate(targetDate);
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.subcontainer}>
-        <View style={styles.piccontainer}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              IngredientModalOpen();
-            }}>
-            <Icon name="plus" color="#EB5500" size={24} />
-            <Text>식재료 사진 등록</Text>
-          </TouchableOpacity>
-          <UploadModeModal
-            visible={ingredientModalVisible}
-            onClose={() => setIngredientModalVisible(false)}
-            onLaunchCamera={() => onLaunchCamera(true)}
-            onLaunchImageLibrary={() => onLaunchImageLibrary(true)}
-          />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              ReceiptModalOpen();
-            }}>
-            <Icon name="plus" color="#EB5500" size={24} />
-            <Text>영수증 사진 등록</Text>
-          </TouchableOpacity>
-          <UploadModeModal
-            visible={receiptModalVisible}
-            onClose={() => setReceiptModalVisible(false)}
-            onLaunchCamera={() => onLaunchCamera(false)}
-            onLaunchImageLibrary={() => onLaunchImageLibrary(false)}
-          />
-        </View>
-        <View>
-          {ingredientUri === undefined && ingredientName === undefined ? (
-            <Text></Text>
-          ) : (
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                  source={{uri: ingredientUri}}
-                  style={{width: 100, height: 100}}
-                />
-                <Text> 내가 ingredientUri</Text>
-              </View>
-              <View style={{flexDirection: 'column', flex: 1}}>
-                {ingredients.map(ingredient => (
-                  <TouchableOpacity
-                    key={ingredient}
-                    style={{flexDirection: 'column'}}
-                    onPress={() => handleIngredient(ingredient)}>
-                    <Text
-                      style={{
-                        width: 250,
-                        height: 15,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        fontSize: 20,
-                        textAlign: 'center',
-                      }}>
-                      {ingredient}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-                {isAdding ? (
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <TextInput
-                      style={{
-                        flex: 1,
-                        height: 30,
-                        backgroundColor: '#FFF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        fontSize: 20,
-                        paddingLeft: 10,
-                      }}
-                      value={newIngredient}
-                      onChangeText={text => setNewIngredient(text)}
-                    />
-                    <TouchableOpacity
-                      style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={handleSaveIngredient}>
-                      <Icon name="check" color="#EB5500" size={20} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={handleCancelAddIngredient}>
-                      <Icon name="times" color="#EB5500" size={20} />
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <TouchableOpacity
-                    style={{
-                      width: 250,
-                      height: 30,
-                      backgroundColor: '#FFD6BF',
-                      borderColor: '#000000',
-                      borderWidth: 1,
-                      alignItems: 'center',
-                    }}
-                    onPress={handleAddIngredient}>
-                    <Icon name="plus" color="#EB5500" size={24} />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          )}
-        </View>
-        <View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Image
-              source={{uri: receiptUri}}
-              style={{width: 100, height: 100}}
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.subcontainer}>
+          <View style={styles.piccontainer}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => {
+                IngredientModalOpen();
+              }}>
+              <Icon name="plus" color="#EB5500" size={24} />
+              <Text>식재료 사진 등록</Text>
+            </TouchableOpacity>
+            <UploadModeModal
+              visible={ingredientModalVisible}
+              onClose={() => setIngredientModalVisible(false)}
+              onLaunchCamera={() => onLaunchCamera(true)}
+              onLaunchImageLibrary={() => onLaunchImageLibrary(true)}
             />
-            <Text> 내가 receiptUri</Text>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => {
+                ReceiptModalOpen();
+              }}>
+              <Icon name="plus" color="#EB5500" size={24} />
+              <Text>영수증 사진 등록</Text>
+            </TouchableOpacity>
+            <UploadModeModal
+              visible={receiptModalVisible}
+              onClose={() => setReceiptModalVisible(false)}
+              onLaunchCamera={() => onLaunchCamera(false)}
+              onLaunchImageLibrary={() => onLaunchImageLibrary(false)}
+            />
           </View>
+          <View>
+            {ingredientUri === undefined && ingredientName === undefined ? (
+              <Text></Text>
+            ) : (
+              <View style={styles.addbox}>
+                <View style={[styles.addbox, {flexDirection: 'column'}]}>
+                  <Image style={styles.imgopt} source={{uri: ingredientUri}} />
+                </View>
+                <View style={styles.column}>
+                  {ingredients.map(ingredient => (
+                    <TouchableOpacity
+                      style={styles.column}
+                      key={ingredient}
+                      onPress={() => handleIngredient(ingredient)}>
+                      <Text style={styles.textbox}>{ingredient}</Text>
+                    </TouchableOpacity>
+                  ))}
+                  {isAdding ? (
+                    <View>
+                      <TextInput
+                        style={{
+                          height: 30,
+                          backgroundColor: '#FFF',
+                          borderColor: '#000000',
+                          borderWidth: 1,
+                          fontSize: 20,
+                          paddingLeft: 10,
+                        }}
+                        value={newIngredient}
+                        onChangeText={text => setNewIngredient(text)}
+                      />
+                      <TouchableOpacity
+                        style={styles.addcompo}
+                        onPress={handleSaveIngredient}>
+                        <Icon name="check" color="#EB5500" size={20} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.addcompo}
+                        onPress={handleCancelAddIngredient}>
+                        <Icon name="times" color="#EB5500" size={20} />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.textbox}
+                      onPress={handleAddIngredient}>
+                      <Icon name="plus" color="#EB5500" size={24} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+            )}
+          </View>
+          <View>
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+              <Image
+                source={{uri: receiptUri}}
+                style={{width: 100, height: 100}}
+              />
+            </View>
+          </View>
+          <View>
+            <Text>구매 일자</Text>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={onChangePurchasedDate}
+              value={purchasedDate}
+              placeholder="YYYY-MM-DD"
+              placeholderTextColor="black"
+              keyboardType="numeric"
+              maxLength={10}></TextInput>
+            <Text>유통 기한</Text>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={onChangeExpirationDate}
+              value={expirationDate}
+              placeholder="YYYY-MM-DD"
+              placeholderTextColor="black"
+              keyboardType="numeric"
+              maxLength={10}></TextInput>
+          </View>
+          <TouchableOpacity style={styles.btn_2} onPress={handleRegister}>
+            <Text> 등록 </Text>
+          </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.text}>구매 일자</Text>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={onChangePurchasedDate}
-            value={purchasedDate}
-            placeholder="YYYY-MM-DD"
-            placeholderTextColor="black"
-            keyboardType="numeric"
-            maxLength={10}></TextInput>
-          <Text style={styles.text}>유통 기한</Text>
-          <TextInput
-            style={styles.inputText}
-            onChangeText={onChangeExpirationDate}
-            value={expirationDate}
-            placeholder="YYYY-MM-DD"
-            placeholderTextColor="black"
-            keyboardType="numeric"
-            maxLength={10}></TextInput>
-        </View>
-        <TouchableOpacity style={styles.btn_2} onPress={handleRegister}>
-          <Text> 등록 </Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

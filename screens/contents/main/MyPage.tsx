@@ -10,11 +10,13 @@ type MyPageScreenProps = {
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from './MyPageStyle';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type IngredientData = {
   id: string;
   name: string;
 };
+
 const testIngredientData: IngredientData[] = [
   {
     id: '1',
@@ -39,14 +41,11 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
     setData(testIngredientData);
   }, []);
   const renderItem = ({item}: {item: IngredientData}) => (
-    <View
-      style={{
-        height: 50,
-        backgroundColor: '#FFF',
-        justifyContent: 'center',
-      }}>
-      <Text style={{fontSize: 20}}>{item.name}</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}> {item.name}</Text>
+      </View>
+    </ScrollView>
   );
 
   return (
@@ -59,10 +58,10 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
               style={styles.logo}
             />
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>hello</Text>
-            <Text style={styles.text}>hello</Text>
-            <Text style={styles.text}>hello</Text>
+          <View style={[styles.textContainer, {paddingHorizontal: '8%'}]}>
+            <Text style={[styles.text, {fontSize: 13}]}>Username: </Text>
+            <Text style={[styles.text, {fontSize: 13}]}>Matching: </Text>
+            <Text style={[styles.text, {fontSize: 13}]}>Location: </Text>
           </View>
         </View>
         <View style={styles.ingContainer}>

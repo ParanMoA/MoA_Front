@@ -6184,6 +6184,11 @@
   dependencies:
     "prop-types" "^15.8.1"
 
+"react-native-device-info@10.6.0":
+  "integrity" "sha512-/MmINdojWdw2/9rwYpH/dX+1gFP0o78p8yYPjwxiPhoySSL2rZaNi+Mq9VwC+zFi/yQmJUvHntkKSw2KUc7rFw=="
+  "resolved" "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-10.6.0.tgz"
+  "version" "10.6.0"
+
 "react-native-gesture-handler@^2.9.0":
   "integrity" "sha512-a0BcH3Qb1tgVqUutc6d3VuWQkI1AM3+fJx8dkxzZs9t06qA27QgURYFoklpabuWpsUTzuKRpxleykp25E8m7tg=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.9.0.tgz"

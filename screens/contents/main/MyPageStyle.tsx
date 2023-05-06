@@ -23,17 +23,28 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageContainer: {
-    width: 150,
-    height: 150,
+    margin: 25,
+    width: 100,
+    height: 100,
     borderRadius: 100,
     overflow: 'hidden',
   },
-  textContainer: {flexDirection: 'column'},
+  textContainer: {
+    paddingHorizontal: 60,
+    paddingVertical: 30,
+    margin: 10,
+    // backgroundColor: 'teal',
+    flexDirection: 'column',
+  },
   logo: {
     width: '100%',
     height: '100%',
   },
-  text: {fontSize: 20},
+  text: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   ingContainer: {
     width: 300,
     height: 300,
