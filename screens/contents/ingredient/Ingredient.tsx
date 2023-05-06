@@ -53,7 +53,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
-    console.log(ingredientImage, receiptImage);
+    console.log(data);
     await axios({
       method: 'POST',
       url: 'http://localhost:8080/user/ingredient/register',
@@ -79,7 +79,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://10.0.2.2:8080/user/ingredient/image',
+        'http://localhost:8080/user/ingredient/image',
         isIngredient,
       );
     } else {
@@ -89,7 +89,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://10.0.2.2:8080/user/ingredient/receiptImage',
+        'http://localhost:8080/user/ingredient/receiptImage',
         isIngredient,
       );
     }
@@ -174,7 +174,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           setIngredients(result);
         } else {
           setReceiptImage(response.data.receiptImage);
-          // console.log('response =', response.data);
         }
       })
       .catch(error => {
@@ -206,7 +205,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     }
   };
 
-  const IngredientModalOpen = () => {
+  const IngredientmodalOpen = () => {
     setIsIngredient(true);
     handleUpload(true);
   };
@@ -231,7 +230,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              IngredientModalOpen();
+              IngredientmodalOpen();
             }}>
             <Icon name="plus" color="#EB5500" size={24} />
             <Text>식재료 사진 등록</Text>
