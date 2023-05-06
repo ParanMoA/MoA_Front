@@ -14,10 +14,19 @@ import DatePicker from 'react-native-date-picker';
 
 import {RootStackParamList} from '../../NavigationType';
 import {styles} from './Style';
+import {request} from '../../component/AxiosComponent';
 
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 };
+
+interface SignUpData {
+  email: string;
+  password: string;
+  gender: string;
+  birth: string;
+  name: string;
+}
 
 const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const handlePress = () => {
@@ -34,12 +43,12 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
     };
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [gender, setGender] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [date, setDate] = useState<Date>(new Date());
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState<string>('');
   const [open, setOpen] = useState(false);
 
   const handleDateChange = (newDate: Date) => {
@@ -51,46 +60,34 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       newDate.getDate();
     setBirthDate(formattedDate);
   };
-  const handleSignUp = () => {
-    const data = {
+  const handleSignUp = async () => {
+    const data: SignUpData = {
       email: email,
       password: password,
       gender: gender,
       birth: birthDate,
       name: name,
     };
-    axios
-      .post('http://10.0.2.2:8080/user/signup', {
-        email: email,
-        password: password,
-        gender: gender,
-        birth: birthDate,
-        name: name,
-      })
-      .then(response => {
-        console.log(response);
-        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
-        navigation.navigate('LoginHome');
-      })
-      .catch(error => {
-        console.log(error);
-        Alert.alert('회원가입 실패', '다시 회원가입 해주세요.');
-      });
+    const result = await request('user/signup', data, 'POST');
+    if (result?.ok) {
+      Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+      navigation.navigate('LoginHome');
+    }
   };
 
-  const handleEmail = () => {
-    axios
-      .get('http://10.0.2.2:8080/user/signup/validation', {
-        params: {email: email},
-      })
-      .then(response => {
-        console.log(response);
+  const handleEmail = async () => {
+    try {
+      const res = await request(
+        'user/signup/validation',
+        {email: email},
+        'GET',
+      );
+      if (res?.ok) {
         Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
-      })
-      .catch(error => {
-        console.log(error.request);
-        Alert.alert('이메일 인증', '중복된 이메일입니다.');
-      });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

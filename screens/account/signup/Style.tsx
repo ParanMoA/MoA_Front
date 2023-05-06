@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     borderWidth: 1.5,
     borderRadius: 16,
+    // flex: 0,
   },
   buttonContainer: {
     flexDirection: 'row',
