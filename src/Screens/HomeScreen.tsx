@@ -9,15 +9,12 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import {MainParamList} from '../../NavigationType';
+import {MainParamList} from '../Navigation/NavigationType';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {styles} from './HomeStyle';
-
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+import {styles} from '../Styles/Screen/HomeStyle';
 
 type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<MainParamList, 'Home'>;
+  navigation: NativeStackNavigationProp<MainParamList, 'HomeScreen'>;
 };
 
 type Todo = {
@@ -34,10 +31,10 @@ const initialData: Todo[] = [
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   const handleIngredientPress = () => {
-    navigation.navigate('Ingredient');
+    navigation.navigate('IngredientScreen');
   };
   const handleRecruitPress = () => {
-    navigation.navigate('Recruit');
+    navigation.navigate('RecruitScreen');
   };
 
   const [data, setData] = useState<Todo[]>(initialData);
@@ -58,11 +55,11 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../../public/images/MoA.png')}
+        source={require('../../public/images/MoA.png')}
         style={styles.logo}
       />
       <Image
-        source={require('../../../public/images/MoA_2.png')}
+        source={require('../../public/images/MoA_2.png')}
         style={styles.logo}
       />
       <View style={styles.buttonContainer}>

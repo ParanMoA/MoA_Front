@@ -7,17 +7,14 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Dimensions,
 } from 'react-native';
-import axios from 'axios';
 import DatePicker from 'react-native-date-picker';
-
-import {RootStackParamList} from '../../NavigationType';
-import {styles} from './Style';
-import {request} from '../../component/AxiosComponent';
+import {RootStackParamList} from '../Navigation/NavigationType';
+import {styles} from '../Styles/Screen/SignUpStyle';
+import {request} from '../Components/AxiosComponent';
 
 type SignUpScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'SignUpScreen'>;
 };
 
 interface SignUpData {
@@ -30,7 +27,7 @@ interface SignUpData {
 
 const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const handlePress = () => {
-    navigation.navigate('LoginHome');
+    navigation.navigate('LoginHomeScreen');
   };
   const handleGenderPress = (selectedGender: string) => {
     setGender(selectedGender);
@@ -71,7 +68,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
     const result = await request('user/signup', data, 'POST');
     if (result?.ok) {
       Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
-      navigation.navigate('LoginHome');
+      navigation.navigate('LoginHomeScreen');
     }
   };
 
@@ -93,11 +90,11 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../../public/images/MoA.png')}
+        source={require('../../public/images/MoA.png')}
         style={styles.logo}
       />
       <Image
-        source={require('../../../public/images/MoA_2.png')}
+        source={require('../../public/images/MoA_2.png')}
         style={styles.logo}
       />
       <View style={styles.inputContainer}>
