@@ -7,21 +7,23 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import axios from 'axios';
 
-import {MainParamList} from '../../NavigationType';
-import UploadModeModal from './CameraModal';
-import {DateAutoFormat} from '../../utils/index';
-import {styles} from './Sytle';
+import {MainParamList} from '../Navigation/NavigationType';
+import UploadModeModal from '../Components/CameraModal';
+import {DateAutoFormat} from '../utils/DateFormatter';
+import {styles} from '../Styles/Screen/IngredientStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
+import {request} from '../Components/AxiosComponent';
 
 type IngredientScreenProps = {
-  navigation: NativeStackNavigationProp<MainParamList, 'Ingredient'>;
+  navigation: NativeStackNavigationProp<MainParamList, 'IngredientScreen'>;
 };
 
 const IngredientScreen = ({navigation}: IngredientScreenProps) => {
@@ -43,10 +45,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [ingredientImage, setIngredientImage] = useState<string>('');
   const [receiptImage, setReceiptImage] = useState<string>('');
   const handleRegister = async () => {
-    const token = await AsyncStorage.getItem('AccessToken');
-    const reqHeader = {
-      'x-access-token': token || '',
-    };
     const data = {
       name: selected,
       purchasedDate: purchasedDate,
@@ -54,15 +52,10 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
-    console.log(data);
-    await axios({
-      method: 'POST',
-      url: 'http://localhost:8080/user/ingredient/register',
-      data,
-      headers: reqHeader,
-    })
-      .then(response => console.log(response))
-      .catch(error => console.log(error.request));
+    const res = await request('/user/ingredient/register', data, 'POST');
+    if (res?.ok) {
+      Alert.alert('식재료 등록', '식재료 등록에 성공하였습니다.');
+    }
   };
 
   const onPickImage = (res: any, isIngredient: boolean) => {
@@ -225,7 +218,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     setExpirationDate(targetDate);
   };
   return (
-
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <View style={styles.piccontainer}>

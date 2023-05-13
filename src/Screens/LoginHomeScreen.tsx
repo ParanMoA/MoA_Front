@@ -9,30 +9,27 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import {RootStackParamList} from '../../NavigationType';
-import {styles} from './Style';
+import {RootStackParamList} from '../Navigation/NavigationType';
+import {styles} from '../Styles/Screen/LoginHomeStyle';
 type LoginHomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHome'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHomeScreen'>;
 };
-
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
 
 const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
   const handlePressLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate('LoginScreen');
   };
   const handlePressSignUp = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('SignUpScreen');
   };
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../../public/images/MoA.png')}
+        source={require('../../public/images/MoA.png')}
         style={styles.logo}
       />
       <Image
-        source={require('../../../public/images/MoA_2.png')}
+        source={require('../../public/images/MoA_2.png')}
         style={styles.logo}
       />
       <View style={styles.btnContainer}>
