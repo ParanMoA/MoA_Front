@@ -1,17 +1,16 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
-import {MainParamList} from '../../NavigationType';
-
-type MyPageScreenProps = {
-  navigation: NativeStackNavigationProp<MainParamList, 'MyPage'>;
-};
+import {MainParamList} from '../Navigation/NavigationType';
 
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {styles} from './MyPageStyle';
+import {styles} from '../Styles/Screen/MyPageStyle';
 import {ScrollView} from 'react-native-gesture-handler';
 
+type MyPageScreenProps = {
+  navigation: NativeStackNavigationProp<MainParamList, 'MyPageScreen'>;
+};
 type IngredientData = {
   id: string;
   name: string;
@@ -35,7 +34,7 @@ const testIngredientData: IngredientData[] = [
 const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const [data, setData] = useState<IngredientData[]>([]);
   const handleIngredientPress = () => {
-    navigation.navigate('Ingredient');
+    navigation.navigate('IngredientScreen');
   };
   useEffect(() => {
     setData(testIngredientData);
@@ -54,7 +53,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
         <View style={styles.thirdContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={require('../../../public/images/MoA_2.png')}
+              source={require('../../public/images/MoA_2.png')}
               style={styles.logo}
             />
           </View>

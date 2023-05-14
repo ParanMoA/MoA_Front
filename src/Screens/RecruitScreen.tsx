@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useId} from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,13 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {MainParamList} from '../../NavigationType';
-import {styles} from './Style';
+import {MainParamList} from '../Navigation/NavigationType';
+import {styles} from '../Styles/Screen/RecruitStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native-gesture-handler';
-import {request} from '../../component/AxiosComponent';
+import {request} from '../Components/AxiosComponent';
 // import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
 type dataList = {
   userId: number;
   id: number;
@@ -29,7 +27,7 @@ type dataList = {
 };
 
 type RecruitScreenProps = {
-  navigation: NativeStackNavigationProp<MainParamList, 'Recruit'>;
+  navigation: NativeStackNavigationProp<MainParamList, 'RecruitScreen'>;
 };
 
 const RecruitScreen = ({navigation}: RecruitScreenProps) => {
@@ -46,7 +44,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [recruitId, setRecruitId] = useState<number>();
   const [id, setId] = useState<string[]>([]);
   const handleBack = () => {
-    navigation.navigate('Home');
+    navigation.navigate('HomeScreen');
   };
 
   // const Tab = createMaterialTopTabNavigator();
@@ -109,16 +107,16 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     console.log(data);
     await axios({
       method: 'POST',
-      url: 'http://10.0.2.2:8080/recruit/create',
+      url: 'http://localhost:8080/recruit/create',
       data,
       headers: reqHeader,
     })
       .then(response => {
         console.log('Data : ', response.data);
-        const id = response.data.id;
-        setRecruitId(id);
-        Alert.alert('Save Success!', '모집글이 등록되었습니다.');
-        navigation.navigate('Recruit');
+        const rId = response.data.id;
+        console.log(rId);
+        setRecruitId(rId);
+        navigation.navigate('RecruitScreen');
       })
       .catch(error => {
         console.log(error.request);
@@ -128,42 +126,30 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   //아래는 수정버튼
 
   const handleRecruitModify = async () => {
-    handleModalOpen();
-
-    try {
-      const res = await request(
-        'recruit/modify/' + recruitId,
-        {
-          foodName: foodname,
-          needIngredients: needIngredients,
-          maxPeople: maxpeople,
-          recruitDate: recruitdate,
-          title: title,
-          content: content,
-        },
-        'POST',
-      );
-      if (res?.ok) {
-        Alert.alert('Modified', '수정되었습니다.');
-      }
-    } catch (e) {
-      console.log(e);
+    const data = {
+      foodName: foodname,
+      needIngredients: needIngredients,
+      maxPeople: maxpeople,
+      recruitDate: recruitdate,
+      title: title,
+      content: content,
+    };
+    const res = await request('recruit/modify/' + recruitId, data, 'POST');
+    if (res?.ok) {
+      console.log(res);
     }
   };
 
   //아래는 삭제버튼
   const handleRecruitDelete = async () => {
-    try {
-      const res = await request('recruit/delete/' + recruitId, {}, 'POST');
-      if (res?.ok) {
-        Alert.alert('Deleted', '삭제되었습니다.');
-      }
-    } catch (e) {
-      console.log(e);
+    const res = await request('recruit/delete/' + recruitId, {}, 'POST');
+    if (res?.ok) {
+      console.log(res);
     }
   };
 
   //아래는 참여버튼
+
   const handleRecruitJoin = async () => {
     try {
       const res = await request(
@@ -192,7 +178,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       }
     } catch (e) {
       console.log(e);
-      navigation.navigate('Recruit');
+      navigation.navigate('RecruitScreen');
     }
   };
 
@@ -224,12 +210,12 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    axios
-      .get('http://jsonplaceholder.typicode.com/posts')
-      .then(response => setData(response.data))
-      .catch(error => console.error(error));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get('http://jsonplaceholder.typicode.com/posts')
+  //     .then(response => setData(response.data))
+  //     .catch(error => console.error(error));
+  // }, []);
 
   return (
     <View style={styles.container}>
