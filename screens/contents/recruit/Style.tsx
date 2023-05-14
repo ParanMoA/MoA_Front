@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
 
   button: {
     //모집글 등록하기 버튼
-    marginTop: '40%',
+    marginTop: '4%',
     marginHorizontal: '5%',
     justifyContent: 'space-between',
     paddingHorizontal: '20%',
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   },
 
   itemContainer: {
-    flex: 1,
+    // flex: 1,
     // backgroundColor: 'black',
     paddingHorizontal: '30%',
     paddingVertical: '5%',

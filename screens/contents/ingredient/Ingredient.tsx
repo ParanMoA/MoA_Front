@@ -80,7 +80,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://localhost:8080/user/ingredient/image',
+        'http://10.0.2.2:8080/user/ingredient/image',
         isIngredient,
       );
     } else {
@@ -90,7 +90,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://localhost:8080/user/ingredient/receiptImage',
+        'http://10.0.2.2:8080/user/ingredient/receiptImage',
         isIngredient,
       );
     }
@@ -225,7 +225,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     setExpirationDate(targetDate);
   };
   return (
-
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <View style={styles.piccontainer}>
@@ -268,7 +267,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                   source={{uri: ingredientUri}}
                   style={{width: 100, height: 100}}
                 />
-                <Text> 내가 ingredientUri</Text>
               </View>
               <View style={{flexDirection: 'column', flex: 1}}>
                 {ingredients.map(ingredient => (

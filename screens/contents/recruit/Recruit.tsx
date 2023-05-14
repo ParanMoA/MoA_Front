@@ -16,6 +16,8 @@ import {MainParamList} from '../../NavigationType';
 import {styles} from './Style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native-gesture-handler';
+import {request} from '../../component/AxiosComponent';
+// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
@@ -36,14 +38,25 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [needIngredients, setNeedIngredients] = useState<string[]>([]);
   const [maxpeople, setMaxpeople] = useState<number>();
   const [recruitdate, setRecruitdate] = useState<string>('');
-  // const [writeremail, setWriterEmail] = useState<string>('');
+  const [useremail, setUserEmail] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [text, setText] = useState('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
+  const [id, setId] = useState<string[]>([]);
   const handleBack = () => {
     navigation.navigate('Home');
+  };
+
+  // const Tab = createMaterialTopTabNavigator();
+
+  const SettingList = () => {
+    return (
+      <View style={styles.textContainer}>
+        <FlatList data={data} renderItem={renderItem} />
+      </View>
+    );
   };
 
   const handleAddIngredient = () => {
@@ -63,23 +76,16 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       </Text>
       <TouchableOpacity
         style={[styles.item, item && styles.completed]}
-        onPress={() => {
-          Alert.alert('Are you sure to join?', 'really?', [
-            {
-              text: 'confirm',
-              onPress: handleRecruitJoin => Alert.alert('confirm'),
-            },
-            {
-              text: 'cancel',
-              onPress: handleRecruitJoin => Alert.alert('cancel'),
-            },
-          ]);
-          setData(
-            data.map(dataList =>
-              dataList.id === item.id ? {...dataList} : dataList,
-            ),
-          );
-        }}>
+        onPress={handleRecruitJoin}
+        // if작성자라면 내가 등록한 모집글 리스트에서 승인/거절 결정가능
+        // onPress={() => {
+        //   setData(
+        //     data.map(dataList =>
+        //       dataList.id === item.id ? {...dataList} : dataList,
+        //     ),
+        //   );
+        // }}>
+      >
         <Text style={styles.joinbtn}>Join</Text>
       </TouchableOpacity>
     </View>
@@ -109,9 +115,9 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     })
       .then(response => {
         console.log('Data : ', response.data);
-        const rId = response.data.recruitId;
-        console.log(rId);
-        setRecruitId(rId);
+        const id = response.data.id;
+        setRecruitId(id);
+        Alert.alert('Save Success!', '모집글이 등록되었습니다.');
         navigation.navigate('Recruit');
       })
       .catch(error => {
@@ -122,65 +128,74 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   //아래는 수정버튼
 
   const handleRecruitModify = async () => {
-    const token = await AsyncStorage.getItem('AccessToken');
-    const reqHeader = {
-      'x-access-token': token || '',
-      'content-type': 'application/json',
-    };
-    const data = {
-      recruitId: recruitId,
-    };
-    console.log(data);
-    await axios({
-      method: 'POST',
-      url: 'http://10.0.2.2:8080/recruit/create/modify',
-      data,
-      headers: reqHeader,
-    })
-      .then(response => {
-        console.log('Data : ', response.data);
-        console.log(response);
-        navigation.navigate('Recruit');
-      })
-      .catch(error => {
-        console.log(error.request);
-        Alert.alert('Modify Failed', 'Please Check your Options Agin');
-      });
+    handleModalOpen();
+
+    try {
+      const res = await request(
+        'recruit/modify/' + recruitId,
+        {
+          foodName: foodname,
+          needIngredients: needIngredients,
+          maxPeople: maxpeople,
+          recruitDate: recruitdate,
+          title: title,
+          content: content,
+        },
+        'POST',
+      );
+      if (res?.ok) {
+        Alert.alert('Modified', '수정되었습니다.');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   //아래는 삭제버튼
-  const handleRecruitDelete = () => {
-    axios
-      .get('http://10.0.2.2:8080/recruit/delete', {
-        params: {id: recruitId},
-      })
-      .then(response => {
-        console.log(response);
-        // navigation.navigate('Recruit');
+  const handleRecruitDelete = async () => {
+    try {
+      const res = await request('recruit/delete/' + recruitId, {}, 'POST');
+      if (res?.ok) {
         Alert.alert('Deleted', '삭제되었습니다.');
-      })
-      .catch(error => {
-        console.log(error.request);
-        Alert.alert('Delete Failed', '삭제 실패하였습니다.');
-      });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   //아래는 참여버튼
-  const handleRecruitJoin = () => {
-    axios
-      .get('http://10.0.2.2:8080/recruit/participate/{id}/enter', {
-        params: {id: recruitId},
-      })
-      .then(response => {
-        console.log(response);
-        // navigation.navigate('Recruit');
+  const handleRecruitJoin = async () => {
+    try {
+      const res = await request(
+        'recruit/' + recruitId + '/participate/register',
+        {id: id},
+        'POST',
+      );
+      if (res?.ok) {
         Alert.alert('Join', '참여신청을 보냈습니다.');
-      })
-      .catch(error => {
-        console.log(error.request);
-        Alert.alert('Join Falied', '참여신청 보내기를 실패하였습니다.');
-      });
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  //아래는 승인
+  const handleApprove = async () => {
+    try {
+      const res = await request(
+        'recruit/' + recruitId + '/participate/allow' + id,
+        {id: id},
+        'POST',
+      );
+      if (res?.ok) {
+        Alert.alert('Approve', '승인처리 되었습니다.');
+      }
+    } catch (e) {
+      console.log(e);
+      navigation.navigate('Recruit');
+    }
+  };
+
   const handleModalOpen = () => {
     setIsModalVisible(true);
   };
@@ -188,6 +203,8 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const handleModalClose = () => {
     setIsModalVisible(false);
   };
+
+  const handleModalChange = () => {};
 
   const handleSave = () => {
     console.log(`Saving: ${foodname}`);
@@ -216,6 +233,10 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
 
   return (
     <View style={styles.container}>
+      {/* <TouchableOpacity style={styles.button}>
+        <Text>모집글 리스트</Text>
+        <Text>내가 등록한 모집글</Text>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.button} onPress={handleModalOpen}>
         <Text style={styles.btnText}>모집글 등록하기</Text>
       </TouchableOpacity>
@@ -264,7 +285,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       </Modal>
       <View>
         {/* <ScrollView> */}
-        <FlatList data={data} renderItem={renderItem} />
+        {/* <FlatList data={data} renderItem={renderItem} /> */}
         {/* </ScrollView> */}
       </View>
     </View>

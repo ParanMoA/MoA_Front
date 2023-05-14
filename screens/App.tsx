@@ -11,6 +11,7 @@ import {
   MainParamList,
   RootStackParamList,
   TabParamList,
+  TopTabParamList,
 } from './NavigationType';
 import Chat from './contents/main/Chat';
 import Home from './contents/main/Home';
@@ -18,9 +19,11 @@ import MyPage from './contents/main/MyPage';
 import Ingredient from './contents/ingredient/Ingredient';
 import Recruit from './contents/recruit/Recruit';
 import {styles} from './Style';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 const MainStack = createNativeStackNavigator<MainParamList>();
+const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
 
 // const Home;
 
@@ -130,6 +133,26 @@ const MainTabScreen = () => {
   );
 };
 
+const SubTabScreen = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarLabel: ({}) => {
+          let labName;
+
+          if (route.name === 'ListViewTab') {
+            labName = '리스트보기';
+          } else if (route.name === 'MyRecruitTab') {
+            labName = '채팅';
+          }
+          return <Text style={{color: 'black'}}>{labelName}</Text>;
+        },
+      })}>
+      <Tab.Screen name="ListViewTab" component={Recruit} />
+      <Tab.Screen name="MyRecruitTab" component={Recruit} />
+    </Tab.Navigator>
+  );
+};
 function App() {
   return (
     <NavigationContainer>

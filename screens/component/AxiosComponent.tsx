@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
 
-const BASE_URL = 'http://localhost:8080/';
+const BASE_URL = 'http://10.0.2.2:8080/';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -33,8 +33,10 @@ export const request = async (
     options.headers['x-access-token'] = token;
   }
   //   console.log(`${BASE_URL}` + url);
+  console.log(url);
   try {
     const res = await fetch(`${BASE_URL}` + url, options);
+    console.log(res);
     if (!res.ok) {
       Alert.alert('서버와의 통신이 실패하였습니다.');
     }

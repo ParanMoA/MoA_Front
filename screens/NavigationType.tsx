@@ -18,3 +18,8 @@ export type MainParamList = {
   Recruit: undefined;
   MyPage: undefined;
 };
+
+export type TopTabParamList = {
+  ListViewTab: undefined;
+  MyRecruitTab: undefined;
+};
