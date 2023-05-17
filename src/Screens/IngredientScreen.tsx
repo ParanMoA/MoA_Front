@@ -8,6 +8,8 @@ import {
   Image,
   TextInput,
   Alert,
+  ScrollView,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -17,10 +19,11 @@ import axios from 'axios';
 import {MainParamList} from '../Navigation/NavigationType';
 import UploadModeModal from '../Components/CameraModal';
 import {DateAutoFormat} from '../utils/DateFormatter';
-import {styles} from '../Styles/Screen/StyleComponent';
+// import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/IngredientStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ScrollView} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
+import {BASE_URL} from '../constants';
 
 type IngredientScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'IngredientScreen'>;
@@ -44,6 +47,8 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [expirationDate, setExpirationDate] = useState<string>('');
   const [ingredientImage, setIngredientImage] = useState<string>('');
   const [receiptImage, setReceiptImage] = useState<string>('');
+  const [addCount, setAddCount] = useState<number>(0);
+
   const handleRegister = async () => {
     const data = {
       name: selected,
@@ -52,6 +57,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
+
     const res = await request('/user/ingredient/register', data, 'POST');
     if (res?.ok) {
       Alert.alert('식재료 등록', '식재료 등록에 성공하였습니다.');
@@ -73,7 +79,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://10.0.2.2:8080/user/ingredient/image',
+        BASE_URL + 'user/ingredient/image',
         isIngredient,
       );
     } else {
@@ -83,10 +89,46 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       handleUploadAxios(
         uri,
         name,
-        'http://10.0.2.2:8080/user/ingredient/receiptImage',
+        BASE_URL + 'user/ingredient/receiptImage',
         isIngredient,
       );
     }
+  };
+  const handleUploadAxios = async (
+    uri: string,
+    name: string,
+    url: string,
+    isIngredient: boolean,
+  ) => {
+    const token = await AsyncStorage.getItem('AccessToken');
+    const reqHeader = {
+      'x-access-token': token || '',
+      'content-type': 'multipart/form-data',
+    };
+    const formData = new FormData();
+    var file = {
+      uri: uri,
+      type: 'multipart/form-data',
+      name: name,
+    };
+    formData.append('file', file);
+    await axios
+      .post(url, formData, {
+        headers: reqHeader,
+      })
+      .then(response => {
+        if (isIngredient) {
+          const result = response.data.result.slice(0, 5);
+          console.log(result);
+          setIngredientImage(response.data.ingredientImage);
+          setIngredients(result);
+        } else {
+          setReceiptImage(response.data.receiptImage);
+        }
+      })
+      .catch(error => {
+        console.log(error.request);
+      });
   };
 
   const onLaunchCamera = (isIngredient: boolean) => {
@@ -128,6 +170,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       if (!exists) {
         setIngredients([...ingredients, newIngredient]);
       }
+      setAddCount(prevCount => prevCount + 1);
       setIsAdding(false);
       setNewIngredient('');
     }
@@ -136,43 +179,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const handleCancelAddIngredient = () => {
     setIsAdding(false);
     setNewIngredient('');
-  };
-
-  const handleUploadAxios = async (
-    uri: string,
-    name: string,
-    url: string,
-    isIngredient: boolean,
-  ) => {
-    const token = await AsyncStorage.getItem('AccessToken');
-    const reqHeader = {
-      'x-access-token': token || '',
-      'content-type': 'multipart/form-data',
-    };
-    const formData = new FormData();
-    var file = {
-      uri: uri,
-      type: 'multipart/form-data',
-      name: name,
-    };
-    formData.append('file', file);
-    console.log(formData.getParts());
-    await axios
-      .post(url, formData, {
-        headers: reqHeader,
-      })
-      .then(response => {
-        if (isIngredient) {
-          const result = response.data.result.slice(0, 5);
-          setIngredientImage(response.data.ingredientImage);
-          setIngredients(result);
-        } else {
-          setReceiptImage(response.data.receiptImage);
-        }
-      })
-      .catch(error => {
-        console.log(error.request);
-      });
   };
 
   const handleUpload = (isIngredient: any) => {
@@ -224,6 +230,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
           styles.subcontainer,
           {borderTopLeftRadius: 24, borderTopRightRadius: 24},
         ]}>
+        {/* <ScrollView style={styles.subcontainer}> */}
         <View style={styles.piccontainer}>
           <TouchableOpacity
             style={styles.btn}
@@ -254,190 +261,139 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             onLaunchImageLibrary={() => onLaunchImageLibrary(false)}
           />
         </View>
-        <View>
-          {ingredientUri === undefined && ingredientName === undefined ? (
-            <Text></Text>
-          ) : (
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <Image
-                  source={{uri: ingredientUri}}
-                  style={{width: 100, height: 100}}
-                />
+        {ingredientUri === undefined && ingredientName === undefined ? (
+          <View style={{marginTop: 10}} />
+        ) : (
+          <View style={[styles.piccontainer, {marginTop: 20}]}>
+            <View style={{flexDirection: 'column'}}>
+              <Text style={styles.text}>등록한 식재료 사진</Text>
+              <Image source={{uri: ingredientUri}} style={styles.imgopt} />
+              <View>
+                <Text style={styles.text}>등록한 영수증 사진</Text>
+                <Image source={{uri: receiptUri}} style={styles.imgopt} />
               </View>
-              <View style={{flexDirection: 'column', flex: 1}}>
+            </View>
+            <View>
+              <Text style={styles.text}> 식재료 이름 </Text>
+              <View style={[styles.imgopt, {flex: 1}]}>
                 {ingredients.map(ingredient => (
-                  <TouchableOpacity
-                    key={ingredient}
-                    style={{flexDirection: 'column'}}
-                    onPress={() => handleIngredient(ingredient)}>
-                    <Text
+                  <View
+                    style={{
+                      marginTop: 10,
+                      height: 23,
+                    }}>
+                    <View
                       style={{
-                        width: 250,
-                        height: 15,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        fontSize: 20,
-                        textAlign: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginHorizontal: 10,
                       }}>
-                      {ingredient}
-                    </Text>
-                  </TouchableOpacity>
+                      <Text>{ingredient}</Text>
+                      <TouchableOpacity
+                        style={{
+                          ...styles.save_cancel_btn,
+                          width: 30,
+                        }}
+                        key={ingredient}
+                        onPress={() => handleIngredient(ingredient)}>
+                        <Text
+                          style={{
+                            fontSize: 10,
+                          }}>
+                          선택
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 ))}
                 {isAdding ? (
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View>
                     <TextInput
                       style={{
-                        flex: 1,
-                        height: 30,
-                        backgroundColor: '#FFF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        fontSize: 20,
-                        paddingLeft: 10,
+                        borderColor: '#FFFFFF',
+                        borderWidth: 1.5,
+                        textAlign: 'center',
                       }}
                       value={newIngredient}
+                      placeholder="추가할 식재료 이름"
                       onChangeText={text => setNewIngredient(text)}
                     />
-                    <TouchableOpacity
+                    <View
                       style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={handleSaveIngredient}>
-                      <Icon name="check" color="#EB5500" size={20} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        width: 30,
-                        height: 30,
-                        backgroundColor: '#FFD6BF',
-                        borderColor: '#000000',
-                        borderWidth: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={handleCancelAddIngredient}>
-                      <Icon name="times" color="#EB5500" size={20} />
-                    </TouchableOpacity>
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        marginTop: 5,
+                      }}>
+                      <TouchableOpacity
+                        style={styles.save_cancel_btn}
+                        onPress={handleSaveIngredient}>
+                        <Text> 추가 </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.save_cancel_btn}
+                        onPress={handleCancelAddIngredient}>
+                        <Text> 취소 </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 ) : (
-                  <TouchableOpacity
+                  <View
                     style={{
-                      width: 250,
-                      height: 30,
-                      backgroundColor: '#FFD6BF',
-                      borderColor: '#000000',
-                      borderWidth: 1,
+                      marginTop: 10,
                       alignItems: 'center',
-                    }}
-                    onPress={handleAddIngredient}>
-                    <Icon name="plus" color="#EB5500" size={24} />
-                  </TouchableOpacity>
+                    }}>
+                    <TouchableOpacity
+                      style={{...styles.save_cancel_btn, width: 100}}
+                      onPress={() => {
+                        if (addCount > 1) {
+                          Alert.alert('더이상 추가할 수 없습니다.');
+                        } else {
+                          handleAddIngredient();
+                        }
+                      }}>
+                      <Text style={{fontSize: 13}}>식재료 추가</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
               </View>
             </View>
-          )}
+          </View>
+        )}
+        <View>
+          <Text style={[styles.text, {marginLeft: 30}]}>구매 일자</Text>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={onChangePurchasedDate}
+            value={purchasedDate}
+            placeholder="YYYY-MM-DD"
+            placeholderTextColor="black"
+            keyboardType="numeric"
+            maxLength={10}></TextInput>
         </View>
         <View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Image
-              source={{uri: receiptUri}}
-              style={{width: 100, height: 100}}
-            />
-          </View>
-          <View>
-            {ingredientUri === undefined && ingredientName === undefined ? (
-              <Text></Text>
-            ) : (
-              <View style={styles.addbox}>
-                <View style={[styles.addbox, {flexDirection: 'column'}]}>
-                  <Image style={styles.imgopt} source={{uri: ingredientUri}} />
-                </View>
-                <View style={styles.column}>
-                  {ingredients.map(ingredient => (
-                    <TouchableOpacity
-                      style={styles.column}
-                      key={ingredient}
-                      onPress={() => handleIngredient(ingredient)}>
-                      <Text style={styles.textbox}>{ingredient}</Text>
-                    </TouchableOpacity>
-                  ))}
-                  {isAdding ? (
-                    <View>
-                      <TextInput
-                        style={{
-                          height: 30,
-                          backgroundColor: '#FFF',
-                          borderColor: '#000000',
-                          borderWidth: 1,
-                          fontSize: 20,
-                          paddingLeft: 10,
-                        }}
-                        value={newIngredient}
-                        onChangeText={text => setNewIngredient(text)}
-                      />
-                      <TouchableOpacity
-                        style={styles.addcompo}
-                        onPress={handleSaveIngredient}>
-                        <Icon name="check" color="#EB5500" size={20} />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.addcompo}
-                        onPress={handleCancelAddIngredient}>
-                        <Icon name="times" color="#EB5500" size={20} />
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.textbox}
-                      onPress={handleAddIngredient}>
-                      <Icon name="plus" color="#EB5500" size={24} />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
-            )}
-          </View>
-          <View>
-            <View style={{flexDirection: 'column', alignItems: 'center'}}>
-              <Image
-                source={{uri: receiptUri}}
-                style={{width: 100, height: 100}}
-              />
-            </View>
-          </View>
-          <View>
-            <Text>구매 일자</Text>
-            <TextInput
-              style={styles.inputText}
-              onChangeText={onChangePurchasedDate}
-              value={purchasedDate}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor="black"
-              keyboardType="numeric"
-              maxLength={10}></TextInput>
-            <Text>유통 기한</Text>
-            <TextInput
-              style={styles.inputText}
-              onChangeText={onChangeExpirationDate}
-              value={expirationDate}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor="black"
-              keyboardType="numeric"
-              maxLength={10}></TextInput>
-          </View>
-          <TouchableOpacity style={styles.btn_2} onPress={handleRegister}>
+          <Text style={[styles.text, {marginLeft: 30}]}>유통 기한</Text>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={onChangeExpirationDate}
+            value={expirationDate}
+            placeholder="YYYY-MM-DD"
+            placeholderTextColor="black"
+            keyboardType="numeric"
+            maxLength={10}></TextInput>
+        </View>
+        <View
+          style={{
+            marginTop: 10,
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={styles.register_btn}
+            onPress={handleRegister}>
             <Text> 등록 </Text>
           </TouchableOpacity>
         </View>
       </View>
+      {/* </ScrollView> */}
     </View>
   );
 };

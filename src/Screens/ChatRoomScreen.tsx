@@ -16,6 +16,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Calendar} from 'react-native-calendars';
 import {styles} from '../Styles/Screen/StyleComponent';
 import {ChatParamList} from '../Navigation/NavigationType';
+import {request} from '../Components/AxiosComponent';
 
 type ChatItem = {
   id: string;
@@ -27,35 +28,24 @@ type ChatListProps = {
   chats: ChatItem[];
   onPress: (item: ChatItem) => void;
 };
-const testChatData: ChatItem[] = [
-  {
-    id: '1',
-    user: 'Alice',
-    message: '음식 1',
-  },
-  {
-    id: '2',
-    user: 'Bob',
-    message: '음식 2',
-  },
-  {
-    id: '3',
-    user: 'Charlie',
-    message: '음식 3',
-  },
-];
-
 type ChatRoomScreenProps = {
   navigation: NativeStackNavigationProp<ChatParamList, 'ChatRoomScreen'>;
 };
 
 const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
-  const [chats, setChats] = useState<ChatItem[]>([]);
+  const [chatList, setChatList] = useState<ChatItem[]>([]);
   const [selectedChat, setSelectedChat] = useState<Object>({});
 
-  useEffect(() => {
-    setChats(testChatData);
-  }, []);
+  const getChatList = async () => {
+    const res = await request('recruit/chat/');
+    if (res?.ok) {
+      console.log(res);
+    }
+  };
+
+  // useEffect(() => {
+  //   setChatList(testChatData);
+  // }, []);
   const renderItem = ({item}: {item: ChatItem}) => (
     <View>
       <TouchableOpacity
@@ -78,16 +68,18 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Text> 채팅방 목록 </Text>
-        <FlatList
-          data={testChatData}
-          renderItem={renderItem}
-          style={{
-            padding: 20,
-            marginVertical: 8,
-            marginHorizontal: 16,
-          }}
-        />
+        <View style={styles.chatcontainer}>
+          <Text style={{color: '#6B7684'}}> 나의 채팅방 목록 </Text>
+          <FlatList
+            data={chatList}
+            renderItem={renderItem}
+            style={{
+              padding: 20,
+              marginVertical: 8,
+              marginHorizontal: 16,
+            }}
+          />
+        </View>
       </View>
     </View>
   );

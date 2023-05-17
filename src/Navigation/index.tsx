@@ -20,6 +20,7 @@ import RecruitScreen from '../Screens/RecruitScreen';
 import MyPageScreen from '../Screens/MyPageScreen';
 import ChatScreen from '../Screens/ChatScreen';
 import ChatRoomScreen from '../Screens/ChatRoomScreen';
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<TabParamList>();
 const MainStack = createNativeStackNavigator<MainParamList>();
@@ -64,6 +65,7 @@ const MainStackScreen = () => {
     </MainStack.Navigator>
   );
 };
+
 const Auth = () => {
   return (
     <Stack.Navigator>
@@ -148,26 +150,6 @@ const BottomTabScreen = () => {
   );
 };
 
-// const SubTabScreen = () => {
-//   return (
-//     <TopTab.Navigator
-//       screenOptions={({route}) => ({
-//         tabBarLabel: ({}) => {
-//           let labelName;
-
-//           if (route.name === 'RecruitScreen') {
-//             labelName = '모집글리스트보기';
-//           } else if (route.name === 'MyRecruitScreen') {
-//             labelName = '내가등록한모집글보기';
-//           }
-//           return <Text style={{color: 'black'}}>{labelName}</Text>;
-//         },
-//       })}>
-//       <TopTab.Screen name="RecruitScreen" component={RecruitScreen} />
-//       <TopTab.Screen name="MyRecruitScreen" component={MyRecruitScreen} />
-//     </TopTab.Navigator>
-//   );
-// };
 const Navigation = () => {
   return (
     <NavigationContainer>
