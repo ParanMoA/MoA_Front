@@ -2,15 +2,14 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFD6BF',
   },
 
   logo: {
-    marginTop: '5%',
-    width: '50%',
+    marginTop: '20%',
+    width: '65%',
     height: '15%',
   },
 
@@ -22,14 +21,14 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'white',
   },
   button: {
+    width: 150,
+    height: 100,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: '8%',
-    paddingVertical: '4%',
-    marginHorizontal: '3%',
-    backgroundColor: '#FFF7F4',
+    backgroundColor: '#FFFFFF',
     borderColor: '#FFFFFF',
-    borderWidth: 1,
-    borderRadius: 15,
+    borderWidth: 1.5,
+    borderRadius: 16,
   },
 
   btnText: {

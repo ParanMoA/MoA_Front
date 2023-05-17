@@ -285,12 +285,8 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                       <Text>{ingredient}</Text>
                       <TouchableOpacity
                         style={{
-                          backgroundColor: '#FFD6BF',
+                          ...styles.save_cancel_btn,
                           width: 30,
-                          height: 20,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderRadius: 4,
                         }}
                         key={ingredient}
                         onPress={() => handleIngredient(ingredient)}>
@@ -323,26 +319,12 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                         marginTop: 5,
                       }}>
                       <TouchableOpacity
-                        style={{
-                          backgroundColor: '#FFD6BF',
-                          width: 40,
-                          height: 20,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderRadius: 4,
-                        }}
+                        style={styles.save_cancel_btn}
                         onPress={handleSaveIngredient}>
                         <Text> 추가 </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={{
-                          backgroundColor: '#FFD6BF',
-                          width: 40,
-                          height: 20,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderRadius: 4,
-                        }}
+                        style={styles.save_cancel_btn}
                         onPress={handleCancelAddIngredient}>
                         <Text> 취소 </Text>
                       </TouchableOpacity>
@@ -355,14 +337,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                       alignItems: 'center',
                     }}>
                     <TouchableOpacity
-                      style={{
-                        backgroundColor: '#FFD6BF',
-                        width: 100,
-                        height: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 4,
-                      }}
+                      style={{...styles.save_cancel_btn, width: 100}}
                       onPress={() => {
                         if (addCount > 1) {
                           Alert.alert('더이상 추가할 수 없습니다.');

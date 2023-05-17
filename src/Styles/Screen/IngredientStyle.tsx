@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   subcontainer: {
     backgroundColor: '#F9FAFB',
-    width: 390,
+    width: 374,
     height: 600,
     marginTop: 30,
     borderTopLeftRadius: 24,
@@ -74,5 +74,13 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: '#6B7684',
+  },
+  save_cancel_btn: {
+    backgroundColor: '#FFD6BF',
+    width: 40,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
   },
 });

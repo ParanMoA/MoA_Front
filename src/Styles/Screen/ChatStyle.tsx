@@ -8,14 +8,18 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFD6BF',
   },
   subcontainer: {
-    width: 375,
+    width: 374,
     height: 584,
     marginTop: 83,
     backgroundColor: '#F9FAFB',
-    borderRadius: 16,
+    borderRadius: 24,
   },
   logo: {
     width: 200,
     height: 100,
+  },
+  chatcontainer: {
+    marginTop: 24,
+    marginLeft: 24,
   },
 });

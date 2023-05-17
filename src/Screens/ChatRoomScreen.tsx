@@ -37,15 +37,15 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   const [selectedChat, setSelectedChat] = useState<Object>({});
 
   const getChatList = async () => {
-    const res = await request('recruit/chat/' + id);
+    const res = await request('recruit/chat/');
     if (res?.ok) {
       console.log(res);
     }
   };
 
-  useEffect(() => {
-    setChatList(testChatData);
-  }, []);
+  // useEffect(() => {
+  //   setChatList(testChatData);
+  // }, []);
   const renderItem = ({item}: {item: ChatItem}) => (
     <View>
       <TouchableOpacity
@@ -68,16 +68,18 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Text> 채팅방 목록 </Text>
-        <FlatList
-          data={chatList}
-          renderItem={renderItem}
-          style={{
-            padding: 20,
-            marginVertical: 8,
-            marginHorizontal: 16,
-          }}
-        />
+        <View style={styles.chatcontainer}>
+          <Text style={{color: '#6B7684'}}> 나의 채팅방 목록 </Text>
+          <FlatList
+            data={chatList}
+            renderItem={renderItem}
+            style={{
+              padding: 20,
+              marginVertical: 8,
+              marginHorizontal: 16,
+            }}
+          />
+        </View>
       </View>
     </View>
   );
