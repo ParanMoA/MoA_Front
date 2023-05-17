@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {MainParamList} from '../Navigation/NavigationType';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {styles} from '../Styles/Screen/HomeStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'HomeScreen'>;

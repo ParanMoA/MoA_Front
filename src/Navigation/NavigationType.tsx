@@ -6,6 +6,7 @@ export type RootStackParamList = {
   LoginHomeScreen: undefined;
   ChatRoomScreen: undefined;
   ChatScreen: undefined;
+  TopTab: undefined;
 };
 
 export type TabParamList = {
@@ -27,6 +28,6 @@ export type ChatParamList = {
 };
 
 export type TopTabParamList = {
-  ListViewTab: undefined;
-  MyRecruitTab: undefined;
+  RecruitScreen: undefined;
+  MyRecruitScreen: undefined;
 };

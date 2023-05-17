@@ -14,7 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Calendar} from 'react-native-calendars';
-import {styles} from '../Styles/Screen/ChatStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 import {ChatParamList} from '../Navigation/NavigationType';
 
 type ChatItem = {

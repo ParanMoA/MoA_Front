@@ -8,7 +8,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RouteProp} from '@react-navigation/native';
 import {Calendar} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {styles} from '../Styles/Screen/ChatStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 
 interface Message {
   user: string;

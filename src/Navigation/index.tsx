@@ -6,7 +6,7 @@ import {
   MainParamList,
   RootStackParamList,
   TabParamList,
-  TopTabParamList,
+  // TopTabParamList,
 } from './NavigationType';
 import {styles} from '../Styles/Navigation/NavigationStyle';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -23,7 +23,7 @@ import ChatRoomScreen from '../Screens/ChatRoomScreen';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<TabParamList>();
 const MainStack = createNativeStackNavigator<MainParamList>();
-const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
+// const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
 const ChatStack = createNativeStackNavigator<ChatParamList>();
 
 const ChatStackScreen = () => {
@@ -148,26 +148,26 @@ const BottomTabScreen = () => {
   );
 };
 
-const SubTabScreen = () => {
-  return (
-    <TopTab.Navigator
-      screenOptions={({route}) => ({
-        tabBarLabel: ({}) => {
-          let labelName;
+// const SubTabScreen = () => {
+//   return (
+//     <TopTab.Navigator
+//       screenOptions={({route}) => ({
+//         tabBarLabel: ({}) => {
+//           let labelName;
 
-          if (route.name === 'ListViewTab') {
-            labelName = '리스트보기';
-          } else if (route.name === 'MyRecruitTab') {
-            labelName = '채팅';
-          }
-          return <Text style={{color: 'black'}}>{labelName}</Text>;
-        },
-      })}>
-      <TopTab.Screen name="ListViewTab" component={RecruitScreen} />
-      <TopTab.Screen name="MyRecruitTab" component={RecruitScreen} />
-    </TopTab.Navigator>
-  );
-};
+//           if (route.name === 'RecruitScreen') {
+//             labelName = '모집글리스트보기';
+//           } else if (route.name === 'MyRecruitScreen') {
+//             labelName = '내가등록한모집글보기';
+//           }
+//           return <Text style={{color: 'black'}}>{labelName}</Text>;
+//         },
+//       })}>
+//       <TopTab.Screen name="RecruitScreen" component={RecruitScreen} />
+//       <TopTab.Screen name="MyRecruitScreen" component={MyRecruitScreen} />
+//     </TopTab.Navigator>
+//   );
+// };
 const Navigation = () => {
   return (
     <NavigationContainer>
@@ -182,6 +182,7 @@ const Navigation = () => {
           component={BottomTabScreen}
           options={{headerShown: false}}
         />
+        {/* <Stack.Screen name="TopTab" component={SubTabScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -60,12 +60,12 @@ export const styles = StyleSheet.create({
   },
 
   item: {
-    paddingHorizontal: 30,
-    paddingVertical: 20,
+    paddingHorizontal: '30%',
+    paddingVertical: '5%',
     backgroundColor: '#FFF7F4',
     alignItems: 'center',
-    marginVertical: '5%',
-    marginHorizontal: '5%',
+    marginVertical: '4%',
+    marginHorizontal: '4%',
     borderWidth: 1.5,
     borderColor: '#000000',
     borderRadius: 5,
@@ -74,19 +74,32 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: 'black',
   },
+
   completed: {
     backgroundColor: '#FFC1B3',
+    paddingHorizontal: '2%',
+    paddingVertical: '2.5%',
+    marginHorizontal: '2%',
   },
 
   joinbtncontainer: {
     justifyContent: 'center',
     borderRadius: 5,
     // padding: 5,
-    borderColor: 'white',
+    // borderColor: 'white',
   },
   joinbtn: {
+    margin: '2%',
+    paddingHorizontal: '5%',
     justifyContent: 'space-between',
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  fuckkkk: {
+    backgroundColor: 'white',
+    width: '80%',
+    height: '5%',
+    marginBottom: '3%',
+    alignItems: 'center',
   },
 });

@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../Navigation/NavigationType';
-import {styles} from '../Styles/Screen/LoginHomeStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 type LoginHomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHomeScreen'>;
 };
@@ -32,12 +32,45 @@ const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
         source={require('../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.button} onPress={handlePressLogin}>
-          <Text style={styles.btnText}>Login</Text>
+      <View style={[styles.buttonContainer, {flexDirection: 'column'}]}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              paddingHorizontal: '20%',
+              borderColor: '#000000',
+              marginVertical: '1%',
+            },
+          ]}
+          onPress={handlePressLogin}>
+          <Text
+            style={[
+              styles.btnText,
+              {paddingHorizontal: '25%', paddingVertical: '0.5%'},
+            ]}>
+            Login
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handlePressSignUp}>
-          <Text style={styles.btnText}>SingUp</Text>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              paddingHorizontal: '20%',
+              borderColor: '#000000',
+              marginVertical: '1%',
+            },
+          ]}
+          onPress={handlePressSignUp}>
+          <Text
+            style={[
+              styles.btnText,
+              {
+                paddingHorizontal: '25%',
+                paddingVertical: '0.5%',
+              },
+            ]}>
+            SingUp
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -10,6 +10,7 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
+
 import axios from 'axios';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainParamList} from '../Navigation/NavigationType';
@@ -17,7 +18,10 @@ import {styles} from '../Styles/Screen/RecruitStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
-// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import Test from './test';
+import MyRecruitScreen from './MyRecruitScreen';
 
 type dataList = {
   userId: number;
@@ -29,6 +33,8 @@ type dataList = {
 type RecruitScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'RecruitScreen'>;
 };
+
+const TopTab = createMaterialTopTabNavigator();
 
 const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [foodname, setFoodname] = useState('');
@@ -47,7 +53,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     navigation.navigate('HomeScreen');
   };
 
-  // const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator();
 
   const SettingList = () => {
     return (
@@ -190,8 +196,6 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     setIsModalVisible(false);
   };
 
-  const handleModalChange = () => {};
-
   const handleSave = () => {
     console.log(`Saving: ${foodname}`);
     Alert.alert('Are you sure to join?', 'really?', [
@@ -210,70 +214,104 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     setIsModalVisible(false);
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get('http://jsonplaceholder.typicode.com/posts')
-  //     .then(response => setData(response.data))
-  //     .catch(error => console.error(error));
-  // }, []);
+  const getRes = async () => {
+    const res = await request('recruit/list');
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getRes();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      {/* <TouchableOpacity style={styles.button}>
-        <Text>모집글 리스트</Text>
-        <Text>내가 등록한 모집글</Text>
-      </TouchableOpacity> */}
-      <TouchableOpacity style={styles.button} onPress={handleModalOpen}>
-        <Text style={styles.btnText}>모집글 등록하기</Text>
-      </TouchableOpacity>
-      <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
-        <View style={styles.container}>
-          <View style={styles.item}>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your foodname..."
-              value={foodname}
-              onChangeText={setFoodname}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put ingredients..."
-              value={ingredient}
-              onChangeText={setIngredient}
-              onSubmitEditing={handleAddIngredient}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put max people..."
-              value={maxpeople?.toString()}
-              onChangeText={text => setMaxpeople(parseInt(text))}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put available recuitdate..."
-              value={recruitdate}
-              onChangeText={setRecruitdate}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your title..."
-              value={title}
-              onChangeText={setTitle}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your content..."
-              value={content}
-              onChangeText={setContent}></TextInput>
-          </View>
-          <View style={styles.ShowboxContainer}>
-            <Button title="Save" onPress={handleRecruit} />
-            <Button title="Cancel" onPress={handleModalClose} />
-            <Button title="Modify" onPress={handleRecruitModify} />
-            <Button title="Delete" onPress={handleRecruitDelete} />
-          </View>
-        </View>
-      </Modal>
-      <View>
-        {/* <ScrollView> */}
-        {/* <FlatList data={data} renderItem={renderItem} /> */}
-        {/* </ScrollView> */}
-      </View>
+    // <View>
+    <TopTab.Navigator
+      initialRouteName="Tab1"
+      screenOptions={{
+        tabBarActiveTintColor: '#000000',
+        tabBarLabelStyle: {fontSize: 15},
+        tabBarStyle: {backgroundColor: '#FFD8C6'},
+      }}>
+      <TopTab.Screen
+        name="Tab1"
+        component={Test}
+        options={{tabBarLabel: '모집글 리스트'}}
+      />
+      <TopTab.Screen
+        name="Tab2"
+        component={MyRecruitScreen}
+        options={{tabBarLabel: '내가 등록한 모집글'}}
+      />
+    </TopTab.Navigator>
+    // </View>
+    // <View style={styles.container}>
+    //   <TouchableOpacity style={styles.button} onPress={handleModalOpen}>
+    //     <Text style={styles.btnText}>모집글 등록하기</Text>
+    //   </TouchableOpacity>
+    //   <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
+    //     <View style={styles.container}>
+    //       <View style={styles.item}>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put your foodname..."
+    //           value={foodname}
+    //           onChangeText={setFoodname}></TextInput>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put ingredients..."
+    //           value={ingredient}
+    //           onChangeText={setIngredient}
+    //           onSubmitEditing={handleAddIngredient}></TextInput>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put max people..."
+    //           value={maxpeople?.toString()}
+    //           onChangeText={text => setMaxpeople(parseInt(text))}></TextInput>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put available recuitdate..."
+    //           value={recruitdate}
+    //           onChangeText={setRecruitdate}></TextInput>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put your title..."
+    //           value={title}
+    //           onChangeText={setTitle}></TextInput>
+    //         <TextInput
+    //           style={styles.btnText}
+    //           placeholder="put your content..."
+    //           value={content}
+    //           onChangeText={setContent}></TextInput>
+    //       </View>
+    //       <View style={styles.ShowboxContainer}>
+    //         <Button title="Save" onPress={handleRecruit} />
+    //         <Button title="Cancel" onPress={handleModalClose} />
+    //         <Button title="Modify" onPress={handleRecruitModify} />
+    //         <Button title="Delete" onPress={handleRecruitDelete} />
+    //       </View>
+    //     </View>
+    //   </Modal>
+    //   <View>
+    //     {/* <ScrollView> */}
+    // {/* <FlatList data={data} renderItem={renderItem} /> */}
+    //     {/* </ScrollView> */}
+    //   </View>
+    // </View>
+  );
+};
+
+const TabScreen1 = () => {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Tab1</Text>
+    </View>
+  );
+};
+
+const TabScreen2 = () => {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Tab2</Text>
     </View>
   );
 };

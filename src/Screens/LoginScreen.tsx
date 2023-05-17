@@ -2,7 +2,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import {RootStackParamList} from '../Navigation/NavigationType';
-import {styles} from '../Styles/Screen/LoginStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {request} from '../Components/AxiosComponent';
 
@@ -49,7 +49,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
       />
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.inputText}
+          style={[styles.inputText, {backgroundColor: '#FFFFFF'}]}
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -58,18 +58,44 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           textAlignVertical="auto"
           onChangeText={setEmail}></TextInput>
         <TextInput
-          style={styles.inputText}
+          style={[styles.inputText, {backgroundColor: '#FFFFFF'}]}
           placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={setPassword}></TextInput>
       </View>
-      <View style={styles.buttonContainer}>
+      <View
+        style={[
+          styles.buttonContainer,
+          {
+            justifyContent: 'space-between',
+            paddingHorizontal: '20%',
+            paddingVertical: '1%',
+          },
+        ]}>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.btnText}>Login</Text>
+          <Text
+            style={[
+              styles.btnText,
+              {
+                paddingHorizontal: '2%',
+                paddingVertical: '0.5%',
+              },
+            ]}>
+            Login
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleBack}>
-          <Text style={styles.btnText}>Back</Text>
+          <Text
+            style={[
+              styles.btnText,
+              {
+                paddingHorizontal: '2%',
+                paddingVertical: '0.5%',
+              },
+            ]}>
+            Back
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

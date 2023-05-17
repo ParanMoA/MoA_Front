@@ -17,7 +17,7 @@ import axios from 'axios';
 import {MainParamList} from '../Navigation/NavigationType';
 import UploadModeModal from '../Components/CameraModal';
 import {DateAutoFormat} from '../utils/DateFormatter';
-import {styles} from '../Styles/Screen/IngredientStyle';
+import {styles} from '../Styles/Screen/StyleComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
@@ -219,7 +219,11 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.subcontainer}>
+      <View
+        style={[
+          styles.subcontainer,
+          {borderTopLeftRadius: 24, borderTopRightRadius: 24},
+        ]}>
         <View style={styles.piccontainer}>
           <TouchableOpacity
             style={styles.btn}
