@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
-import {getUniqueId} from 'react-native-device-info';
-import io from 'socket.io-client';
+import SockJS from 'sockjs-client';
+import StompJs from '@stomp/stompjs';
+import {useRoute} from '@react-navigation/native';
 import {BASE_URL} from '../constants';
 import {Text, View, Modal, TouchableOpacity} from 'react-native';
 import {ChatParamList} from '../Navigation/NavigationType';
@@ -14,7 +15,10 @@ interface Message {
   user: string;
   message: string;
 }
-interface Chat {}
+
+interface RouteParams {
+  apply_id: string;
+}
 
 type ChatDetailRouteProp = RouteProp<ChatParamList, 'ChatScreen'>;
 
@@ -24,21 +28,70 @@ type ChatDetailNavigationProps = {
 };
 
 const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
-  const [messageText, setMessageText] = useState('');
-  const [serverMessages, setServerMessages] = useState([]);
-  const serverMessagesList = [];
-  const chatSocket = useRef(null);
-  const {chatRoomId} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, SetSeleted] = useState('');
+  const [chatList, setChatList] = useState<Message[]>([]);
+  const client = useRef<StompJs.Client | null>(null);
 
-  // useEffect(() => {
-  //   chatSocket.current = io(BASE_URL + '/chat');
-  // }, []);
+  const connect = () => {
+    client.current = new StompJs.Client({
+      // brokerURL: 'ws://34.64.137.61:8787/ws',
+      brokerURL: BASE_URL + 'chat',
+      onConnect: () => {
+        console.log('success');
+        subscribe();
+      },
+      onStompError: frame => {
+        console.log('Broker reported error: ' + frame.headers['message']);
+        console.log('Additional details: ' + frame.body);
+      },
+    });
+    client.current.activate();
+  };
+
+  const subscribe = () => {
+    if (client.current) {
+      console.log('/sub/list/');
+      client.current.subscribe('/sub/list/1', body => {
+        console.log(JSON.parse(body.body));
+        const json_body = JSON.parse(body.body);
+        setChatList(prevChatList => [
+          ...prevChatList,
+          {
+            user: json_body.user,
+            message: json_body.message,
+          },
+        ]);
+      });
+
+      console.log(chatList);
+    }
+  };
+
+  const disconnect = () => {
+    if (client.current) {
+      client.current.deactivate();
+    }
+  };
+
+  useEffect(() => {
+    connect();
+
+    return () => disconnect();
+  }, []);
+
+  useEffect(() => {
+    // fetchChat();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {/* <FlatList data={serverMessages} renderItem={} keyExtractor={}></FlatList> */}
+      <Text
+        style={{
+          fontSize: 100,
+        }}>
+        {route.params.chatRoomId}
+      </Text>
       <TouchableOpacity
         onPress={() => {
           setModalVisible(!modalVisible);

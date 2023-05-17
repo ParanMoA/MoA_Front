@@ -12,6 +12,7 @@ import {
 import {MainParamList} from '../Navigation/NavigationType';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {styles} from '../Styles/Screen/HomeStyle';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'HomeScreen'>;
@@ -60,20 +61,32 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
       />
       <Image
         source={require('../../public/images/MoA_2.png')}
-        style={styles.logo}
+        style={{...styles.logo, marginTop: '5%'}}
       />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleIngredientPress}>
-          <Text style={styles.btnText}> 식재료 등록 </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleRecruitPress}>
-          <Text style={styles.btnText}> 모집글 보기 </Text>
-        </TouchableOpacity>
+      <View
+        style={{
+          backgroundColor: '#F9FAFB',
+          width: 374,
+          borderRadius: 24,
+          marginTop: 20,
+        }}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleIngredientPress}>
+            <Icon name="plus" color="#EB5500" size={24} />
+            <Text style={styles.btnText}> 식재료 등록 </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleRecruitPress}>
+            <Icon name="plus" color="#EB5500" size={24} />
+            <Text style={styles.btnText}> 모집글 보기 </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}></FlatList>
       </View>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}></FlatList>
     </View>
   );
 };

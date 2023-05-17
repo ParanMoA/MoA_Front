@@ -22,7 +22,9 @@ export const request = async (
     method,
   };
   if (method === 'GET') {
-    url += '?' + new URLSearchParams(data).toString();
+    if (data) {
+      url += '?' + new URLSearchParams(data).toString();
+    }
   } else {
     options.body = JSON.stringify(data);
   }
@@ -30,7 +32,7 @@ export const request = async (
   if (token) {
     options.headers['x-access-token'] = token;
   }
-  //   console.log(`${BASE_URL}` + url);
+  // console.log(`${BASE_URL}` + url);
   // console.log(url);
   try {
     const res = await fetch(`${BASE_URL}` + url, options);
@@ -40,6 +42,7 @@ export const request = async (
     }
     return res;
   } catch (error: unknown) {
+    // console.log(error);
     Alert.alert('서버와의 통신이 실패하였습니다.');
   }
 };
