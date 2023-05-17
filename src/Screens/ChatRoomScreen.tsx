@@ -16,6 +16,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Calendar} from 'react-native-calendars';
 import {styles} from '../Styles/Screen/ChatStyle';
 import {ChatParamList} from '../Navigation/NavigationType';
+import {request} from '../Components/AxiosComponent';
 
 type ChatItem = {
   id: string;
@@ -27,34 +28,23 @@ type ChatListProps = {
   chats: ChatItem[];
   onPress: (item: ChatItem) => void;
 };
-const testChatData: ChatItem[] = [
-  {
-    id: '1',
-    user: 'Alice',
-    message: '음식 1',
-  },
-  {
-    id: '2',
-    user: 'Bob',
-    message: '음식 2',
-  },
-  {
-    id: '3',
-    user: 'Charlie',
-    message: '음식 3',
-  },
-];
-
 type ChatRoomScreenProps = {
   navigation: NativeStackNavigationProp<ChatParamList, 'ChatRoomScreen'>;
 };
 
 const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
-  const [chats, setChats] = useState<ChatItem[]>([]);
+  const [chatList, setChatList] = useState<ChatItem[]>([]);
   const [selectedChat, setSelectedChat] = useState<Object>({});
 
+  const getChatList = async () => {
+    const res = await request('recruit/chat/' + id);
+    if (res?.ok) {
+      console.log(res);
+    }
+  };
+
   useEffect(() => {
-    setChats(testChatData);
+    setChatList(testChatData);
   }, []);
   const renderItem = ({item}: {item: ChatItem}) => (
     <View>
@@ -80,7 +70,7 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
       <View style={styles.subcontainer}>
         <Text> 채팅방 목록 </Text>
         <FlatList
-          data={testChatData}
+          data={chatList}
           renderItem={renderItem}
           style={{
             padding: 20,

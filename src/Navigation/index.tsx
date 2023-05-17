@@ -20,6 +20,8 @@ import RecruitScreen from '../Screens/RecruitScreen';
 import MyPageScreen from '../Screens/MyPageScreen';
 import ChatScreen from '../Screens/ChatScreen';
 import ChatRoomScreen from '../Screens/ChatRoomScreen';
+import MyRecruitScreen from '../Screens/MyRecruitScreen';
+import MyRecruitScreen2 from '../Screens/MyRecruitScreen2';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<TabParamList>();
 const MainStack = createNativeStackNavigator<MainParamList>();
@@ -64,6 +66,7 @@ const MainStackScreen = () => {
     </MainStack.Navigator>
   );
 };
+
 const Auth = () => {
   return (
     <Stack.Navigator>
@@ -148,26 +151,6 @@ const BottomTabScreen = () => {
   );
 };
 
-const SubTabScreen = () => {
-  return (
-    <TopTab.Navigator
-      screenOptions={({route}) => ({
-        tabBarLabel: ({}) => {
-          let labelName;
-
-          if (route.name === 'ListViewTab') {
-            labelName = '리스트보기';
-          } else if (route.name === 'MyRecruitTab') {
-            labelName = '채팅';
-          }
-          return <Text style={{color: 'black'}}>{labelName}</Text>;
-        },
-      })}>
-      <TopTab.Screen name="ListViewTab" component={RecruitScreen} />
-      <TopTab.Screen name="MyRecruitTab" component={RecruitScreen} />
-    </TopTab.Navigator>
-  );
-};
 const Navigation = () => {
   return (
     <NavigationContainer>

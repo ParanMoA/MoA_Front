@@ -12,7 +12,7 @@ import DatePicker from 'react-native-date-picker';
 import {RootStackParamList} from '../Navigation/NavigationType';
 import {styles} from '../Styles/Screen/SignUpStyle';
 import {request} from '../Components/AxiosComponent';
-
+import axios from 'axios';
 type SignUpScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'SignUpScreen'>;
 };
