@@ -7,14 +7,21 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFD6BF',
   },
 
+  subcontainer: {
+    backgroundColor: '#F9FAFB',
+    width: '90%',
+    borderRadius: 24,
+    marginTop: '3%',
+  },
   logo: {
-    marginTop: '20%',
-    width: '65%',
+    marginTop: '10%',
+    width: '50%',
     height: '15%',
   },
 
   buttonContainer: {
     marginTop: '2%',
+    justifyContent: 'center',
     flexDirection: 'row',
     paddingHorizontal: '10%',
     paddingVertical: '5%',
@@ -22,8 +29,9 @@ export const styles = StyleSheet.create({
   },
   button: {
     width: 150,
-    height: 100,
-    justifyContent: 'center',
+    height: 90,
+    marginHorizontal: '3%',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderColor: '#FFFFFF',
@@ -39,10 +47,11 @@ export const styles = StyleSheet.create({
 
   item: {
     paddingHorizontal: '30%',
-    paddingVertical: '10%',
+    paddingVertical: '8%',
+    alignContent: 'space-between',
     marginVertical: 8,
     marginHorizontal: 16,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: 'black',
     borderRadius: 5,
   },

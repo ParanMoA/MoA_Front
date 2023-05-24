@@ -64,13 +64,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         source={require('../../public/images/MoA_2.png')}
         style={{...styles.logo, marginTop: '5%'}}
       />
-      <View
-        style={{
-          backgroundColor: '#F9FAFB',
-          width: 374,
-          borderRadius: 24,
-          marginTop: 20,
-        }}>
+      <View style={styles.subcontainer}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}

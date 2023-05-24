@@ -14,7 +14,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Calendar} from 'react-native-calendars';
-import {styles} from '../Styles/Screen/StyleComponent';
+// import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/ChatStyle';
 import {ChatParamList} from '../Navigation/NavigationType';
 import {request} from '../Components/AxiosComponent';
 

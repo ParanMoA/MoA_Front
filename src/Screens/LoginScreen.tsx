@@ -2,7 +2,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import {RootStackParamList} from '../Navigation/NavigationType';
-import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/LoginStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {request} from '../Components/AxiosComponent';
 

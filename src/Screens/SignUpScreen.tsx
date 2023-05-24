@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {RootStackParamList} from '../Navigation/NavigationType';
-import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/SignUpStyle';
 import {request} from '../Components/AxiosComponent';
 import axios from 'axios';
 type SignUpScreenProps = {
@@ -103,7 +103,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           {margin: '0.3%', paddingVertical: '1%'},
         ]}>
         <TextInput
-          style={styles.inputText2}
+          style={styles.inputText}
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -126,7 +126,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
             },
           ]}
           onPress={handleEmail}>
-          <Text style={[styles.btnText, {paddingVertical: '1%'}]}>
+          <Text style={[styles.buttonText, {paddingVertical: '1%'}]}>
             중복 확인
           </Text>
         </TouchableOpacity>
@@ -137,13 +137,13 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           {margin: '0.3%', paddingVertical: '1%'},
         ]}>
         <TextInput
-          style={styles.inputText2}
+          style={styles.inputText}
           placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={setPassword}></TextInput>
         <TextInput
-          style={styles.inputText2}
+          style={styles.inputText}
           placeholder="name"
           value={name}
           onChangeText={setName}
@@ -157,12 +157,14 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
         <TouchableOpacity
           style={getButtonStyle('Male')}
           onPress={() => handleGenderPress('Male')}>
-          <Text style={[styles.btnText, {paddingVertical: '1%'}]}>male</Text>
+          <Text style={[styles.buttonText, {paddingVertical: '1%'}]}>male</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('Female')}
           onPress={() => handleGenderPress('Female')}>
-          <Text style={[styles.btnText, {paddingVertical: '1%'}]}>female</Text>
+          <Text style={[styles.buttonText, {paddingVertical: '1%'}]}>
+            female
+          </Text>
         </TouchableOpacity>
       </View>
       <>
@@ -174,7 +176,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
           <TouchableOpacity
             style={styles.BirthBtn}
             onPress={() => setOpen(true)}>
-            <Text style={styles.inputText2}> 생일 </Text>
+            <Text style={styles.inputText}> 생일 </Text>
             <DatePicker
               modal
               open={open}
@@ -207,7 +209,9 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
             },
           ]}
           onPress={handleSignUp}>
-          <Text style={[styles.btnText, {paddingVertical: '1%'}]}>SignUp</Text>
+          <Text style={[styles.buttonText, {paddingVertical: '1%'}]}>
+            SignUp
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -219,7 +223,7 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
             },
           ]}
           onPress={handlePress}>
-          <Text style={[styles.btnText, {paddingVertical: '1%'}]}>Back</Text>
+          <Text style={[styles.buttonText, {paddingVertical: '1%'}]}>Back</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -16,7 +16,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import IngredientScreen from '../Screens/IngredientScreen';
-import RecruitScreen from '../Screens/RecruitScreen';
+import RecruitScreen from '../Screens/RecruitTabScreen';
 import MyPageScreen from '../Screens/MyPageScreen';
 import ChatScreen from '../Screens/ChatScreen';
 import ChatRoomScreen from '../Screens/ChatRoomScreen';

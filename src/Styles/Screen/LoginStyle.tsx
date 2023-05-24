@@ -25,8 +25,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '30%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
-    borderColor: '#000000',
-    borderWidth: 1.5,
+    borderWidth: 0,
     borderRadius: 15,
   },
 
@@ -43,8 +42,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
-    borderColor: '#000000',
-    borderWidth: 1.5,
     borderRadius: 15,
   },
   btnText: {

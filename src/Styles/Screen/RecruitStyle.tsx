@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#000000',
     borderWidth: 1.5,
-    borderRadius: 5,
+    borderRadius: 16,
   },
 
   btnText: {
@@ -49,24 +49,25 @@ export const styles = StyleSheet.create({
   itemContainer: {
     // flex: 1,
     // backgroundColor: 'black',
-    paddingHorizontal: '30%',
+    // paddingHorizontal: '20%',
     paddingVertical: '5%',
     paddingBottom: '5%',
   },
   ShowboxContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    marginBottom: 20,
   },
 
   item: {
-    paddingHorizontal: '30%',
+    paddingHorizontal: '20%',
     paddingVertical: '5%',
-    backgroundColor: '#FFF7F4',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     marginVertical: '4%',
     marginHorizontal: '4%',
-    borderWidth: 1.5,
+    // borderWidth: 1.5,
     borderColor: '#000000',
     borderRadius: 5,
   },
@@ -76,7 +77,7 @@ export const styles = StyleSheet.create({
   },
 
   completed: {
-    backgroundColor: '#FFC1B3',
+    // backgroundColor: '#FFD6BF',
     paddingHorizontal: '2%',
     paddingVertical: '2.5%',
     marginHorizontal: '2%',
@@ -86,7 +87,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     // padding: 5,
-    // borderColor: 'white',
+    borderColor: '#FFFFFF',
   },
   joinbtn: {
     margin: '2%',
@@ -99,7 +100,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '80%',
     height: '5%',
-    marginBottom: '3%',
+    // marginBottom: '3%',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
 });
