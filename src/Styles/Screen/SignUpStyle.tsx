@@ -35,13 +35,13 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
     // backgroundColor: 'teal',
     margin: '0.3%',
     paddingHorizontal: '10%',
     paddingVertical: '1%',
   },
   button: {
-    // alignItems: 'center',
     marginHorizontal: '5%',
     paddingVertical: '2%',
     paddingHorizontal: '10%',

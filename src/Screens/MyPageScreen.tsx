@@ -5,7 +5,7 @@ import {MainParamList} from '../Navigation/NavigationType';
 
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/MyPageStyle';
 import {ScrollView} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
 
@@ -81,7 +81,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   };
   return (
     <View style={styles.container}>
-      <View style={[styles.subcontainer, {alignItems: 'center'}]}>
+      <View style={[styles.subContainer, {alignItems: 'center'}]}>
         <View style={styles.thirdContainer}>
           <View style={styles.imageContainer}>
             <Image

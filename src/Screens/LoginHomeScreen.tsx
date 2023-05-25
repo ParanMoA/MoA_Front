@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {RootStackParamList} from '../Navigation/NavigationType';
-import {styles} from '../Styles/Screen/StyleComponent';
+import {styles} from '../Styles/Screen/LoginHomeStyle';
 type LoginHomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginHomeScreen'>;
 };
@@ -32,7 +32,7 @@ const LoginHomeScreen = ({navigation}: LoginHomeScreenProps) => {
         source={require('../../public/images/MoA_2.png')}
         style={styles.logo}
       />
-      <View style={[styles.buttonContainer, {flexDirection: 'column'}]}>
+      <View style={[styles.btnContainer, {flexDirection: 'column'}]}>
         <TouchableOpacity
           style={[
             styles.button,

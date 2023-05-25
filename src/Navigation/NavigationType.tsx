@@ -20,8 +20,8 @@ export type MainParamList = {
   HomeScreen: undefined;
   RecruitScreen: undefined;
   MyPageScreen: undefined;
-  Tab1: undefined;
-  Tab2: undefined;
+  MyRecruitScreen: undefined;
+  RecruitTabScreen: undefined;
 };
 
 export type ChatParamList = {

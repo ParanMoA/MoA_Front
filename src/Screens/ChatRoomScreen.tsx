@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, Text, FlatList} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {styles} from '../Styles/Screen/StyleComponent';
+import {Calendar} from 'react-native-calendars';
+import {styles} from '../Styles/Screen/ChatStyle';
 import {ChatParamList} from '../Navigation/NavigationType';
 import {request} from '../Components/AxiosComponent';
 

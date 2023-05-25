@@ -20,6 +20,8 @@ import {FlatList} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import Test from './RecruitScreen';
+import MyRecruitScreen from './MyRecruitScreen';
 
 type dataList = {
   userId: number;
@@ -29,12 +31,12 @@ type dataList = {
 };
 
 type RecruitScreenProps = {
-  navigation: NativeStackNavigationProp<MainParamList, 'RecruitScreen'>;
+  navigation: NativeStackNavigationProp<MainParamList, 'RecruitTabScreen'>;
 };
 
 const TopTab = createMaterialTopTabNavigator();
 
-const Test = ({navigation}: RecruitScreenProps) => {
+const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [foodname, setFoodname] = useState('');
   const [ingredient, setIngredient] = useState<string>('');
   const [needIngredients, setNeedIngredients] = useState<string[]>([]);
@@ -45,7 +47,6 @@ const Test = ({navigation}: RecruitScreenProps) => {
   const [content, setContent] = useState<string>('');
   const [text, setText] = useState('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isJoinModalVisible, setIsJoinModalVisible] = useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
   const [id, setId] = useState<string[]>([]);
   const [joinData, setJoinData] = useState({});
@@ -56,13 +57,13 @@ const Test = ({navigation}: RecruitScreenProps) => {
 
   const Tab = createMaterialTopTabNavigator();
 
-  //   const SettingList = () => {
-  //     return (
-  //       <View style={styles.textContainer}>
-  //         <FlatList data={data} renderItem={renderItem} />
-  //       </View>
-  //     );
-  //   };
+  const SettingList = () => {
+    return (
+      <View style={styles.textContainer}>
+        <FlatList data={data} renderItem={renderItem} />
+      </View>
+    );
+  };
 
   const handleAddIngredient = () => {
     if (ingredient.trim() === '') {
@@ -81,15 +82,10 @@ const Test = ({navigation}: RecruitScreenProps) => {
       </Text>
       <TouchableOpacity
         style={[styles.item, item && styles.completed]}
-        // onPress={async () => {
-        //   setRecruitId(item.id);
-        // await handleRecruitJoin();
-        // }}
-        onPress={() => {
-          console.log(item);
-          handleJoinModalOpen(item);
-        }}>
-        <Text style={styles.joinbtn}>Join</Text>
+        onPress={handleRecruitJoin}>
+        <View style={styles.joinbtncontainer}>
+          <Text style={styles.joinbtn}>Join</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -112,7 +108,7 @@ const Test = ({navigation}: RecruitScreenProps) => {
     console.log(data);
     await axios({
       method: 'POST',
-      url: 'http://43.201.118.41:8081/recruit/create',
+      url: 'http://localhost:8081/recruit/create',
       data,
       headers: reqHeader,
     })
@@ -121,7 +117,6 @@ const Test = ({navigation}: RecruitScreenProps) => {
         const rId = response.data.id;
         console.log(rId);
         setRecruitId(rId);
-        setIsModalVisible(false);
         navigation.navigate('RecruitScreen');
       })
       .catch(error => {
@@ -129,12 +124,34 @@ const Test = ({navigation}: RecruitScreenProps) => {
         Alert.alert('Recruit Failed', 'Please Check your Recruit Options');
       });
   };
+  //아래는 수정버튼
+
+  const handleRecruitModify = async () => {
+    const data = {
+      foodName: foodname,
+      needIngredients: needIngredients,
+      maxPeople: maxpeople,
+      recruitDate: recruitdate,
+      title: title,
+      content: content,
+    };
+    const res = await request('recruit/modify/' + recruitId, data, 'POST');
+    if (res?.ok) {
+      console.log(res);
+    }
+  };
+
+  //아래는 삭제버튼
+  const handleRecruitDelete = async () => {
+    const res = await request('recruit/delete/' + recruitId, {}, 'POST');
+    if (res?.ok) {
+      console.log(res);
+    }
+  };
 
   //아래는 참여버튼
 
   const handleRecruitJoin = async () => {
-    // handleJoinModalOpen();
-    console.log(recruitId);
     try {
       const res = await request(
         'recruit/' + recruitId + '/participate/register',
@@ -149,13 +166,21 @@ const Test = ({navigation}: RecruitScreenProps) => {
     }
   };
 
-  const handleJoinModalOpen = (item: any) => {
-    setJoinData(item);
-    setIsJoinModalVisible(true);
-  };
-  const handleJoinModalClose = () => {
-    setIsJoinModalVisible(false);
-    navigation.navigate('RecruitScreen');
+  //아래는 승인
+  const handleApprove = async () => {
+    try {
+      const res = await request(
+        'recruit/' + recruitId + '/participate/allow' + id,
+        {id: id},
+        'POST',
+      );
+      if (res?.ok) {
+        Alert.alert('Approve', '승인처리 되었습니다.');
+      }
+    } catch (e) {
+      console.log(e);
+      navigation.navigate('RecruitScreen');
+    }
   };
 
   const handleModalOpen = () => {
@@ -164,8 +189,6 @@ const Test = ({navigation}: RecruitScreenProps) => {
 
   const handleModalClose = () => {
     setIsModalVisible(false);
-    Alert.alert('취소되었습니다.');
-    navigation.navigate('RecruitScreen');
   };
 
   const handleSave = () => {
@@ -201,73 +224,29 @@ const Test = ({navigation}: RecruitScreenProps) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.button, {marginTop: '18%'}]}
-        onPress={handleModalOpen}>
-        <Text style={styles.btnText}>모집글 등록하기</Text>
-      </TouchableOpacity>
-      <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
-        <View style={styles.container}>
-          <View style={styles.item}>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your foodname..."
-              value={foodname}
-              onChangeText={setFoodname}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put ingredients..."
-              value={ingredient}
-              onChangeText={setIngredient}
-              onSubmitEditing={handleAddIngredient}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put max people..."
-              value={maxpeople?.toString()}
-              onChangeText={text => setMaxpeople(parseInt(text))}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put available recuitdate..."
-              value={recruitdate}
-              onChangeText={setRecruitdate}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your title..."
-              value={title}
-              onChangeText={setTitle}></TextInput>
-            <TextInput
-              style={styles.btnText}
-              placeholder="put your content..."
-              value={content}
-              onChangeText={setContent}></TextInput>
-          </View>
-
-          <View style={styles.ShowboxContainer}>
-            <Button title="Save" onPress={handleRecruit} />
-            <Button title="Cancel" onPress={handleModalClose} />
-          </View>
-        </View>
-      </Modal>
-      {/* 아래는 join버튼 눌렀을 때 모집글의 상세정보가 떠야함. */}
-      <Modal visible={isJoinModalVisible} onRequestClose={handleJoinModalClose}>
-        <View style={styles.container}>
-          {Object.entries(joinData).map(([key, value]) => (
-            <View style={styles.fuckkkk}>
-              <Text key={key}>
-                {key}: {value as string}
-              </Text>
-            </View>
-          ))}
-          <Button title="Join" onPress={handleRecruitJoin} />
-          <Button title="Cancel" onPress={handleJoinModalClose} />
-        </View>
-      </Modal>
-      <View>
-        <FlatList data={data} renderItem={renderItem} />
-      </View>
-    </View>
+    // <View>
+    <TopTab.Navigator
+      initialRouteName="RecruitListScreen"
+      screenOptions={{
+        tabBarPressColor: '#F0EFEF',
+        tabBarActiveTintColor: '#000000',
+        tabBarLabelStyle: {fontSize: 15, color: 'black'},
+        tabBarStyle: {backgroundColor: '#FFFFFF'},
+      }}>
+      <TopTab.Screen
+        name="RecruitListScreen"
+        // listeners={{tabPress: e => navigation.navigate('RecruitListScreen')}}
+        component={Test}
+        options={{tabBarLabel: '모집글 리스트'}}
+      />
+      <TopTab.Screen
+        name="MyRecruitScreen"
+        // listeners={{tabPress: e => navigation.navigate('MyRecruitScreen')}}
+        component={MyRecruitScreen}
+        options={{tabBarLabel: '내가 등록한 모집글'}}
+      />
+    </TopTab.Navigator>
   );
 };
 
-export default Test;
+export default RecruitScreen;
