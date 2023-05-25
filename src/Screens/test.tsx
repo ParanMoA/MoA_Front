@@ -49,6 +49,7 @@ const Test = ({navigation}: RecruitScreenProps) => {
   const [recruitId, setRecruitId] = useState<number>();
   const [id, setId] = useState<string[]>([]);
   const [joinData, setJoinData] = useState({});
+
   const handleBack = () => {
     navigation.navigate('HomeScreen');
   };
@@ -188,7 +189,10 @@ const Test = ({navigation}: RecruitScreenProps) => {
   const getRes = async () => {
     const res = await request('recruit/list');
     if (res?.ok) {
-      res.json().then(response => setData(response));
+      res.json().then(response => {
+        console.log(response);
+        setData(response);
+      });
     }
   };
 

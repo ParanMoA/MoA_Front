@@ -213,16 +213,6 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     Alert.alert('취소되었습니다.');
     setIsModalVisible(false);
   };
-
-  const getRes = async () => {
-    const res = await request('recruit/list');
-    console.log(res);
-  };
-
-  useEffect(() => {
-    getRes();
-  }, []);
-
   return (
     // <View>
     <TopTab.Navigator

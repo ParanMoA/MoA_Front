@@ -214,22 +214,22 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
     setIsModalVisible(false);
   };
 
-  const getRes = async () => {
-    const res = await request(
-      'recruit/' + id + 'participate/ingredients',
-      {
-        id: id,
-      },
-      'GET',
-    );
-    if (res?.ok) {
-      res.json().then(response => setData(response));
-    }
-  };
+  // const getRes = async () => {
+  //   const res = await request(
+  //     'recruit/' + id + 'participate/ingredients',
+  //     {
+  //       id: id,
+  //     },
+  //     'GET',
+  //   );
+  //   if (res?.ok) {
+  //     res.json().then(response => setData(response));
+  //   }
+  // };
 
-  useEffect(() => {
-    getRes();
-  }, []);
+  // useEffect(() => {
+  //   getRes();
+  // }, []);
 
   return (
     <View style={styles.container}>

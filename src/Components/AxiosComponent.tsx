@@ -34,6 +34,7 @@ export const request = async (
   }
   // console.log(`${BASE_URL}` + url);
   // console.log(url);
+  // console.log(token);
   try {
     const res = await fetch(`${BASE_URL}` + url, options);
     console.log(res);
@@ -42,7 +43,7 @@ export const request = async (
     }
     return res;
   } catch (error: unknown) {
-    // console.log(error);
+    console.log(error);
     Alert.alert('서버와의 통신이 실패하였습니다.');
   }
 };

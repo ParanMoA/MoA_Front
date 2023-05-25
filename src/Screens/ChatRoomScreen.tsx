@@ -1,27 +1,14 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  SafeAreaView,
-  Dimensions,
-  ScrollView,
-  Text,
-  FlatList,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, TouchableOpacity, Text, FlatList} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Calendar} from 'react-native-calendars';
 import {styles} from '../Styles/Screen/StyleComponent';
 import {ChatParamList} from '../Navigation/NavigationType';
 import {request} from '../Components/AxiosComponent';
 
 type ChatItem = {
   id: string;
-  user: string;
-  message: string;
+  name: string;
 };
 
 type ChatListProps = {
@@ -37,15 +24,20 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   const [selectedChat, setSelectedChat] = useState<Object>({});
 
   const getChatList = async () => {
-    const res = await request('recruit/chat/');
+    const res = await request('chat/list');
     if (res?.ok) {
-      console.log(res);
+      res.json().then(response => {
+        setChatList(response);
+        // console.log(response);
+      });
     }
   };
-
-  // useEffect(() => {
-  //   setChatList(testChatData);
-  // }, []);
+  useEffect(() => {
+    const result = navigation.addListener('focus', () => {
+      getChatList();
+    });
+    return result;
+  }, [navigation]);
   const renderItem = ({item}: {item: ChatItem}) => (
     <View>
       <TouchableOpacity
@@ -54,12 +46,10 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
         }}>
         <View
           style={{
-            height: 100,
-            backgroundColor: '#FFF',
-            marginTop: 100,
+            height: 49,
             justifyContent: 'center',
           }}>
-          <Text style={{fontSize: 20}}>{item.message}</Text>
+          <Text style={{fontSize: 20, color: '#191F28'}}>{item.name}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -75,8 +65,11 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
             renderItem={renderItem}
             style={{
               padding: 20,
-              marginVertical: 8,
-              marginHorizontal: 16,
+              marginVertical: 12,
+              marginRight: 24,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 16,
+              height: 465,
             }}
           />
         </View>
