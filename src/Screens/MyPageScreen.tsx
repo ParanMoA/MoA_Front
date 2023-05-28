@@ -13,7 +13,7 @@ type MyPageScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'MyPageScreen'>;
 };
 type IngredientData = {
-  name: any;
+  name: string;
   registerDate: any;
   purchaseDate: any;
   expirationDate: any;
@@ -68,6 +68,16 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
       </View>
     </ScrollView>
   );
+
+  // const getRes = async () => {
+  //   const res = await request('recruit/list');
+  //   if (res?.ok) {
+  //     res.json().then(response => setData(response));
+  //   }
+  // };
+  // useEffect(() => {
+  //   getRes();
+  // }, [renderItem]);
 
   const handleMyPageIngredient = async () => {
     const data = {

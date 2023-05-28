@@ -34,7 +34,7 @@ type RecruitScreenProps = {
 
 const TopTab = createMaterialTopTabNavigator();
 
-const Test = ({navigation}: RecruitScreenProps) => {
+const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [foodname, setFoodname] = useState('');
   const [ingredient, setIngredient] = useState<string>('');
   const [needIngredients, setNeedIngredients] = useState<string[]>([]);
@@ -72,7 +72,6 @@ const Test = ({navigation}: RecruitScreenProps) => {
         </Text>
       </ScrollView>
       <TouchableOpacity
-        key={item.id}
         style={[styles.item, item && styles.completed]}
         // onPress={async () => {
         //   setRecruitId(item.id);
@@ -266,4 +265,4 @@ const Test = ({navigation}: RecruitScreenProps) => {
   );
 };
 
-export default Test;
+export default RecruitScreen;

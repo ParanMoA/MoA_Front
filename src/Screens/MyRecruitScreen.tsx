@@ -84,10 +84,9 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <ScrollView>
         <TouchableOpacity
-          key={item.id}
           style={[styles.item, item && styles.completed]}
           onPress={handleApprove}>
-          <Text style={styles.item}>
+          <Text key={item.id} style={styles.item}>
             {item.id} : {item.title}
           </Text>
         </TouchableOpacity>
