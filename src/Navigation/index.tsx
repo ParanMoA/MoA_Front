@@ -69,23 +69,25 @@ const MainStackScreen = () => {
 
 const Auth = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="LoginHomeScreen"
-        component={LoginHomeScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="SignUpScreen"
-        component={SignUpScreen}
-        options={{headerShown: false}}
-      />
-    </Stack.Navigator>
+    <RecoilRoot>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="LoginHomeScreen"
+          component={LoginHomeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUpScreen"
+          component={SignUpScreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </RecoilRoot>
   );
 };
 

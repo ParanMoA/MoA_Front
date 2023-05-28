@@ -66,22 +66,25 @@ const Test = ({navigation}: RecruitScreenProps) => {
 
   const renderItem = ({item}: {item: dataList}) => (
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-      <Text style={styles.item}>
-        {item.id}
-        {item.title}
-      </Text>
+      <ScrollView>
+        <Text style={[styles.item, {paddingVertical: '6%'}]}>
+          {item.id} : {item.title}
+        </Text>
+      </ScrollView>
       <TouchableOpacity
+        key={item.id}
         style={[styles.item, item && styles.completed]}
         // onPress={async () => {
         //   setRecruitId(item.id);
         // await handleRecruitJoin();
         // }}
         onPress={() => {
-          console.log(item);
+          // console.log(item);
           handleJoinModalOpen(item);
         }}>
         <Text style={styles.joinbtn}>Join</Text>
       </TouchableOpacity>
+      {/* </ScrollView> */}
     </View>
   );
 
@@ -130,12 +133,12 @@ const Test = ({navigation}: RecruitScreenProps) => {
   };
   useEffect(() => {
     getRes();
-  }, []);
+  }, [renderItem]);
   //아래는 참여버튼
 
   const handleRecruitJoin = async () => {
     // handleJoinModalOpen();
-    console.log(recruitId);
+    // console.log(recruitId);
     try {
       const res = await request(
         'recruit/' + recruitId + '/participate/register',
@@ -144,6 +147,7 @@ const Test = ({navigation}: RecruitScreenProps) => {
       );
       if (res?.ok) {
         Alert.alert('Join', '참여신청을 보냈습니다.');
+        setIsJoinModalVisible(false);
       }
     } catch (e) {
       console.log(e);
