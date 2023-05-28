@@ -20,6 +20,7 @@ import RecruitScreen from '../Screens/RecruitTabScreen';
 import MyPageScreen from '../Screens/MyPageScreen';
 import ChatScreen from '../Screens/ChatScreen';
 import ChatRoomScreen from '../Screens/ChatRoomScreen';
+import {RecoilRoot} from 'recoil';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<TabParamList>();
@@ -68,23 +69,25 @@ const MainStackScreen = () => {
 
 const Auth = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="LoginHomeScreen"
-        component={LoginHomeScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="SignUpScreen"
-        component={SignUpScreen}
-        options={{headerShown: false}}
-      />
-    </Stack.Navigator>
+    <RecoilRoot>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="LoginHomeScreen"
+          component={LoginHomeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUpScreen"
+          component={SignUpScreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </RecoilRoot>
   );
 };
 
@@ -152,21 +155,23 @@ const BottomTabScreen = () => {
 
 const Navigation = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth">
-        <Stack.Screen
-          name="Auth"
-          component={Auth}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTabScreen}
-          options={{headerShown: false}}
-        />
-        {/* <Stack.Screen name="TopTab" component={SubTabScreen} /> */}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecoilRoot>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Auth">
+          <Stack.Screen
+            name="Auth"
+            component={Auth}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="BottomTab"
+            component={BottomTabScreen}
+            options={{headerShown: false}}
+          />
+          {/* <Stack.Screen name="TopTab" component={SubTabScreen} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </RecoilRoot>
   );
 };
 

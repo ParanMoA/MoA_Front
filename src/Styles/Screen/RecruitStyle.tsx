@@ -61,15 +61,17 @@ export const styles = StyleSheet.create({
   },
 
   item: {
-    paddingHorizontal: '20%',
-    paddingVertical: '5%',
+    paddingHorizontal: '23%',
+    // paddingVertical: '4%',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     marginVertical: '4%',
     marginHorizontal: '4%',
     // borderWidth: 1.5,
+    color: 'black',
+    fontWeight: 'bold',
     borderColor: '#000000',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   title: {
     fontSize: 20,
@@ -90,8 +92,8 @@ export const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
   },
   joinbtn: {
-    margin: '2%',
-    paddingHorizontal: '5%',
+    // margin: '2%',
+    paddingHorizontal: '4%',
     justifyContent: 'space-between',
     fontSize: 15,
     fontWeight: 'bold',
