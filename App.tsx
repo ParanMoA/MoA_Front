@@ -1,6 +1,11 @@
 import Navigation from './src/Navigation';
+import {RecoilRoot} from 'recoil';
 
 function App() {
-  return <Navigation />;
+  return (
+    <RecoilRoot>
+      <Navigation />
+    </RecoilRoot>
+  );
 }
 export default App;

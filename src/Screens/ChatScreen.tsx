@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ReservationScreen from './ReservationScreen';
 import {styles} from '../Styles/Screen/ChatStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import authState, {IAuthTypes} from '../Recoil/idState';
 
 interface Message {
@@ -41,62 +41,15 @@ type ChatDetailNavigationProps = {
 const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, SetSeleted] = useState('');
-
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [sendMsg, setSendMsg] = useState(false);
+  const [items, setItems] = useState([]);
   const [msg, setMsg] = useState('');
   const [name, setName] = useState('');
   const [chatt, setChatt] = useState([]);
   const [chkLog, setChkLog] = useState(false);
   const [socketData, setSocketData] = useState();
-  const [auth, setAuth] = useRecoilState<IAuthTypes[]>(authState);
-  // const ws = useRef<WebSocket | null>(null);
-
-  // useEffect(() => {
-  //   if (socketData !== undefined) {
-  //     const tempData = chatt.concat(socketData);
-  //     console.log(tempData);
-  //     setChatt(tempData);
-  //   }
-  // }, [socketData]);
-  // const webSocketLogin = useCallback(() => {
-  //   console.log(route.params.chatRoomId);
-  //   ws.current = new WebSocket(
-  //     'ws://43.201.118.41:8081/chat/room/' + route.params.chatRoomId,
-  //   );
-  //   console.log(ws.current);
-  // }, []);
-
-  // const send = useCallback(() => {
-  //   if (!chkLog) {
-  //     if (name === '') {
-  //       Alert.alert('이름을 입력하세요.');
-  //       return;
-  //     }
-  //     webSocketLogin();
-  //     setChkLog(true);
-  //   }
-
-  //   if (msg !== '') {
-  //     const data = {
-  //       name,
-  //       msg,
-  //       date: new Date().toLocaleString(),
-  //     }; //전송 데이터(JSON)
-
-  //     const temp = JSON.stringify(data);
-
-  //     if (ws.current) {
-  //       if (ws.current.readyState === WebSocket.OPEN) {
-  //         ws.current.send(temp);
-  //       } else {
-  //         Alert.alert('WebSocket 연결이 아직 준비되지 않았습니다.');
-  //       }
-  //     }
-  //   } else {
-  //     Alert.alert('메세지를 입력하세요.');
-  //   }
-
-  //   setMsg('');
-  // }, [chkLog, name, msg, webSocketLogin]);
+  const auth = useRecoilValue(authState);
 
   var ws = useRef<WebSocket | null>(null);
 
@@ -105,27 +58,23 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
       const token = await AsyncStorage.getItem('AccessToken');
       if (token) {
         ws.current = new WebSocket(
-          'ws://43.201.118.41:8081/chat/room',
-          undefined,
-          {
-            headers: {
-              'x-access-token': token,
-            },
-          },
+          'ws://43.201.118.41:8081/chat/' +
+            route.params.chatRoomId +
+            '/' +
+            auth[0].email,
         );
-        console.log(auth);
+
         console.log(ws.current);
+
         ws.current.onopen = () => {
           // connection opened
           console.log('connected');
           // send a message
+          setSocketConnected(true);
         };
-
         ws.current.onmessage = e => {
-          // a message was received
           console.log(e.data);
         };
-
         ws.current.onerror = e => {
           // an error occurred
           console.log(e.message);
@@ -133,7 +82,7 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
 
         ws.current.onclose = e => {
           // connection closed
-          // console.log(e.code, e.reason);
+          console.log(e.code, e.reason);
         };
       } else {
         console.log('토큰 없음');
@@ -148,7 +97,14 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
       }
     };
   }, []);
-
+  useEffect(() => {
+    if (socketConnected) {
+      if (ws.current) {
+        ws.current.send('hello');
+        setSendMsg(true);
+      }
+    }
+  }, [socketConnected]);
   return (
     <View style={styles.container}>
       <Text
