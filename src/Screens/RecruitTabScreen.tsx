@@ -49,6 +49,8 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
   const [id, setId] = useState<string[]>([]);
+  const [joinData, setJoinData] = useState({});
+
   const handleBack = () => {
     navigation.navigate('HomeScreen');
   };
@@ -206,6 +208,20 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     Alert.alert('취소되었습니다.');
     setIsModalVisible(false);
   };
+
+  const getRes = async () => {
+    const res = await request('recruit/list');
+    if (res?.ok) {
+      res.json().then(response => {
+        console.log(response);
+        setData(response);
+      });
+    }
+  };
+
+  useEffect(() => {
+    getRes();
+  }, []);
 
   return (
     // <View>

@@ -190,7 +190,6 @@ const Test = ({navigation}: RecruitScreenProps) => {
     Alert.alert('취소되었습니다.');
     setIsModalVisible(false);
   };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity

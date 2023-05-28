@@ -258,4 +258,8 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
+  chatcontainer: {
+    marginTop: 24,
+    marginLeft: 24,
+  },
 });

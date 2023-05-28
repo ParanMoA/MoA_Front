@@ -225,12 +225,11 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   };
   return (
     <View style={styles.container}>
-      <View
+      <ScrollView
         style={[
           styles.subcontainer,
           {borderTopLeftRadius: 24, borderTopRightRadius: 24},
         ]}>
-        {/* <ScrollView style={styles.subcontainer}> */}
         <View style={styles.piccontainer}>
           <TouchableOpacity
             style={styles.btn}
@@ -392,8 +391,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             <Text> 등록 </Text>
           </TouchableOpacity>
         </View>
-      </View>
-      {/* </ScrollView> */}
+      </ScrollView>
     </View>
   );
 };
