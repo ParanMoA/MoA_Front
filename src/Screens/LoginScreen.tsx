@@ -5,6 +5,8 @@ import {RootStackParamList} from '../Navigation/NavigationType';
 import {styles} from '../Styles/Screen/LoginStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {request} from '../Components/AxiosComponent';
+import {useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import authState, {IAuthTypes} from '../Recoil/idState';
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>;
@@ -13,7 +15,7 @@ type LoginScreenProps = {
 const LoginScreen = ({navigation}: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [auth, setAuth] = useRecoilState<IAuthTypes[]>(authState);
   const handleBack = () => {
     navigation.navigate('LoginHomeScreen');
   };
@@ -30,8 +32,13 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         .then(response =>
           AsyncStorage.setItem('AccessToken', JSON.stringify(response)),
         )
+        .then(() => {
+          setAuth([{email: email, password: password}]);
+        })
+        .then(() => {
+          navigation.navigate('BottomTab');
+        })
         .catch(error => console.log(error));
-      navigation.navigate('BottomTab');
     } else {
       console.log(res);
     }

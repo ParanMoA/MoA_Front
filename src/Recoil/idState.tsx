@@ -5,9 +5,9 @@ export interface IAuthTypes {
   password: string;
 }
 
-const AuthState = atom <IAuthTypes[]>({
-  key: 'AuthState',
+const authState = atom<IAuthTypes[]>({
+  key: 'authState',
   default: [],
 });
 
-export default AuthState;
+export default authState;
