@@ -37,7 +37,7 @@ export const request = async (
   // console.log(token);
   try {
     const res = await fetch(`${BASE_URL}` + url, options);
-    // console.log(res);
+    console.log(res);
     if (!res.ok) {
       Alert.alert('서버와의 통신이 실패하였습니다.');
     }

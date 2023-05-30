@@ -20,7 +20,8 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import idState, {IAuthTypes} from '../Recoil/idState';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import authState from '../Recoil/idState';
 
 type dataList = {
   userId: number;
@@ -49,7 +50,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [content, setContent] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
-  const [userId, setUserId] = useRecoilState<IAuthTypes[]>(idState);
+  const userId = useRecoilValue(authState);
   const [data, setData] = useState<dataList[]>([]);
   const [modifyData, setModifyData] = useState<dataList>();
   const handleBack = () => {
@@ -85,7 +86,9 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
       <ScrollView>
         <TouchableOpacity
           style={[styles.item, item && styles.completed]}
-          onPress={handleApprove}>
+          onPress={() => {
+            handleApprove(item.id);
+          }}>
           <Text key={item.id} style={styles.item}>
             {item.id} : {item.title}
           </Text>
@@ -100,17 +103,12 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
           setRecruitDate(item.recruitDate);
           setTitle(item.title);
           setContent(item.content);
-          setRecruitId(item.id);
+          // setRecruitId(item.id);
           setFoodName(item.foodName);
           handleModalOpen();
         }}>
         <Text style={[styles.joinbtn, {flexDirection: 'row'}]}>Modify</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={[styles.item, item && styles.completed]}
-        onPress={handleApprove}>
-        <Text style={[styles.joinbtn, {flexDirection: 'row'}]}>Accept</Text>
-      </TouchableOpacity> */}
     </View>
   );
   //아래는 수정버튼
@@ -143,11 +141,11 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
   };
 
   //아래는 승인
-  const handleApprove = async () => {
+  const handleApprove = async (id: number) => {
     try {
       const res = await request(
-        'recruit/' + recruitId + '/participate/allow/' + userId,
-        {id: userId},
+        'recruit/' + id + '/participate/allow/' + userId[0].email,
+        {id: userId[0].email},
         'POST',
       );
       if (res?.ok) {
