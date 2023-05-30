@@ -34,7 +34,7 @@ type RecruitScreenProps = {
 
 const TopTab = createMaterialTopTabNavigator();
 
-const Test = ({navigation}: RecruitScreenProps) => {
+const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [foodname, setFoodname] = useState('');
   const [ingredient, setIngredient] = useState<string>('');
   const [needIngredients, setNeedIngredients] = useState<string[]>([]);
@@ -65,21 +65,16 @@ const Test = ({navigation}: RecruitScreenProps) => {
   const [data, setData] = useState<dataList[]>([]);
 
   const renderItem = ({item}: {item: dataList}) => (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View key={item.id} style={{flexDirection: 'row', alignItems: 'center'}}>
       <ScrollView>
         <Text style={[styles.item, {paddingVertical: '6%'}]}>
           {item.id} : {item.title}
         </Text>
       </ScrollView>
       <TouchableOpacity
-        key={item.id}
+        key={`${item.id}_button`}
         style={[styles.item, item && styles.completed]}
-        // onPress={async () => {
-        //   setRecruitId(item.id);
-        // await handleRecruitJoin();
-        // }}
         onPress={() => {
-          // console.log(item);
           handleJoinModalOpen(item);
         }}>
         <Text style={styles.joinbtn}>Join</Text>
@@ -118,6 +113,7 @@ const Test = ({navigation}: RecruitScreenProps) => {
         setIsModalVisible(false);
         Alert.alert('등록완료', '등록이 완료되었습니다.');
         navigation.navigate('RecruitScreen');
+        getRes();
       })
       .catch(error => {
         console.log(error.request);
@@ -133,12 +129,11 @@ const Test = ({navigation}: RecruitScreenProps) => {
   };
   useEffect(() => {
     getRes();
-  }, [renderItem]);
+  }, []);
   //아래는 참여버튼
 
   const handleRecruitJoin = async () => {
     // handleJoinModalOpen();
-    // console.log(recruitId);
     try {
       const res = await request(
         'recruit/' + recruitId + '/participate/register',
@@ -156,6 +151,7 @@ const Test = ({navigation}: RecruitScreenProps) => {
 
   const handleJoinModalOpen = (item: any) => {
     setJoinData(item);
+    setRecruitId(item.id);
     setIsJoinModalVisible(true);
   };
   const handleJoinModalClose = () => {
@@ -171,6 +167,23 @@ const Test = ({navigation}: RecruitScreenProps) => {
     setIsModalVisible(false);
     Alert.alert('취소되었습니다.');
     navigation.navigate('RecruitScreen');
+  };
+
+  const handleIngredientChoice = async () => {
+    try {
+      const res = await request(
+        'recruit/' + recruitId + '/participate/ingredients',
+        {id: id},
+      );
+      if (res?.ok) {
+        Alert.alert(
+          'Choice your Ingredient',
+          '보유하고 있는 식재료를 고르세요.',
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleSave = () => {
@@ -243,10 +256,16 @@ const Test = ({navigation}: RecruitScreenProps) => {
       <Modal visible={isJoinModalVisible} onRequestClose={handleJoinModalClose}>
         <View style={styles.container}>
           {Object.entries(joinData).map(([key, value]) => (
-            <View style={styles.fuckkkk}>
-              <Text key={key}>
-                {key}: {value as string}
-              </Text>
+            <View key={key} style={styles.fuckkkk}>
+              {key === 'needIngredients' ? (
+                <TouchableOpacity onPress={handleIngredientChoice}>
+                  <Text>Required Ingredient</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text>
+                  {key}: {value as string}
+                </Text>
+              )}
             </View>
           ))}
           <View style={styles.ShowboxContainer}>
@@ -260,10 +279,14 @@ const Test = ({navigation}: RecruitScreenProps) => {
         </View>
       </Modal>
       <View>
-        <FlatList data={data} renderItem={renderItem} />
+        <FlatList
+          data={data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+        />
       </View>
     </View>
   );
 };
 
-export default Test;
+export default RecruitScreen;
