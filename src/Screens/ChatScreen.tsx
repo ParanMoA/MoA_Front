@@ -22,10 +22,12 @@ import {styles} from '../Styles/Screen/ChatStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import authState, {IAuthTypes} from '../Recoil/idState';
+import {FlatList} from 'react-native-gesture-handler';
 
 interface Message {
   user: string;
   message: string;
+  date: string;
 }
 interface RouteParams {
   apply_id: string;
@@ -41,52 +43,48 @@ type ChatDetailNavigationProps = {
 const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, SetSeleted] = useState('');
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [sendMsg, setSendMsg] = useState(false);
-  const [items, setItems] = useState([]);
-  const [msg, setMsg] = useState('');
-  const [name, setName] = useState('');
-  const [chatt, setChatt] = useState([]);
-  const [chkLog, setChkLog] = useState(false);
-  const [socketData, setSocketData] = useState();
+  const [serverState, setServerState] = useState('Loading...');
+  const [messageText, setMessageText] = useState('');
+  const [serverMessages, setServerMessages] = useState<Message[]>([]);
   const auth = useRecoilValue(authState);
+  const serverMessagesList: Message[] = [];
 
   var ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const connectWebSocket = async () => {
-      const token = await AsyncStorage.getItem('AccessToken');
-      if (token) {
-        ws.current = new WebSocket(
-          'ws://43.201.118.41:8081/chat/' +
-            route.params.chatRoomId +
-            '/' +
-            auth[0].email,
-        );
+      ws.current = new WebSocket(
+        'ws://43.201.118.41:8081/chat/' +
+          route.params.chatRoomId +
+          '/' +
+          auth[0].email,
+      );
 
-        console.log(ws.current);
+      console.log(ws.current);
 
-        ws.current.onopen = () => {
-          // connection opened
-          console.log('connected');
-          // send a message
-          setSocketConnected(true);
-        };
-        ws.current.onmessage = e => {
-          console.log(e.data);
-        };
-        ws.current.onerror = e => {
-          // an error occurred
-          console.log(e.message);
-        };
+      ws.current.onopen = () => {
+        // connection opened
+        console.log('connected');
+        // send a message
+        setServerState('Connected to the server');
+      };
+      ws.current.onmessage = e => {
+        console.log(e.data);
+        let parse = JSON.parse(e.data);
+        serverMessagesList.push(parse);
+        setServerMessages([...serverMessagesList]);
+      };
+      ws.current.onerror = e => {
+        // an error occurred
+        console.log(e.message);
+        setServerState(e.message);
+      };
 
-        ws.current.onclose = e => {
-          // connection closed
-          console.log(e.code, e.reason);
-        };
-      } else {
-        console.log('토큰 없음');
-      }
+      ws.current.onclose = e => {
+        // connection closed
+        console.log(e.code, e.reason);
+        setServerState('Disconnected. Check internet or server.');
+      };
     };
 
     connectWebSocket();
@@ -97,23 +95,53 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
       }
     };
   }, []);
-  useEffect(() => {
-    if (socketConnected) {
-      if (ws.current) {
-        ws.current.send('hello');
-        setSendMsg(true);
-      }
+  const sendMessage = () => {
+    if (ws.current) {
+      let str = JSON.stringify({user: auth[0].email, message: messageText});
+      ws.current.send(str);
+      setMessageText('');
     }
-  }, [socketConnected]);
+  };
   return (
     <View style={styles.container}>
       <Text
         style={{
-          fontSize: 100,
+          marginTop: 100,
         }}>
-        {route.params.chatRoomId}
+        {serverState}
       </Text>
-      <TouchableOpacity
+      <View
+        style={{
+          padding: 5,
+          flexGrow: 1,
+        }}>
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={{paddingBottom: 50}}
+          data={serverMessages}
+          keyExtractor={(item, index) => `message_${index}`}
+          renderItem={({item}) =>
+            item.user == auth[0].email ? (
+              <Text style={styles.myChat}>{(item.message, item.date)}</Text>
+            ) : (
+              <Text style={styles.otherChat}>{item.message}</Text>
+            )
+          }
+        />
+      </View>
+      <View style={styles.bottomContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder={'Add Message'}
+          onChangeText={text => {
+            setMessageText(text);
+          }}
+          value={messageText}></TextInput>
+        <TouchableOpacity onPress={sendMessage} disabled={messageText == ''}>
+          <Text style={styles.send}>Send</Text>
+        </TouchableOpacity>
+      </View>
+      {/* <TouchableOpacity
         onPress={() => {
           setModalVisible(!modalVisible);
         }}>
@@ -138,8 +166,8 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
             SetSeleted(day.dateString);
           }}
         />
-      </Modal>
-      <TouchableOpacity
+      </Modal> */}
+      {/* <TouchableOpacity
         onPress={() => {
           ReservationScreen(route.params.chatRoomId);
         }}>
@@ -149,7 +177,7 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
           }}>
           예약
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
     // return (
     //   <View style={styles.container}>
