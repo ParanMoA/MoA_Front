@@ -17,6 +17,8 @@ type IngredientData = {
   registerDate: any;
   purchaseDate: any;
   expirationDate: any;
+  email: string;
+  birth: any;
 };
 
 // const testIngredientData: IngredientData[] = [
@@ -69,15 +71,27 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
     </ScrollView>
   );
 
-  // const getRes = async () => {
-  //   const res = await request('recruit/list');
-  //   if (res?.ok) {
-  //     res.json().then(response => setData(response));
-  //   }
-  // };
-  // useEffect(() => {
-  //   getRes();
-  // }, [renderItem]);
+  // 마이페이지 재료 조회 api
+  const getRes = async () => {
+    const res = await request('mypage/ingredients', [], 'GET');
+    if (res?.ok) {
+      res.json().then(response => setData(response));
+    }
+  };
+  useEffect(() => {
+    getRes();
+  }, []);
+
+  //마이페이지 정보 조회 api
+  const getRes2 = async () => {
+    const res = await request('mypage/info', [], 'GET');
+    if (res?.ok) {
+      res.json().then(response => setData(response));
+    }
+  };
+  useEffect(() => {
+    getRes2();
+  }, []);
 
   const handleMyPageIngredient = async () => {
     const data = {

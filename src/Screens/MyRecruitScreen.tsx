@@ -187,7 +187,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
     <View style={styles.container}>
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
         <View style={styles.container}>
-          <View style={styles.item}>
+          <View style={[styles.item, {paddingHorizontal: '5%'}]}>
             <TextInput
               style={styles.btnText}
               placeholder="put your foodname..."
@@ -223,11 +223,13 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
           <View style={styles.ShowboxContainer}>
             {/* <Button title="Save" onPress={handleRecruit} /> */}
             <Button title="Cancel" onPress={handleModalClose} color="black" />
+            <Text> </Text>
             <Button
               title="Modify"
               onPress={handleRecruitModify}
               color="black"
             />
+            <Text> </Text>
             <Button
               title="Delete"
               onPress={handleRecruitDelete}

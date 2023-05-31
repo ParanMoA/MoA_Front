@@ -98,12 +98,27 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-  fuckkkk: {
-    backgroundColor: 'white',
+  joinDetail: {
+    backgroundColor: '#FFBB99', //#FFE8C2
     width: '80%',
-    height: '5%',
-    // marginBottom: '3%',
+    height: '60%',
+    marginBottom: '5%',
+    // paddingLeft: '20%',
+    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },
+  joinDetailText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  joinAndcancelBtn: {
+    flex: 1,
+    marginHorizontal: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: 'black',
+    borderRadius: 5,
   },
 });

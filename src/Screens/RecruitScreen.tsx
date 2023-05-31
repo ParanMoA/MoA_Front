@@ -212,7 +212,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       </TouchableOpacity>
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
         <View style={styles.container}>
-          <View style={styles.item}>
+          <View style={[styles.item, {paddingHorizontal: '10%'}]}>
             <TextInput
               style={styles.btnText}
               placeholder="put your foodname..."
@@ -248,6 +248,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
 
           <View style={styles.ShowboxContainer}>
             <Button title="Save" onPress={handleRecruit} color="black" />
+            <Text> </Text>
             <Button title="Cancel" onPress={handleModalClose} color="black" />
           </View>
         </View>
@@ -255,21 +256,26 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       {/* 아래는 join버튼 눌렀을 때 모집글의 상세정보가 떠야함. */}
       <Modal visible={isJoinModalVisible} onRequestClose={handleJoinModalClose}>
         <View style={styles.container}>
-          {Object.entries(joinData).map(([key, value]) => (
-            <View key={key} style={styles.fuckkkk}>
-              {key === 'needIngredients' ? (
-                <TouchableOpacity onPress={handleIngredientChoice}>
-                  <Text>Required Ingredient</Text>
-                </TouchableOpacity>
-              ) : (
-                <Text>
-                  {key}: {value as string}
-                </Text>
-              )}
-            </View>
-          ))}
+          <View style={styles.joinDetail}>
+            {Object.entries(joinData).map(([key, value]) => (
+              <View key={key}>
+                {key === 'needIngredients' ? (
+                  <TouchableOpacity onPress={handleIngredientChoice}>
+                    <Text style={[styles.joinDetailText, {color: 'white'}]}>
+                      Required Ingredient
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <Text style={styles.joinDetailText}>
+                    {key}: {value as string}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
           <View style={styles.ShowboxContainer}>
             <Button title="Join" onPress={handleRecruitJoin} color="black" />
+            <Text> </Text>
             <Button
               title="Cancel"
               onPress={handleJoinModalClose}
