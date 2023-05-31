@@ -293,88 +293,102 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       {/* 아래는 join버튼 눌렀을 때 모집글의 상세정보가 떠야함. */}
       <Modal visible={isJoinModalVisible} onRequestClose={handleJoinModalClose}>
         <View style={styles.container}>
-          {Object.entries(joinData).map(([key, value]) => (
-            <View key={key} style={styles.joinDetail}>
-              {key === 'needIngredients' ? (
-                <View>
-                  <Text>
-                    {key} : {value as string}
-                  </Text>
+          <View style={styles.joinDetail}>
+            {Object.entries(joinData).map(([key, value]) => (
+              <View key={key}>
+                {key === 'needIngredients' ? (
                   <View>
-                    {!isIngredientSelected ? (
-                      <View>
-                        <TouchableOpacity onPress={handleIngredientChoice}>
-                          <Text>등록한 식재료 보기</Text>
-                        </TouchableOpacity>
-                        <Modal
-                          visible={isIngredientModalVisible}
-                          onRequestClose={handleIngredientModalClose}>
-                          <View style={styles.container}>
-                            <View>
-                              {ingredientData.map(
-                                (
-                                  ingredient: {name: any; id: any},
-                                  index: any,
-                                ) => (
-                                  <View key={index}>
-                                    <TouchableOpacity
-                                      onPress={() =>
-                                        handleIngredientPress(ingredient)
-                                      }
-                                      style={{
-                                        backgroundColor:
-                                          selectedIngredientIds.includes(
-                                            ingredient.id,
-                                          )
-                                            ? 'green'
-                                            : 'transparent',
-                                        // You can customize the selected and unselected colors as per your needs
-                                      }}>
-                                      <Text>{ingredient.name}</Text>
-                                    </TouchableOpacity>
-                                  </View>
-                                ),
-                              )}
+                    <Text style={[styles.joinDetailText, {color: 'white'}]}>
+                      {key} : {value as string}
+                    </Text>
+                    <View>
+                      {!isIngredientSelected ? (
+                        <View>
+                          <TouchableOpacity onPress={handleIngredientChoice}>
+                            <Text
+                              style={[styles.joinDetailText, {color: 'white'}]}>
+                              등록한 식재료 보기
+                            </Text>
+                          </TouchableOpacity>
+                          <Modal
+                            visible={isIngredientModalVisible}
+                            onRequestClose={handleIngredientModalClose}>
+                            <View style={styles.container}>
+                              <View>
+                                {ingredientData.map(
+                                  (
+                                    ingredient: {name: any; id: any},
+                                    index: any,
+                                  ) => (
+                                    <View key={index}>
+                                      <TouchableOpacity
+                                        onPress={() =>
+                                          handleIngredientPress(ingredient)
+                                        }
+                                        style={{
+                                          backgroundColor:
+                                            selectedIngredientIds.includes(
+                                              ingredient.id,
+                                            )
+                                              ? 'green'
+                                              : 'transparent',
+                                          // You can customize the selected and unselected colors as per your needs
+                                        }}>
+                                        <Text style={styles.joinDetailText}>
+                                          {ingredient.name}
+                                        </Text>
+                                      </TouchableOpacity>
+                                    </View>
+                                  ),
+                                )}
+                              </View>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={styles.empty}>
+                                  <Button
+                                    title="Confirm"
+                                    onPress={handleIngredientConfirm}
+                                    color="black"
+                                  />
+                                </View>
+                                <View style={styles.empty}>
+                                  <Button
+                                    title="Close"
+                                    onPress={handleIngredientModalClose}
+                                    color="black"
+                                  />
+                                </View>
+                              </View>
                             </View>
-                            <View style={{flexDirection: 'row'}}>
-                              <Button
-                                title="Confirm"
-                                onPress={handleIngredientConfirm}
-                                color="black"
-                              />
-                              <Button
-                                title="Close"
-                                onPress={handleIngredientModalClose}
-                                color="black"
-                              />
-                            </View>
-                          </View>
-                        </Modal>
-                      </View>
-                    ) : (
-                      <View>
-                        {selectedIngredientNames.map((selected: any) => (
-                          <Text>{selected}</Text>
-                        ))}
-                      </View>
-                    )}
+                          </Modal>
+                        </View>
+                      ) : (
+                        <View>
+                          {selectedIngredientNames.map((selected: any) => (
+                            <Text>{selected}</Text>
+                          ))}
+                        </View>
+                      )}
+                    </View>
                   </View>
-                </View>
-              ) : (
-                <Text>
-                  {key}: {value as string}
-                </Text>
-              )}
-            </View>
-          ))}
+                ) : (
+                  <Text style={styles.joinDetailText}>
+                    {key}: {value as string}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
           <View style={styles.ShowboxContainer}>
-            <Button title="Join" onPress={handleRecruitJoin} color="black" />
-            <Text> </Text>
-            <Button
-              title="Cancel"
-              onPress={handleJoinModalClose}
-              color="black"
-            />
+            <View style={styles.empty}>
+              <Button title="Join" onPress={handleRecruitJoin} color="black" />
+            </View>
+            <View style={styles.empty}>
+              <Button
+                title="Cancel"
+                onPress={handleJoinModalClose}
+                color="black"
+              />
+            </View>
           </View>
         </View>
       </Modal>

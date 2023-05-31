@@ -121,4 +121,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 5,
   },
+  empty: {
+    marginVertical: 3,
+    marginHorizontal: 3,
+  },
 });

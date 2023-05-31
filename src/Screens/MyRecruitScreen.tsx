@@ -274,22 +274,34 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
               {joinList.map((item: any) => (
                 <View key={item.id}>
                   <Text>{item.name}</Text>
-                  <Button
-                    title="승인"
-                    onPress={() => {
-                      handleApply(item.id);
-                    }}
-                    color="black"
-                  />
-                  <Button title="거부" onPress={handleReject} color="black" />
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={styles.empty}>
+                      <Button
+                        title="승인"
+                        onPress={() => {
+                          handleApply(item.id);
+                        }}
+                        color="black"
+                      />
+                    </View>
+                    <View style={styles.empty}>
+                      <Button
+                        title="거부"
+                        onPress={handleReject}
+                        color="black"
+                      />
+                    </View>
+                  </View>
                 </View>
               ))}
             </View>
-            <Button
-              title="Close"
-              onPress={handleJoinListModalClose}
-              color="black"
-            />
+            <View style={styles.empty}>
+              <Button
+                title="Close"
+                onPress={handleJoinListModalClose}
+                color="black"
+              />
+            </View>
           </View>
         </Modal>
       </View>
