@@ -57,7 +57,7 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.chatroomContainer}>
       <View style={styles.subcontainer}>
         <View style={styles.chatcontainer}>
           <Text style={{color: '#6B7684'}}> 나의 채팅방 목록 </Text>
