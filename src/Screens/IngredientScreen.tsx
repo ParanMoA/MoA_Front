@@ -57,9 +57,10 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       ingredientImage: ingredientImage,
       receiptImage: receiptImage,
     };
-
-    const res = await request('/user/ingredient/register', data, 'POST');
+    console.log(data);
+    const res = await request('user/ingredient/register', data, 'POST');
     if (res?.ok) {
+      console.log(res);
       Alert.alert('식재료 등록', '식재료 등록에 성공하였습니다.');
     }
   };
@@ -293,7 +294,6 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                           ...styles.save_cancel_btn,
                           width: 30,
                         }}
-                        key={ingredient}
                         onPress={() => handleIngredient(ingredient)}>
                         <Text
                           style={{

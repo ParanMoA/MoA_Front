@@ -34,6 +34,11 @@ type dataList = {
   foodName: string;
 };
 
+type joinDataList = {
+  id: number;
+  name: string;
+};
+
 type RecruitScreenProps = {
   navigation: NativeStackNavigationProp<MainParamList, 'MyRecruitScreen'>;
 };
@@ -49,10 +54,15 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isJoinListModalVisible, setIsJoinListModalVisible] =
+    useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
   const userId = useRecoilValue(authState);
   const [data, setData] = useState<dataList[]>([]);
   const [modifyData, setModifyData] = useState<dataList>();
+  const [joinList, setJoinList] = useState<any>([]);
+  const [selectedId, setSelectedId] = useState<number>();
+  const [idList, setIdList] = useState([]);
   const handleBack = () => {
     navigation.navigate('HomeScreen');
   };
@@ -87,7 +97,8 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
         <TouchableOpacity
           style={[styles.item, item && styles.completed]}
           onPress={() => {
-            handleApprove(item.id);
+            setRecruitId(item.id);
+            handleJoinList(item.id);
           }}>
           <Text key={item.id} style={styles.item}>
             {item.id} : {item.title}
@@ -141,22 +152,27 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
   };
 
   //아래는 승인
-  const handleApprove = async (id: number) => {
+  const handleJoinList = async (id: number) => {
     try {
-      const res = await request(
-        'recruit/' + id + '/participate/allow/' + userId[0].email,
-        {id: userId[0].email},
-        'POST',
-      );
+      const res = await request('recruit/' + id + '/participate/list');
       if (res?.ok) {
-        Alert.alert('Approve', '승인처리 되었습니다.');
+        const response = await res.json();
+        const JoinList = response.map((item: any) => item);
+        setJoinList(JoinList);
+        console.log(JoinList);
+        setIsJoinListModalVisible(true);
       }
     } catch (e) {
       console.log(e);
       navigation.navigate('RecruitScreen');
     }
   };
-
+  // const handleJoinListModalOpen = () => {
+  //   setIsJoinListModalVisible(true);
+  // };
+  const handleJoinListModalClose = () => {
+    setIsJoinListModalVisible(false);
+  };
   const handleModalOpen = () => {
     setIsModalVisible(true);
   };
@@ -182,7 +198,16 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
     Alert.alert('취소되었습니다.');
     setIsModalVisible(false);
   };
-
+  const handleApply = async (id: number) => {
+    const res = await request(
+      'recruit/' + recruitId + '/participate/allow/' + id,
+    );
+    if (res?.ok) {
+      console.log(res);
+      setIsJoinListModalVisible(false);
+    }
+  };
+  const handleReject = () => {};
   return (
     <View style={styles.container}>
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
@@ -241,6 +266,32 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
       <View>
         {/* 아래 touchableOpacity추가햇슴 */}
         <FlatList data={data} renderItem={renderItem} />
+        <Modal
+          visible={isJoinListModalVisible}
+          onRequestClose={handleJoinListModalClose}>
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row'}}>
+              {joinList.map((item: any) => (
+                <View key={item.id}>
+                  <Text>{item.name}</Text>
+                  <Button
+                    title="승인"
+                    onPress={() => {
+                      handleApply(item.id);
+                    }}
+                    color="black"
+                  />
+                  <Button title="거부" onPress={handleReject} color="black" />
+                </View>
+              ))}
+            </View>
+            <Button
+              title="Close"
+              onPress={handleJoinListModalClose}
+              color="black"
+            />
+          </View>
+        </Modal>
       </View>
     </View>
   );

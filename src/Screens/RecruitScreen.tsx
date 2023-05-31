@@ -46,9 +46,19 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const [text, setText] = useState('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isJoinModalVisible, setIsJoinModalVisible] = useState<boolean>(false);
+  const [isIngredientModalVisible, setIsIngredientModalVisible] =
+    useState<boolean>(false);
   const [recruitId, setRecruitId] = useState<number>();
   const [id, setId] = useState<string[]>([]);
   const [joinData, setJoinData] = useState({});
+  const [ingredientData, setIngredientData] = useState<any>([]);
+  const [selectedIngredientIds, setSelectedIngredientIds] = useState<any>([]);
+  const [selectedIngredientNames, setSelectedIngredientNames] = useState<any>(
+    [],
+  );
+  const [isIngredientSelected, setIsIngredientSelected] =
+    useState<boolean>(false);
+  const [data, setData] = useState<dataList[]>([]);
   const handleBack = () => {
     navigation.navigate('HomeScreen');
   };
@@ -62,7 +72,6 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     setNeedIngredients([...needIngredients, ingredient]);
     setIngredient('');
   };
-  const [data, setData] = useState<dataList[]>([]);
 
   const renderItem = ({item}: {item: dataList}) => (
     <View key={item.id} style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -85,11 +94,6 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
 
   //아래는 등록버튼
   const handleRecruit = async () => {
-    const token = await AsyncStorage.getItem('AccessToken');
-    const reqHeader = {
-      'x-access-token': token || '',
-      'content-type': 'application/json',
-    };
     const data = {
       foodName: foodname,
       needIngredients: needIngredients,
@@ -98,27 +102,14 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       title: title,
       content: content,
     };
-    console.log(data);
-    await axios({
-      method: 'POST',
-      url: 'http://43.201.118.41:8081/recruit/create',
-      data,
-      headers: reqHeader,
-    })
-      .then(response => {
-        console.log('Data : ', response.data);
-        const rId = response.data.id;
-        console.log(rId);
-        setRecruitId(rId);
-        setIsModalVisible(false);
-        Alert.alert('등록완료', '등록이 완료되었습니다.');
-        navigation.navigate('RecruitScreen');
-        getRes();
-      })
-      .catch(error => {
-        console.log(error.request);
-        Alert.alert('Recruit Failed', 'Please Check your Recruit Options');
-      });
+    const res = await request('recruit/create', data, 'POST');
+    if (res?.ok) {
+      const rId = await res.json().then(response => response.id);
+      setRecruitId(rId);
+      Alert.alert('등록완료', '게시글 등록이 완료되었습니다.');
+      setIsModalVisible(false);
+      getRes();
+    }
   };
 
   const getRes = async () => {
@@ -133,15 +124,21 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   //아래는 참여버튼
 
   const handleRecruitJoin = async () => {
-    // handleJoinModalOpen();
+    const data = {
+      ingredient_id: selectedIngredientIds,
+    };
+    console.log(data);
     try {
       const res = await request(
         'recruit/' + recruitId + '/participate/register',
-        {id: id},
+        data,
         'POST',
       );
       if (res?.ok) {
         Alert.alert('Join', '참여신청을 보냈습니다.');
+        setSelectedIngredientIds([]);
+        setSelectedIngredientNames([]);
+        setIsIngredientSelected(false);
         setIsJoinModalVisible(false);
       }
     } catch (e) {
@@ -155,12 +152,22 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     setIsJoinModalVisible(true);
   };
   const handleJoinModalClose = () => {
+    setSelectedIngredientIds([]);
+    setSelectedIngredientNames([]);
+    setIsIngredientSelected(false);
     setIsJoinModalVisible(false);
     navigation.navigate('RecruitScreen');
   };
 
   const handleModalOpen = () => {
     setIsModalVisible(true);
+  };
+
+  const handleIngredientModalClose = () => {
+    setSelectedIngredientIds([]);
+    setSelectedIngredientNames([]);
+    setIsIngredientSelected(false);
+    setIsIngredientModalVisible(false);
   };
 
   const handleModalClose = () => {
@@ -176,10 +183,10 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
         {id: id},
       );
       if (res?.ok) {
-        Alert.alert(
-          'Choice your Ingredient',
-          '보유하고 있는 식재료를 고르세요.',
-        );
+        const response = await res.json();
+        setIngredientData(response);
+
+        setIsIngredientModalVisible(true);
       }
     } catch (e) {
       console.log(e);
@@ -202,6 +209,36 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   const handleCancel = () => {
     Alert.alert('취소되었습니다.');
     setIsModalVisible(false);
+  };
+  const handleIngredientConfirm = () => {
+    if (selectedIngredientIds === 0) {
+      setIsIngredientSelected(false);
+    } else {
+      setIsIngredientSelected(true);
+    }
+    setIsIngredientModalVisible(false);
+  };
+  // const handleIngredientId = () => {
+  //     if(selectedIngredients.)
+  // };
+
+  const handleIngredientPress = (ingredient: any) => {
+    // Check if the ingredient is already selected
+    const isSelected = selectedIngredientIds.includes(ingredient.id);
+
+    if (isSelected) {
+      // Remove the ingredient from selectedIngredients
+      setSelectedIngredientIds(
+        selectedIngredientIds.filter((id: any) => id !== ingredient.id),
+      );
+      setSelectedIngredientNames(
+        selectedIngredientNames.filter((name: any) => name !== ingredient.name),
+      );
+    } else {
+      // Add the ingredient to selectedIngredients
+      setSelectedIngredientIds([...selectedIngredientIds, ingredient.id]);
+      setSelectedIngredientNames([...selectedIngredientNames, ingredient.name]);
+    }
   };
   return (
     <View style={styles.container}>
@@ -256,23 +293,80 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       {/* 아래는 join버튼 눌렀을 때 모집글의 상세정보가 떠야함. */}
       <Modal visible={isJoinModalVisible} onRequestClose={handleJoinModalClose}>
         <View style={styles.container}>
-          <View style={styles.joinDetail}>
-            {Object.entries(joinData).map(([key, value]) => (
-              <View key={key}>
-                {key === 'needIngredients' ? (
-                  <TouchableOpacity onPress={handleIngredientChoice}>
-                    <Text style={[styles.joinDetailText, {color: 'white'}]}>
-                      Required Ingredient
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <Text style={styles.joinDetailText}>
-                    {key}: {value as string}
+          {Object.entries(joinData).map(([key, value]) => (
+            <View key={key} style={styles.joinDetail}>
+              {key === 'needIngredients' ? (
+                <View>
+                  <Text>
+                    {key} : {value as string}
                   </Text>
-                )}
-              </View>
-            ))}
-          </View>
+                  <View>
+                    {!isIngredientSelected ? (
+                      <View>
+                        <TouchableOpacity onPress={handleIngredientChoice}>
+                          <Text>등록한 식재료 보기</Text>
+                        </TouchableOpacity>
+                        <Modal
+                          visible={isIngredientModalVisible}
+                          onRequestClose={handleIngredientModalClose}>
+                          <View style={styles.container}>
+                            <View>
+                              {ingredientData.map(
+                                (
+                                  ingredient: {name: any; id: any},
+                                  index: any,
+                                ) => (
+                                  <View key={index}>
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        handleIngredientPress(ingredient)
+                                      }
+                                      style={{
+                                        backgroundColor:
+                                          selectedIngredientIds.includes(
+                                            ingredient.id,
+                                          )
+                                            ? 'green'
+                                            : 'transparent',
+                                        // You can customize the selected and unselected colors as per your needs
+                                      }}>
+                                      <Text>{ingredient.name}</Text>
+                                    </TouchableOpacity>
+                                  </View>
+                                ),
+                              )}
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                              <Button
+                                title="Confirm"
+                                onPress={handleIngredientConfirm}
+                                color="black"
+                              />
+                              <Button
+                                title="Close"
+                                onPress={handleIngredientModalClose}
+                                color="black"
+                              />
+                            </View>
+                          </View>
+                        </Modal>
+                      </View>
+                    ) : (
+                      <View>
+                        {selectedIngredientNames.map((selected: any) => (
+                          <Text>{selected}</Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                </View>
+              ) : (
+                <Text>
+                  {key}: {value as string}
+                </Text>
+              )}
+            </View>
+          ))}
           <View style={styles.ShowboxContainer}>
             <Button title="Join" onPress={handleRecruitJoin} color="black" />
             <Text> </Text>
@@ -284,6 +378,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
           </View>
         </View>
       </Modal>
+
       <View>
         <FlatList
           data={data}
