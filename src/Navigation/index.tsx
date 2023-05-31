@@ -38,7 +38,11 @@ const ChatStackScreen = () => {
       <ChatStack.Screen
         name="ChatScreen"
         component={ChatScreen}
-        options={{headerShown: false}}
+        options={{
+          headerStyle: {
+            backgroundColor: '#FFD6BF',
+          },
+        }}
       />
     </ChatStack.Navigator>
   );

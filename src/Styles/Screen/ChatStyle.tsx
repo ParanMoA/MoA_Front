@@ -5,7 +5,20 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  chatroomContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FFD6BF',
+  },
+  list: {
+    marginTop: 40,
+  },
+  chatcontainer: {
+    marginTop: 24,
+    marginLeft: 24,
   },
   subcontainer: {
     width: 374,
@@ -14,35 +27,48 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     borderRadius: 24,
   },
-  logo: {
-    width: 200,
-    height: 100,
-  },
-  chatcontainer: {
-    marginTop: 24,
-    marginLeft: 24,
-  },
-  list: {
-    marginTop: 300,
-    paddingHorizontal: '23%',
-    // paddingVertical: '4%',
-    backgroundColor: '#FFFFFF',
-    marginVertical: '4%',
-    marginHorizontal: '4%',
-    // borderWidth: 1.5,
-    color: 'black',
-    fontWeight: 'bold',
-    borderColor: '#000000',
-    borderRadius: 10,
-  },
-  myChat: {backgroundColor: '#123456'},
-  otherChat: {backgroundColor: '#111222'},
-  bottomContainer: {
-    flexDirection: 'row',
-    marginBottom: 500,
+  mychatContainer: {
+    backgroundColor: '#E2E2E2',
+    width: '50%',
+    borderRadius: 16,
+    paddingVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  input: {width: 100, height: 100, backgroundColor: '#FFFFFF'},
-  send: {width: 100, height: 100, backgroundColor: '#000000'},
+  otherchatContainer: {
+    backgroundColor: '#FFD6BF',
+  },
+  myChat: {
+    color: 'black',
+    fontSize: 20,
+  },
+  otherChat: {
+    color: 'white',
+
+    fontSize: 20,
+    width: 200,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  input: {
+    width: 280,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    borderColor: 'grey',
+    borderRadius: 4,
+    borderWidth: 0.5,
+  },
+  sendbox: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#FFD6BF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  send: {},
 });

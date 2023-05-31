@@ -104,87 +104,40 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
   };
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          marginTop: 100,
-        }}>
-        {serverState}
-      </Text>
-      <View
-        style={{
-          padding: 5,
-          flexGrow: 1,
-        }}>
+      <View>
         <FlatList
-          style={styles.list}
-          contentContainerStyle={{paddingBottom: 50}}
+          style={{marginTop: 40}}
           data={serverMessages}
           keyExtractor={(item, index) => `message_${index}`}
           renderItem={({item}) =>
             item.user == auth[0].email ? (
-              <Text style={styles.myChat}>{(item.message, item.date)}</Text>
+              <View style={styles.mychatContainer}>
+                <Text style={styles.myChat}>{item.message}</Text>
+              </View>
             ) : (
-              <Text style={styles.otherChat}>{item.message}</Text>
+              <View style={styles.otherchatContainer}>
+                <Text style={styles.otherChat}>{item.message}</Text>
+              </View>
             )
           }
         />
+        <View style={styles.bottomContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={'Add Message'}
+            onChangeText={text => {
+              setMessageText(text);
+            }}
+            value={messageText}></TextInput>
+          <TouchableOpacity
+            style={styles.sendbox}
+            onPress={sendMessage}
+            disabled={messageText == ''}>
+            <Text style={styles.send}>Send</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.bottomContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder={'Add Message'}
-          onChangeText={text => {
-            setMessageText(text);
-          }}
-          value={messageText}></TextInput>
-        <TouchableOpacity onPress={sendMessage} disabled={messageText == ''}>
-          <Text style={styles.send}>Send</Text>
-        </TouchableOpacity>
-      </View>
-      {/* <TouchableOpacity
-        onPress={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <Icon name="plus" color="black" size={60} />
-      </TouchableOpacity>
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <Icon name="backward" color="black" size={60}></Icon>
-        </TouchableOpacity>
-        <Calendar
-          onDayPress={day => {
-            console.log('selected day', day);
-            SetSeleted(day.dateString);
-          }}
-        />
-      </Modal> */}
-      {/* <TouchableOpacity
-        onPress={() => {
-          ReservationScreen(route.params.chatRoomId);
-        }}>
-        <Text
-          style={{
-            fontSize: 100,
-          }}>
-          예약
-        </Text>
-      </TouchableOpacity> */}
     </View>
-    // return (
-    //   <View style={styles.container}>
-    //     <TextInput value={name} placeholder="이름" onChangeText={setName} />
-    //     <TextInput value={msg} placeholder="메시지" onChangeText={setMsg} />
-    //     <Button title="전송" onPress={send} />
-    //   </View>
   );
 };
 
