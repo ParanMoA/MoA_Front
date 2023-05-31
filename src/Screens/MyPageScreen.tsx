@@ -75,14 +75,14 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const getRes = async () => {
     const res = await request('mypage/ingredients', [], 'GET');
     if (res?.ok) {
-      res.json().then(response => setData(response));
+      res.json().then(response => console.log(response));
     }
   };
   useEffect(() => {
     getRes();
   }, []);
 
-  //마이페이지 정보 조회 api
+  // 마이페이지 정보 조회 api
   const getRes2 = async () => {
     const res = await request('mypage/info', [], 'GET');
     if (res?.ok) {
@@ -109,15 +109,8 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
         <View style={styles.thirdContainer}>
           <View style={styles.imageContainer}>
             <Image
+              style={styles.logo}
               source={require('../../public/images/MoA_2.png')}
-              style={[
-                styles.logo,
-                {
-                  width: '100%',
-                  height: '90%',
-                  borderRadius: 100,
-                },
-              ]}
             />
           </View>
           <View style={[styles.textContainer, {paddingHorizontal: 0}]}>
@@ -130,7 +123,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
                   fontWeight: 'bold',
                 },
               ]}>
-              Username:{}
+              Name:{}
             </Text>
             <Text
               style={[
@@ -141,7 +134,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
                   fontWeight: 'bold',
                 },
               ]}>
-              Matching:{' '}
+              Email:{' '}
             </Text>
             <Text
               style={[
@@ -152,7 +145,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
                   fontWeight: 'bold',
                 },
               ]}>
-              Location:{' '}
+              Birth:{' '}
             </Text>
           </View>
         </View>
