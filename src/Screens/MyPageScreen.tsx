@@ -87,17 +87,42 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
               style={styles.logo}
               source={require('../../public/images/MoA_2.png')}
             />
-            <FlatList
-              data={userdata}
-              renderItem={renderItem}
-              // keyExtractor={item => item.Name}
-            />
           </View>
-          {/* <View style={[styles.textContainer, {paddingHorizontal: 0}]}>
-            <Text style={styles.text}>Name: </Text>
-            <Text style={styles.text}>Email: </Text>
-            <Text style={styles.text}>Birth: </Text>
-          </View> */}
+          <View style={[styles.textContainer, {paddingHorizontal: 0}]}>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontSize: 14,
+                  color: 'black',
+                  fontWeight: 'bold',
+                },
+              ]}>
+              Name:{}
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontSize: 14,
+                  color: 'black',
+                  fontWeight: 'bold',
+                },
+              ]}>
+              Email:{' '}
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontSize: 14,
+                  color: 'black',
+                  fontWeight: 'bold',
+                },
+              ]}>
+              Birth:{' '}
+            </Text>
+          </View>
         </View>
         <View style={styles.ingContainer}>
           <TouchableOpacity onPress={handleIngredientPress}>
