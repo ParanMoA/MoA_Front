@@ -46,20 +46,39 @@ export const styles = StyleSheet.create({
   },
 
   item: {
-    paddingHorizontal: '30%',
+    // paddingHorizontal: '30%',
     paddingVertical: '8%',
-    alignContent: 'space-between',
+    // alignContent: 'space-between',
     marginVertical: 8,
     marginHorizontal: 16,
-    borderWidth: 1.5,
-    borderColor: 'black',
+    // borderWidth: 1.5,
+    // borderColor: 'black',
+    backgroundColor: '#FFFFFF',
     borderRadius: 5,
   },
   title: {
     fontSize: 18,
     color: 'black',
   },
+  time: {
+    fontSize: 13,
+    color: '#EB5500',
+  },
+  listcontainer: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
   completed: {
     backgroundColor: '#ccc',
+  },
+  text: {
+    color: '#6B7684',
+    marginLeft: 15,
+    marginBottom: 5,
+  },
+  flatlist: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    marginHorizontal: '3%',
   },
 });

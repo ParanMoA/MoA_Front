@@ -53,7 +53,9 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
     </View>
   );
 
-  // 마이페이지 재료 조회 api
+  {
+    /* 마이페이지 재료 조회 api */
+  }
   const getRes = async () => {
     const res = await request('mypage/ingredients', [], 'GET');
     if (res?.ok) {
@@ -65,7 +67,9 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
     getRes();
   }, []);
 
-  // 마이페이지 정보 조회 api
+  {
+    /* 마이페이지 정보 조회 api */
+  }
   const getRes2 = async () => {
     const res = await request('mypage/info', [], 'GET');
     if (res?.ok) {
