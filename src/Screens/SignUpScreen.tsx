@@ -47,15 +47,20 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
   const [date, setDate] = useState<Date>(new Date());
   const [birthDate, setBirthDate] = useState<string>('');
   const [open, setOpen] = useState(false);
-
+  const [signUpPossible, setSignUpPossible] = useState<boolean>(false);
   const handleDateChange = (newDate: Date) => {
-    const formattedDate =
-      newDate.getFullYear() +
-      '-' +
-      (newDate.getMonth() + 1) +
-      '-' +
-      newDate.getDate();
-    setBirthDate(formattedDate);
+    if (newDate.getFullYear() > 2004) {
+      setSignUpPossible(false);
+    } else {
+      const formattedDate =
+        newDate.getFullYear() +
+        '-' +
+        (newDate.getMonth() + 1) +
+        '-' +
+        newDate.getDate();
+      setBirthDate(formattedDate);
+      setSignUpPossible(true);
+    }
   };
   const handleSignUp = async () => {
     const data: SignUpData = {
@@ -65,10 +70,22 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
       birth: birthDate,
       name: name,
     };
-    const result = await request('user/signup', data, 'POST');
-    if (result?.ok) {
-      Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
-      navigation.navigate('LoginHomeScreen');
+    if (email === '') {
+      Alert.alert('이메일 입력', '이메일을 입력해주세요');
+    } else if (password === '') {
+      Alert.alert('비밀번호 입력', '비밀번호를 입력해주세요');
+    } else if (name === '') {
+      Alert.alert('닉네임 입력', '닉네임을 입력해주세요');
+    } else if (gender === '') {
+      Alert.alert('성별 선택 ', '성별을 선택해주세요');
+    } else if (birthDate === '') {
+      Alert.alert('생일 입력 ', '생일을 올바르게 선택하여 주세요');
+    } else {
+      const result = await request('user/signup', data, 'POST');
+      if (result?.ok) {
+        Alert.alert('회원 가입', '회원 가입에 성공하였습니다.');
+        navigation.navigate('LoginHomeScreen');
+      }
     }
   };
 

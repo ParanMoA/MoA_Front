@@ -33,7 +33,6 @@ type MyingredientData = {
 };
 
 const MyPageScreen = ({navigation}: MyPageScreenProps) => {
-  const [ingredientdata, setIngredientdata] = useState<IngredientData[]>([]);
   const [userdata, setUserdata] = useState<UserData>({
     name: '',
     birth: null,
@@ -48,19 +47,24 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   };
 
   const renderItem = ({item}: {item: MyingredientData}) => (
-    <View style={styles.textContainer}>
+    <View
+      key={item.name}
+      style={[styles.textContainer, {flexDirection: 'row'}]}>
       <Text style={styles.text}>{item.name}</Text>
+      <View style={styles.line} />
+      <View style={{flexDirection: 'column'}}>
+        <Text>구매날짜 : {item.purchasedDate}</Text>
+        <Text>유통기한 : {item.expirationDate}</Text>
+      </View>
     </View>
   );
 
-  {
-    /* 마이페이지 재료 조회 api */
-  }
   const getRes = async () => {
     const res = await request('mypage/ingredients', [], 'GET');
     if (res?.ok) {
-      // res.json().then(response => setMyingredientdata(response));
-      res.json().then(response => console.log(response));
+      let response = await res.json();
+      console.log(response);
+      setMyingredientdata(response);
     }
   };
   useEffect(() => {
@@ -73,27 +77,17 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const getRes2 = async () => {
     const res = await request('mypage/info', [], 'GET');
     if (res?.ok) {
-      res.json().then(response => setUserdata(response));
+      let response = await res.json();
+      setUserdata(response);
     }
   };
   useEffect(() => {
     getRes2();
   }, []);
 
-  // const handleMyPageIngredient = async () => {
-  //   const data = {
-  //     registerDate: registerDate,
-  //     purchaseDate: purchaseDate,
-  //   };
-  //   const res = await request('/');
-  //   if (res?.ok) {
-  //     console.log(res);
-  //   }
-  // };
-
   return (
     <View style={styles.container}>
-      <View style={[styles.subContainer, {alignItems: 'center'}]}>
+      <View style={styles.subContainer}>
         <View style={styles.thirdContainer}>
           <View style={styles.imageContainer}>
             <Image
@@ -117,7 +111,7 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
           />
           <View>
             <TouchableOpacity onPress={handleIngredientPress}>
-              <Icon name="plus" color="black" size={60}></Icon>
+              <Icon name="plus" color="black" size={40}></Icon>
             </TouchableOpacity>
           </View>
         </View>

@@ -282,7 +282,8 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                     style={{
                       marginTop: 10,
                       height: 23,
-                    }}>
+                    }}
+                    key={ingredient}>
                     <View
                       style={{
                         flexDirection: 'row',

@@ -218,16 +218,11 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     }
     setIsIngredientModalVisible(false);
   };
-  // const handleIngredientId = () => {
-  //     if(selectedIngredients.)
-  // };
 
   const handleIngredientPress = (ingredient: any) => {
-    // Check if the ingredient is already selected
     const isSelected = selectedIngredientIds.includes(ingredient.id);
 
     if (isSelected) {
-      // Remove the ingredient from selectedIngredients
       setSelectedIngredientIds(
         selectedIngredientIds.filter((id: any) => id !== ingredient.id),
       );
@@ -235,7 +230,6 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
         selectedIngredientNames.filter((name: any) => name !== ingredient.name),
       );
     } else {
-      // Add the ingredient to selectedIngredients
       setSelectedIngredientIds([...selectedIngredientIds, ingredient.id]);
       setSelectedIngredientNames([...selectedIngredientNames, ingredient.name]);
     }

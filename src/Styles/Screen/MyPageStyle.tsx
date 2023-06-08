@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
     width: 300,
     height: 150,
     marginTop: 40,
-    // backgroundColor: 'pink',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
     flexDirection: 'row',
   },
   imageContainer: {
@@ -33,7 +34,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 60,
     paddingVertical: 30,
     margin: 10,
-    // backgroundColor: 'teal',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'column',
   },
   logo: {
@@ -48,9 +50,15 @@ export const styles = StyleSheet.create({
   ingContainer: {
     width: 300,
     height: 300,
-    marginTop: 83,
+    marginTop: 30,
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     alignItems: 'center',
+  },
+  line: {
+    width: 1,
+    height: '70%',
+    backgroundColor: 'black',
+    marginHorizontal: '15%',
   },
 });
