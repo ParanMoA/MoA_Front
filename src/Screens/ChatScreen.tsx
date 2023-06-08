@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useRecoilState, useRecoilValue} from 'recoil';
 import authState, {IAuthTypes} from '../Recoil/idState';
 import {FlatList} from 'react-native-gesture-handler';
+import {request} from '../Components/AxiosComponent';
 
 interface Message {
   user: string;
@@ -41,14 +42,12 @@ type ChatDetailNavigationProps = {
 };
 
 const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selected, SetSeleted] = useState('');
+  // chat 관련 변수
   const [serverState, setServerState] = useState('Loading...');
   const [messageText, setMessageText] = useState('');
   const [serverMessages, setServerMessages] = useState<Message[]>([]);
   const auth = useRecoilValue(authState);
   const serverMessagesList: Message[] = [];
-
   var ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
           '/' +
           auth[0].email,
       );
-
       console.log(ws.current);
 
       ws.current.onopen = () => {
@@ -102,6 +100,7 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
       setMessageText('');
     }
   };
+
   return (
     <View style={styles.container}>
       <View>
@@ -134,6 +133,11 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
             onPress={sendMessage}
             disabled={messageText == ''}>
             <Text style={styles.send}>Send</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sendbox}
+            onPress={() => navigation.navigate('ReservationScreen')}>
+            <Text style={styles.send}>예약</Text>
           </TouchableOpacity>
         </View>
       </View>

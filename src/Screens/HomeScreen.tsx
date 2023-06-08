@@ -22,13 +22,14 @@ type HomeScreenProps = {
 type Todo = {
   id: string;
   title: string;
+  time: string;
   completed: boolean;
 };
 
 const initialData: Todo[] = [
-  {id: '1', title: '레스토랑 1', completed: false},
-  {id: '2', title: '레스토랑 2', completed: false},
-  {id: '3', title: '레스토랑 3', completed: false},
+  {id: '1', title: '인더키친', time: '06.11(토) 오후 6시', completed: false},
+  {id: '2', title: '꾸메주방', time: '06.12(일) 오전 11시', completed: false},
+  {id: '3', title: '키친벨리', time: '06.19(일) 오전 11시', completed: false},
 ];
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
@@ -51,7 +52,10 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           ),
         );
       }}>
-      <Text style={styles.title}>{item.title}</Text>
+      <View style={styles.listcontainer}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.time}>{item.time}</Text>
+      </View>
     </TouchableOpacity>
   );
   return (
@@ -77,7 +81,9 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             <Text style={styles.btnText}> 모집글 보기 </Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.text}>나의 예약 현황</Text>
         <FlatList
+          style={styles.flatlist}
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}></FlatList>

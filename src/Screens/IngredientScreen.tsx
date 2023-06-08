@@ -119,6 +119,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
       })
       .then(response => {
         if (isIngredient) {
+          console.log(response.data.result);
           const result = response.data.result.slice(0, 5);
           console.log(result);
           setIngredientImage(response.data.ingredientImage);

@@ -20,6 +20,7 @@ import RecruitScreen from '../Screens/RecruitTabScreen';
 import MyPageScreen from '../Screens/MyPageScreen';
 import ChatScreen from '../Screens/ChatScreen';
 import ChatRoomScreen from '../Screens/ChatRoomScreen';
+import ReservationScreen from '../Screens/ReservationScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<TabParamList>();
@@ -42,6 +43,13 @@ const ChatStackScreen = () => {
           headerStyle: {
             backgroundColor: '#FFD6BF',
           },
+        }}
+      />
+      <ChatStack.Screen
+        name="ReservationScreen"
+        component={ReservationScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </ChatStack.Navigator>
@@ -168,7 +176,6 @@ const Navigation = () => {
           component={BottomTabScreen}
           options={{headerShown: false}}
         />
-        {/* <Stack.Screen name="TopTab" component={SubTabScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

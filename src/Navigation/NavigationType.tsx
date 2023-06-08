@@ -27,4 +27,5 @@ export type MainParamList = {
 export type ChatParamList = {
   ChatRoomScreen: undefined;
   ChatScreen: {chatRoomId: string};
+  ReservationScreen: undefined;
 };

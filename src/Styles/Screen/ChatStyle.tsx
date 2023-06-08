@@ -34,9 +34,15 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-end',
   },
   otherchatContainer: {
     backgroundColor: '#FFD6BF',
+    width: '50%',
+    borderRadius: 16,
+    paddingVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   myChat: {
     color: 'black',
@@ -44,9 +50,7 @@ export const styles = StyleSheet.create({
   },
   otherChat: {
     color: 'white',
-
     fontSize: 20,
-    width: 200,
   },
   bottomContainer: {
     flexDirection: 'row',

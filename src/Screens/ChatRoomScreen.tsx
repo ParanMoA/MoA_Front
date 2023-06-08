@@ -6,6 +6,8 @@ import {Calendar} from 'react-native-calendars';
 import {styles} from '../Styles/Screen/ChatStyle';
 import {ChatParamList} from '../Navigation/NavigationType';
 import {request} from '../Components/AxiosComponent';
+import chatRoomState, {ChatRoomTypes} from '../Recoil/ChatRoomState';
+import {useRecoilState as useRecoilStateChat} from 'recoil';
 
 type ChatItem = {
   id: string;
@@ -23,7 +25,7 @@ type ChatRoomScreenProps = {
 const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
   const [chatList, setChatList] = useState<ChatItem[]>([]);
   const [selectedChat, setSelectedChat] = useState<Object>({});
-
+  const [roomId, setRoomId] = useRecoilStateChat<ChatRoomTypes>(chatRoomState);
   const getChatList = async () => {
     const res = await request('chat/list');
     if (res?.ok) {
@@ -43,6 +45,7 @@ const ChatRoomScreen = ({navigation}: ChatRoomScreenProps) => {
     <View>
       <TouchableOpacity
         onPress={() => {
+          setRoomId({chatRoomId: item.id});
           navigation.navigate('ChatScreen', {chatRoomId: item.id});
         }}>
         <View
