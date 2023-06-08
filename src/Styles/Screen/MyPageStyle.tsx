@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     width: 300,
     height: 150,
     marginTop: 40,
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: 'pink',
     flexDirection: 'row',
   },
   imageContainer: {
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   ingContainer: {

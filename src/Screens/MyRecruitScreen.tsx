@@ -159,7 +159,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
         const response = await res.json();
         const JoinList = response.map((item: any) => item);
         setJoinList(JoinList);
-        console.log(JoinList);
+        JoinList.map((item: any) => console.log(item.ingredientResponseDto));
         setIsJoinListModalVisible(true);
       }
     } catch (e) {
@@ -272,30 +272,47 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
           <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
               {joinList.map((item: any) => (
-                <View key={item.id}>
-                  <Text>{item.name}</Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={styles.empty}>
-                      <Button
-                        title="승인"
-                        onPress={() => {
-                          handleApply(item.id);
-                        }}
-                        color="black"
-                      />
-                    </View>
-                    <View style={styles.empty}>
-                      <Button
-                        title="거부"
-                        onPress={handleReject}
-                        color="black"
-                      />
+                <View key={item.id} style={{flexDirection: 'row'}}>
+                  <View style={styles.joinlist}>
+                    <Text style={styles.joinlistname}>이름: {item.name}</Text>
+                    {item.ingredientResponseDto.map(
+                      (value: {name: string; id: any}) => (
+                        <View key={value.id}>
+                          <Text style={styles.joinlistname}>
+                            식재료: {value.name}
+                          </Text>
+                        </View>
+                      ),
+                    )}
+                  </View>
+                  <View style={{justifyContent: 'center'}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                      }}>
+                      <View style={styles.empty}>
+                        <Button
+                          title="승인"
+                          onPress={() => {
+                            handleApply(item.id);
+                          }}
+                          color="black"
+                        />
+                      </View>
+                      <View style={styles.empty}>
+                        <Button
+                          title="거부"
+                          onPress={handleReject}
+                          color="black"
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
               ))}
             </View>
-            <View style={styles.empty}>
+            <View style={[styles.empty, {marginVertical: 15}]}>
               <Button
                 title="Close"
                 onPress={handleJoinListModalClose}

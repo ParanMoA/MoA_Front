@@ -125,4 +125,17 @@ export const styles = StyleSheet.create({
     marginVertical: 3,
     marginHorizontal: 3,
   },
+  joinlist: {
+    marginHorizontal: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
+  joinlistname: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

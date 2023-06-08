@@ -20,61 +20,44 @@ type IngredientData = {
   email: string;
   birth: any;
 };
+type UserData = {
+  name: string;
+  birth: any;
+  email: string;
+};
 
-// const testIngredientData: IngredientData[] = [
-//   {
-//     name: '식재료 1',
-//     registerDate: 1023,
-//     purchaseDate: 1024,
-//     expirationDate: 1025,
-//   },
-//   {
-//     name: '식재료 2',
-//     registerDate: 2023,
-//     purchaseDate: 2024,
-//     expirationDate: 2025,
-//   },
-//   {
-//     name: '식재료 3',
-//     registerDate: 3023,
-//     purchaseDate: 3024,
-//     expirationDate: 3025,
-//   },
-// ];
+type MyingredientData = {
+  name: string;
+  purchasedDate: any;
+  expirationDate: any;
+};
 
 const MyPageScreen = ({navigation}: MyPageScreenProps) => {
-  const [data, setData] = useState<IngredientData[]>([]);
-  const [registerDate, setRegisterDate] = useState<string>('');
-  const [purchaseDate, setPurchaseDate] = useState<string>('');
-  const [expirationDate, setExpirationDate] = useState<string>('');
+  const [ingredientdata, setIngredientdata] = useState<IngredientData[]>([]);
+  const [userdata, setUserdata] = useState<UserData>({
+    name: '',
+    birth: null,
+    email: '',
+  });
+  const [myingredientdata, setMyingredientdata] = useState<MyingredientData[]>(
+    [],
+  );
 
   const handleIngredientPress = () => {
     navigation.navigate('IngredientScreen');
   };
-  // useEffect(() => {
-  //   setData(testIngredientData);
-  // }, []);
 
-  const renderItem = ({item}: {item: IngredientData}) => (
-    <ScrollView>
-      <View style={styles.textContainer}>
-        <TouchableOpacity onPress={handleMyPageIngredient}></TouchableOpacity>
-        <Text
-          style={[
-            styles.text,
-            {color: 'black', fontSize: 20, fontWeight: 'bold'},
-          ]}>
-          {item.name}
-          {item.registerDate}ddd
-        </Text>
-      </View>
-    </ScrollView>
+  const renderItem = ({item}: {item: MyingredientData}) => (
+    <View style={styles.textContainer}>
+      <Text style={styles.text}>{item.name}</Text>
+    </View>
   );
 
   // 마이페이지 재료 조회 api
   const getRes = async () => {
     const res = await request('mypage/ingredients', [], 'GET');
     if (res?.ok) {
+      // res.json().then(response => setMyingredientdata(response));
       res.json().then(response => console.log(response));
     }
   };
@@ -86,23 +69,24 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
   const getRes2 = async () => {
     const res = await request('mypage/info', [], 'GET');
     if (res?.ok) {
-      res.json().then(response => setData(response));
+      res.json().then(response => setUserdata(response));
     }
   };
   useEffect(() => {
     getRes2();
   }, []);
 
-  const handleMyPageIngredient = async () => {
-    const data = {
-      registerDate: registerDate,
-      purchaseDate: purchaseDate,
-    };
-    const res = await request('/');
-    if (res?.ok) {
-      console.log(res);
-    }
-  };
+  // const handleMyPageIngredient = async () => {
+  //   const data = {
+  //     registerDate: registerDate,
+  //     purchaseDate: purchaseDate,
+  //   };
+  //   const res = await request('/');
+  //   if (res?.ok) {
+  //     console.log(res);
+  //   }
+  // };
+
   return (
     <View style={styles.container}>
       <View style={[styles.subContainer, {alignItems: 'center'}]}>
@@ -114,53 +98,24 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
             />
           </View>
           <View style={[styles.textContainer, {paddingHorizontal: 0}]}>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontSize: 14,
-                  color: 'black',
-                  fontWeight: 'bold',
-                },
-              ]}>
-              Name:{}
-            </Text>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontSize: 14,
-                  color: 'black',
-                  fontWeight: 'bold',
-                },
-              ]}>
-              Email:{' '}
-            </Text>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontSize: 14,
-                  color: 'black',
-                  fontWeight: 'bold',
-                },
-              ]}>
-              Birth:{' '}
-            </Text>
+            <View>
+              <Text style={styles.text}>Name: {userdata.name}</Text>
+              <Text style={styles.text}>Email: {userdata.email}</Text>
+              <Text style={styles.text}>Birth: {userdata.birth}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.ingContainer}>
           <FlatList
-            data={data}
+            data={myingredientdata}
+            keyExtractor={item => item.name.toString()}
             renderItem={renderItem}
-            keyExtractor={item => item.name}
-            style={{
-              flex: 1,
-            }}
           />
-          <TouchableOpacity onPress={handleIngredientPress}>
-            <Icon name="plus" color="black" size={60}></Icon>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity onPress={handleIngredientPress}>
+              <Icon name="plus" color="black" size={60}></Icon>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
