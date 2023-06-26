@@ -103,16 +103,23 @@ const MyPageScreen = ({navigation}: MyPageScreenProps) => {
             </View>
           </View>
         </View>
-        <View style={styles.ingContainer}>
-          <FlatList
-            data={myingredientdata}
-            keyExtractor={item => item.name.toString()}
-            renderItem={renderItem}
-          />
-          <View>
+        <View style={{marginTop: 30}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: '#6B7684'}}> 식재료 등록 목록 </Text>
             <TouchableOpacity onPress={handleIngredientPress}>
-              <Icon name="plus" color="black" size={40}></Icon>
+              <Icon name="plus" color="#6B7584" size={18}></Icon>
             </TouchableOpacity>
+          </View>
+          <View style={styles.ingContainer}>
+            <FlatList
+              data={myingredientdata}
+              keyExtractor={item => item.name.toString()}
+              renderItem={renderItem}
+            />
           </View>
         </View>
       </View>

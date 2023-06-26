@@ -1,6 +1,13 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  SafeAreaView,
+} from 'react-native';
 import {RootStackParamList} from '../Navigation/NavigationType';
 import {styles} from '../Styles/Screen/LoginStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,7 +52,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image
         source={require('../../public/images/MoA.png')}
         style={styles.logo}
@@ -61,8 +68,6 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
-          multiline={false}
-          textAlignVertical="auto"
           onChangeText={setEmail}></TextInput>
         <TextInput
           style={[styles.inputText, {backgroundColor: '#FFFFFF'}]}
@@ -105,7 +110,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

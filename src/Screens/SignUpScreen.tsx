@@ -91,13 +91,22 @@ const SignUpScreen = ({navigation}: SignUpScreenProps) => {
 
   const handleEmail = async () => {
     try {
+      const emailRegex =
+        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+      if (!emailRegex.test(email)) {
+        Alert.alert('이메일 형식 오류', '유효한 이메일 형식이 아닙니다.');
+        return;
+      }
+
       const res = await request(
         'user/signup/validation',
         {email: email},
         'GET',
       );
+
       if (res?.ok) {
-        Alert.alert('이메일 인증', '사용가능한 이메일입니다.');
+        Alert.alert('이메일 인증', '사용 가능한 이메일입니다.');
       }
     } catch (e) {
       console.log(e);

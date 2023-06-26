@@ -48,7 +48,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
   const [ingredientImage, setIngredientImage] = useState<string>('');
   const [receiptImage, setReceiptImage] = useState<string>('');
   const [addCount, setAddCount] = useState<number>(0);
-
+  const [isSelected, setIsSelected] = useState<number>(-1);
   const handleRegister = async () => {
     const data = {
       name: selected,
@@ -62,6 +62,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     if (res?.ok) {
       console.log(res);
       Alert.alert('식재료 등록', '식재료 등록에 성공하였습니다.');
+      navigation.navigate('HomeScreen');
     }
   };
 
@@ -157,8 +158,9 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
     );
   };
 
-  const handleIngredient = (selectedIngredient: any) => {
+  const handleIngredient = (selectedIngredient: any, index: any) => {
     console.log(selectedIngredient);
+    setIsSelected(index);
     setSelected(selectedIngredient);
   };
 
@@ -277,7 +279,7 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
             <View>
               <Text style={styles.text}> 식재료 이름 </Text>
               <View style={[styles.imgopt, {flex: 1}]}>
-                {ingredients.map(ingredient => (
+                {ingredients.map((ingredient, index) => (
                   <View
                     style={{
                       marginTop: 10,
@@ -295,8 +297,11 @@ const IngredientScreen = ({navigation}: IngredientScreenProps) => {
                         style={{
                           ...styles.save_cancel_btn,
                           width: 30,
+                          backgroundColor: !(isSelected === index)
+                            ? '#FFD6BF'
+                            : '#6B7684',
                         }}
-                        onPress={() => handleIngredient(ingredient)}>
+                        onPress={() => handleIngredient(ingredient, index)}>
                         <Text
                           style={{
                             fontSize: 10,

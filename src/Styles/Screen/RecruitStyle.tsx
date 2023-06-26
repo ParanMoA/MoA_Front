@@ -7,7 +7,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFD6BF',
     flex: 1,
   },
-
+  subContainer: {
+    width: 300,
+    height: 300,
+    marginTop: 83,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 16,
+    alignItems: 'center',
+  },
   textContainer: {
     backgroundColor: 'white',
     paddingHorizontal: '30%',
@@ -109,8 +116,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   joinDetailText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 20,
+
     color: 'black',
   },
   joinAndcancelBtn: {

@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: '1%',
-    paddingHorizontal: '30%',
+    paddingHorizontal: '20%',
     paddingVertical: '2%',
     backgroundColor: '#FFF7F4',
     borderWidth: 0,

@@ -20,6 +20,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {request} from '../Components/AxiosComponent';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import {DateAutoFormat} from '../utils/DateFormatter';
 
 type dataList = {
   userId: number;
@@ -65,20 +66,12 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
 
   const Tab = createMaterialTopTabNavigator();
 
-  const handleAddIngredient = () => {
-    if (ingredient.trim() === '') {
-      return;
-    }
-    setNeedIngredients([...needIngredients, ingredient]);
-    setIngredient('');
-  };
+  const handleAddIngredient = () => {};
 
   const renderItem = ({item}: {item: dataList}) => (
     <View key={item.id} style={{flexDirection: 'row', alignItems: 'center'}}>
       <ScrollView>
-        <Text style={[styles.item, {paddingVertical: '6%'}]}>
-          {item.id} : {item.title}
-        </Text>
+        <Text style={[styles.item, {paddingVertical: '6%'}]}>{item.title}</Text>
       </ScrollView>
       <TouchableOpacity
         key={`${item.id}_button`}
@@ -93,6 +86,15 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   );
 
   //아래는 등록버튼
+
+  // const handleRecruit = async () => {
+  //   setNeedIngredients(ingredient.split(',').map(item => item.trim()));
+
+  // };
+  const handleRecruitData = async () => {
+    setNeedIngredients(ingredient.split(',').map(item => item.trim()));
+  };
+
   const handleRecruit = async () => {
     const data = {
       foodName: foodname,
@@ -102,8 +104,12 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       title: title,
       content: content,
     };
+
+    console.log(data);
     const res = await request('recruit/create', data, 'POST');
+
     if (res?.ok) {
+      console.log(res);
       const rId = await res.json().then(response => response.id);
       setRecruitId(rId);
       Alert.alert('등록완료', '게시글 등록이 완료되었습니다.');
@@ -111,6 +117,9 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       getRes();
     }
   };
+  useEffect(() => {
+    handleRecruit();
+  }, [needIngredients]);
 
   const getRes = async () => {
     const res = await request('recruit/list');
@@ -119,7 +128,9 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
     }
   };
   useEffect(() => {
-    getRes();
+    const unsubscribe = navigation.addListener('focus', e => {
+      getRes();
+    });
   }, []);
   //아래는 참여버튼
 
@@ -171,6 +182,12 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
   };
 
   const handleModalClose = () => {
+    setFoodname('');
+    setNeedIngredients([]);
+    setMaxpeople(0);
+    setRecruitdate('');
+    setTitle('');
+    setContent('');
     setIsModalVisible(false);
     Alert.alert('취소되었습니다.');
     navigation.navigate('RecruitScreen');
@@ -184,6 +201,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       );
       if (res?.ok) {
         const response = await res.json();
+        console.log(response);
         setIngredientData(response);
 
         setIsIngredientModalVisible(true);
@@ -234,6 +252,10 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
       setSelectedIngredientNames([...selectedIngredientNames, ingredient.name]);
     }
   };
+  const handleAvailabledate = (date: string) => {
+    const targetDate = DateAutoFormat(date);
+    setRecruitdate(targetDate);
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -253,8 +275,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
               style={styles.btnText}
               placeholder="put ingredients..."
               value={ingredient}
-              onChangeText={setIngredient}
-              onSubmitEditing={handleAddIngredient}></TextInput>
+              onChangeText={setIngredient}></TextInput>
             <TextInput
               style={styles.btnText}
               placeholder="put max people..."
@@ -264,7 +285,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
               style={styles.btnText}
               placeholder="put available recuitdate..."
               value={recruitdate}
-              onChangeText={setRecruitdate}></TextInput>
+              onChangeText={handleAvailabledate}></TextInput>
             <TextInput
               style={styles.btnText}
               placeholder="put your title..."
@@ -278,7 +299,7 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
           </View>
 
           <View style={styles.ShowboxContainer}>
-            <Button title="Save" onPress={handleRecruit} color="black" />
+            <Button title="Save" onPress={handleRecruitData} color="black" />
             <Text> </Text>
             <Button title="Cancel" onPress={handleModalClose} color="black" />
           </View>
@@ -308,48 +329,58 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
                             visible={isIngredientModalVisible}
                             onRequestClose={handleIngredientModalClose}>
                             <View style={styles.container}>
-                              <View>
-                                {ingredientData.map(
-                                  (
-                                    ingredient: {name: any; id: any},
-                                    index: any,
-                                  ) => (
-                                    <View key={index}>
-                                      <TouchableOpacity
-                                        onPress={() =>
-                                          handleIngredientPress(ingredient)
-                                        }
-                                        style={{
-                                          backgroundColor:
-                                            selectedIngredientIds.includes(
-                                              ingredient.id,
-                                            )
-                                              ? 'green'
-                                              : 'transparent',
-                                          // You can customize the selected and unselected colors as per your needs
-                                        }}>
-                                        <Text style={styles.joinDetailText}>
-                                          {ingredient.name}
-                                        </Text>
-                                      </TouchableOpacity>
-                                    </View>
-                                  ),
-                                )}
-                              </View>
-                              <View style={{flexDirection: 'row'}}>
-                                <View style={styles.empty}>
-                                  <Button
-                                    title="Confirm"
-                                    onPress={handleIngredientConfirm}
-                                    color="black"
-                                  />
+                              <View style={styles.subContainer}>
+                                <Text
+                                  style={{
+                                    fontSize: 25,
+                                    marginBottom: 30,
+                                    fontWeight: 'bold',
+                                  }}>
+                                  내 식재료 목록
+                                </Text>
+                                <View>
+                                  {ingredientData.map(
+                                    (
+                                      ingredient: {name: any; id: any},
+                                      index: any,
+                                    ) => (
+                                      <View key={index}>
+                                        <TouchableOpacity
+                                          onPress={() =>
+                                            handleIngredientPress(ingredient)
+                                          }
+                                          style={{
+                                            backgroundColor:
+                                              selectedIngredientIds.includes(
+                                                ingredient.id,
+                                              )
+                                                ? '#FFD6BF'
+                                                : 'white',
+                                            // You can customize the selected and unselected colors as per your needs
+                                          }}>
+                                          <Text style={styles.joinDetailText}>
+                                            {ingredient.name}
+                                          </Text>
+                                        </TouchableOpacity>
+                                      </View>
+                                    ),
+                                  )}
                                 </View>
-                                <View style={styles.empty}>
-                                  <Button
-                                    title="Close"
-                                    onPress={handleIngredientModalClose}
-                                    color="black"
-                                  />
+                                <View style={{flexDirection: 'row'}}>
+                                  <View style={styles.empty}>
+                                    <Button
+                                      title="Confirm"
+                                      onPress={handleIngredientConfirm}
+                                      color="black"
+                                    />
+                                  </View>
+                                  <View style={styles.empty}>
+                                    <Button
+                                      title="Close"
+                                      onPress={handleIngredientModalClose}
+                                      color="black"
+                                    />
+                                  </View>
                                 </View>
                               </View>
                             </View>
@@ -357,9 +388,13 @@ const RecruitScreen = ({navigation}: RecruitScreenProps) => {
                         </View>
                       ) : (
                         <View>
-                          {selectedIngredientNames.map((selected: any) => (
-                            <Text>{selected}</Text>
-                          ))}
+                          {selectedIngredientNames.map(
+                            (selected: any, index: any) => (
+                              <View key={index}>
+                                <Text>{selected}</Text>
+                              </View>
+                            ),
+                          )}
                         </View>
                       )}
                     </View>

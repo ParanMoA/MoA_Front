@@ -114,7 +114,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
           setRecruitDate(item.recruitDate);
           setTitle(item.title);
           setContent(item.content);
-          // setRecruitId(item.id);
+          setSelectedId(item.id);
           setFoodName(item.foodName);
           handleModalOpen();
         }}>
@@ -133,7 +133,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
       content: content,
     };
     // console.log(recruitId);
-    const res = await request('recruit/modify/' + recruitId, data, 'POST');
+    const res = await request('recruit/modify/' + selectedId, data, 'POST');
     if (res?.ok) {
       // console.log(res);
       Alert.alert('수정완료', '수정되었습니다.');
@@ -143,11 +143,12 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
 
   //아래는 삭제버튼
   const handleRecruitDelete = async () => {
-    const res = await request('recruit/delete/' + recruitId, {}, 'POST');
+    const res = await request('recruit/delete/' + selectedId, {}, 'POST');
     if (res?.ok) {
       // console.log(res);
       Alert.alert('삭제완료', '삭제되었습니다.');
       setIsModalVisible(false);
+      getResult();
     }
   };
 
@@ -207,7 +208,7 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
       setIsJoinListModalVisible(false);
     }
   };
-  const handleReject = () => {};
+
   return (
     <View style={styles.container}>
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
@@ -270,6 +271,9 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
           visible={isJoinListModalVisible}
           onRequestClose={handleJoinListModalClose}>
           <View style={styles.container}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 15}}>
+              신청자 목록
+            </Text>
             <View style={{flexDirection: 'row'}}>
               {joinList.map((item: any) => (
                 <View key={item.id} style={{flexDirection: 'row'}}>
@@ -297,13 +301,6 @@ const MyRecruitScreen = ({navigation}: RecruitScreenProps) => {
                           onPress={() => {
                             handleApply(item.id);
                           }}
-                          color="black"
-                        />
-                      </View>
-                      <View style={styles.empty}>
-                        <Button
-                          title="거부"
-                          onPress={handleReject}
                           color="black"
                         />
                       </View>

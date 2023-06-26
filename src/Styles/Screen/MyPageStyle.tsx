@@ -24,7 +24,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageContainer: {
-    margin: 25,
+    marginTop: 25,
+    marginLeft: 15,
     width: 100,
     height: 100,
     borderRadius: 100,
@@ -44,13 +45,12 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   ingContainer: {
     width: 300,
     height: 300,
-    marginTop: 30,
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
     alignItems: 'center',

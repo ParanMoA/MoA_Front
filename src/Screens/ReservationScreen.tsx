@@ -74,6 +74,7 @@ const ReservationScreen = ({navigation}: ReservationScreenProps) => {
     const res = await request('reservation/confirm', data, 'POST');
     if (res?.ok) {
       console.log(res);
+      navigation.navigate('ChatScreen', {chatRoomId: chatRoomId.chatRoomId});
     }
   };
   return (
