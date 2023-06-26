@@ -46,6 +46,7 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
   const [serverState, setServerState] = useState('Loading...');
   const [messageText, setMessageText] = useState('');
   const [serverMessages, setServerMessages] = useState<Message[]>([]);
+  const [userId, setUserId] = useState('');
   const auth = useRecoilValue(authState);
   const serverMessagesList: Message[] = [];
   var ws = useRef<WebSocket | null>(null);
@@ -53,24 +54,40 @@ const ChatScreen = ({navigation, route}: ChatDetailNavigationProps) => {
   useEffect(() => {
     const connectWebSocket = async () => {
       ws.current = new WebSocket(
-        'ws://43.201.118.41:8081/chat/' +
+        'ws://3.34.78.33:8081/chat/' +
           route.params.chatRoomId +
           '/' +
           auth[0].email,
       );
       console.log(ws.current);
 
-      ws.current.onopen = () => {
+      ws.current.onopen = async () => {
         // connection opened
         console.log('connected');
         // send a message
         setServerState('Connected to the server');
+        const res = await request(
+          'chat/' + route.params.chatRoomId + '/messages',
+        );
+        if (res?.ok) {
+          const response = await res.json();
+          // const;
+          const extractedData = response.map((item: any) => {
+            const contentObj = JSON.parse(item.content);
+            return {
+              user: contentObj.user,
+              message: contentObj.message,
+            };
+          });
+          setServerMessages([...extractedData]);
+        }
       };
       ws.current.onmessage = e => {
-        console.log(e.data);
+        console.log('나는 data : ' + e.data);
         let parse = JSON.parse(e.data);
         serverMessagesList.push(parse);
-        setServerMessages([...serverMessagesList]);
+        console.log('나는 parse : ' + parse);
+        setServerMessages(prevMessages => [...prevMessages, parse]);
       };
       ws.current.onerror = e => {
         // an error occurred
